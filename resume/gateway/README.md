@@ -1,63 +1,64 @@
-# 网关模块
+# Gateway网关服务
 
-## 模块说明
-网关模块作为系统的统一入口，负责请求路由、负载均衡、限流、监控和安全控制等功能。
+## 模块简介
 
-## 目录结构
+Gateway模块是整个简历系统的API网关，负责请求的路由、鉴权、限流等功能。作为系统的流量入口，它提供了统一的接入点，同时通过一系列的过滤器实现了安全控制和流量管理。
+
+## 功能特性
+
+- **路由转发**：根据配置将请求转发到相应的微服务
+- **统一鉴权**：通过JWT验证实现API调用的身份认证
+- **限流控制**：集成Sentinel实现针对API的限流保护
+- **跨域支持**：提供CORS跨域资源共享配置
+- **熔断降级**：服务不可用时提供友好的降级处理
+- **日志追踪**：记录请求响应信息，便于问题排查
+
+## 模块结构
+
 ```
 gateway/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/
-│   │   │       └── ptu/
-│   │   │           └── resume/
-│   │   │               └── gateway/
-│   │   │                   ├── controller/   # 控制器层，处理HTTP请求
-│   │   │                   ├── service/      # 服务接口层
-│   │   │                   │   └── impl/     # 服务实现层
-│   │   │                   ├── mapper/       # 数据访问层
-│   │   │                   ├── entity/       # 实体类层
-│   │   │                   ├── dto/          # 数据传输对象层
-│   │   │                   ├── vo/           # 视图对象层
-│   │   │                   ├── query/        # 查询对象层
-│   │   │                   ├── config/       # 配置类层
-│   │   │                   └── util/         # 工具类
-│   │   └── resources/
-│   │       ├── mapper/      # MyBatis映射文件
-│   │       ├── application.yml
-│   │       └── bootstrap.yml
-│   └── test/
-└── pom.xml
+├── src/main/java/com/ptu/resume/gateway/
+│   ├── config/           # 配置类
+│   │   └── CorsConfig.java  # 跨域配置
+│   ├── filter/           # 过滤器
+│   │   ├── AuthFilter.java  # 权限校验过滤器
+│   │   └── LoggingFilter.java  # 日志记录过滤器
+│   ├── exception/        # 异常处理
+│   ├── handler/          # 处理器
+│   └── GatewayApplication.java  # 启动类
+└── src/main/resources/
+    ├── application.yml   # 应用配置
+    └── bootstrap.yml     # 启动配置
 ```
 
-## 功能清单
-- 功能1（待开发）
-- 功能2（待开发）
-- 功能3（待开发）
+## 关键配置
 
-## 数据表设计
-- 表1：说明（待设计）
-- 表2：说明（待设计）
+### 路由配置
 
-## 技术栈
-- Spring Boot
-- MyBatis Plus
-- Spring Cloud
-- Redis
+路由定义在`application.yml`中，系统目前已配置以下路由：
 
-## 依赖服务
-- 依赖 `common` 模块中的 `core` 组件
-- 依赖 `common` 模块中的 `web` 组件
-- 依赖 `common` 模块中的 `service` 组件
+- **用户服务**：/user/** → user-service
+- **简历服务**：/resume/** → resume-service
+- **认证服务**：/auth/** → auth-service
+- **模板服务**：/template/** → template-service
+- **订单服务**：/order/** → order-service
+- **AI服务**：/ai/** → ai-service
+- **文件服务**：/file/** → file-service
+- **通知服务**：/notification/** → notification-service
 
-## 接口说明
-- 接口1：说明（待开发）
-- 接口2：说明（待开发）
-- 接口3：说明（待开发）
+### 安全配置
 
-## 开发进度
-- [ ] 基础架构搭建
-- [ ] 功能1开发
-- [ ] 功能2开发
-- [ ] 功能3开发
+白名单路径配置在application.yml的security.ignore.whites部分，无需身份验证即可访问。
+
+## 依赖组件
+
+- **Spring Cloud Gateway**：基于WebFlux的API网关
+- **Spring Cloud Alibaba Nacos**：服务注册与发现
+- **Spring Cloud Alibaba Sentinel**：限流熔断
+- **Redis**：缓存Token信息
+- **JWT**：无状态身份验证
+
+## 部署信息
+
+- 默认端口：9000
+- 服务名称：gateway-service
