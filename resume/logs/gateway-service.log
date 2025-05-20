@@ -1,0 +1,705 @@
+2025-05-20 11:09:52.372 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:09:54.041 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 00d87a40-48ae-4aaa-aac5-433847dbad87_config-0
+2025-05-20 11:09:54.087 [main] INFO  org.reflections.Reflections - Reflections took 28 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:09:54.113 [main] INFO  org.reflections.Reflections - Reflections took 9 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:09:54.126 [main] INFO  org.reflections.Reflections - Reflections took 11 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:09:54.231 [main] INFO  org.reflections.Reflections - Reflections took 103 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:09:54.240 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:09:54.255 [main] INFO  org.reflections.Reflections - Reflections took 13 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:09:54.266 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:09:54.356 [main] INFO  org.reflections.Reflections - Reflections took 87 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:09:54.358 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:09:54.359 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/1324514662
+2025-05-20 11:09:54.359 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/908722588
+2025-05-20 11:09:54.359 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:09:54.360 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:09:54.366 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:09:55.739 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747710595484_127.0.0.1_12159
+2025-05-20 11:09:55.739 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Notify connected event to listeners.
+2025-05-20 11:09:55.740 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:09:55.740 [main] INFO  c.alibaba.nacos.common.remote.client - [00d87a40-48ae-4aaa-aac5-433847dbad87_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/1073878937
+2025-05-20 11:09:55.808 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:09:55.812 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:09:55.818 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:09:55.818 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:09:55.835 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:09:56.811 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:09:56.813 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:09:56.833 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:09:56.953 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.ptu.resume.gateway]' package. Please check your configuration.
+2025-05-20 11:09:57.006 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c7851f7a-b791-3acf-818b-c81410e3ca87
+2025-05-20 11:09:57.199 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:09:57.200 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:09:57.202 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:09:58.798 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:10:00.109 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:10:01.452 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:10:02.374 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:10:02.450 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:10:02.526 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:10:02.526 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:10:02.526 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:10:02.527 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:10:02.670 [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'webHandler' defined in class path resource [org/springframework/boot/autoconfigure/web/reactive/WebFluxAutoConfiguration$EnableWebFluxConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointWebFluxHandlerMapping' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointReactiveWebExtensionConfiguration$WebFluxAdditionalHealthEndpointPathsConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.web.reactive.AdditionalHealthEndpointPathsWebFluxHandlerMapping]: Factory method 'healthEndpointWebFluxHandlerMapping' threw exception; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthEndpoint' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthEndpoint' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthContributorRegistry' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthContributorRegistry' parameter 2; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dbHealthContributor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/jdbc/DataSourceHealthContributorAutoConfiguration.class]: Unsatisfied dependency expressed through method 'dbHealthContributor' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]: Unsatisfied dependency expressed through method 'dataSource' parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties': Could not bind properties to 'DataSourceProperties' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource.type' to java.lang.Class<javax.sql.DataSource>
+2025-05-20 11:10:02.705 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-20 11:10:02.725 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'spring.datasource.type' to java.lang.Class<javax.sql.DataSource>:
+
+    Property: spring.datasource.type
+    Value: "com.alibaba.druid.pool.DruidDataSource"
+    Origin: "spring.datasource.type" from property source "bootstrapProperties-common-config.yaml,DEFAULT_GROUP"
+    Reason: failed to convert java.lang.String to java.lang.Class<javax.sql.DataSource> (caused by java.lang.ClassNotFoundException: com.alibaba.druid.pool.DruidDataSource)
+
+Action:
+
+Update your application's configuration
+
+2025-05-20 11:10:03.699 [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2025-05-20 11:10:03.699 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2025-05-20 11:10:03.700 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2025-05-20 11:10:50.441 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:10:52.047 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0
+2025-05-20 11:10:52.086 [main] INFO  org.reflections.Reflections - Reflections took 25 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:10:52.114 [main] INFO  org.reflections.Reflections - Reflections took 15 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:10:52.125 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:10:52.226 [main] INFO  org.reflections.Reflections - Reflections took 99 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:10:52.234 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:10:52.250 [main] INFO  org.reflections.Reflections - Reflections took 14 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:10:52.258 [main] INFO  org.reflections.Reflections - Reflections took 6 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:10:52.344 [main] INFO  org.reflections.Reflections - Reflections took 84 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:10:52.345 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:10:52.346 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/809383315
+2025-05-20 11:10:52.346 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/1324514662
+2025-05-20 11:10:52.346 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:10:52.347 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:10:52.352 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:10:53.665 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747710653426_127.0.0.1_12299
+2025-05-20 11:10:53.665 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Notify connected event to listeners.
+2025-05-20 11:10:53.665 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:10:53.666 [main] INFO  c.alibaba.nacos.common.remote.client - [ede351cc-0fb7-4c0a-9145-f2fea0c5dda9_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/1592712032
+2025-05-20 11:10:53.711 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:10:53.716 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:10:53.720 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:10:53.721 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:10:53.733 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:10:54.352 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:10:54.354 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:10:54.378 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:10:54.483 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.ptu.resume.gateway]' package. Please check your configuration.
+2025-05-20 11:10:54.535 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c7851f7a-b791-3acf-818b-c81410e3ca87
+2025-05-20 11:10:54.707 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:10:54.707 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:10:54.709 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:10:56.269 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:10:57.578 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:10:58.888 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:10:59.744 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:10:59.816 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:10:59.880 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:10:59.880 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:10:59.880 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:10:59.880 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:10:59.880 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:10:59.880 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:10:59.881 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:11:00.036 [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'webHandler' defined in class path resource [org/springframework/boot/autoconfigure/web/reactive/WebFluxAutoConfiguration$EnableWebFluxConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointWebFluxHandlerMapping' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointReactiveWebExtensionConfiguration$WebFluxAdditionalHealthEndpointPathsConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.web.reactive.AdditionalHealthEndpointPathsWebFluxHandlerMapping]: Factory method 'healthEndpointWebFluxHandlerMapping' threw exception; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthEndpoint' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthEndpoint' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthContributorRegistry' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthContributorRegistry' parameter 2; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dbHealthContributor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/jdbc/DataSourceHealthContributorAutoConfiguration.class]: Unsatisfied dependency expressed through method 'dbHealthContributor' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]: Unsatisfied dependency expressed through method 'dataSource' parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties': Could not bind properties to 'DataSourceProperties' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource.type' to java.lang.Class<javax.sql.DataSource>
+2025-05-20 11:11:00.071 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-20 11:11:00.092 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'spring.datasource.type' to java.lang.Class<javax.sql.DataSource>:
+
+    Property: spring.datasource.type
+    Value: "com.alibaba.druid.pool.DruidDataSource"
+    Origin: "spring.datasource.type" from property source "bootstrapProperties-common-config.yaml,DEFAULT_GROUP"
+    Reason: failed to convert java.lang.String to java.lang.Class<javax.sql.DataSource> (caused by java.lang.ClassNotFoundException: com.alibaba.druid.pool.DruidDataSource)
+
+Action:
+
+Update your application's configuration
+
+2025-05-20 11:11:01.062 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2025-05-20 11:11:01.062 [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2025-05-20 11:11:01.063 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2025-05-20 11:12:24.816 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:12:26.439 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0
+2025-05-20 11:12:26.484 [main] INFO  org.reflections.Reflections - Reflections took 28 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:12:26.517 [main] INFO  org.reflections.Reflections - Reflections took 18 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:12:26.529 [main] INFO  org.reflections.Reflections - Reflections took 9 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:12:26.656 [main] INFO  org.reflections.Reflections - Reflections took 123 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:12:26.665 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:12:26.683 [main] INFO  org.reflections.Reflections - Reflections took 15 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:12:26.694 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:12:26.790 [main] INFO  org.reflections.Reflections - Reflections took 93 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:12:26.791 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:12:26.792 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/809383315
+2025-05-20 11:12:26.792 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/1324514662
+2025-05-20 11:12:26.793 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:12:26.793 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:12:26.799 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:12:28.127 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747710747904_127.0.0.1_12487
+2025-05-20 11:12:28.128 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Notify connected event to listeners.
+2025-05-20 11:12:28.128 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:12:28.128 [main] INFO  c.alibaba.nacos.common.remote.client - [953397e8-b01d-45b6-8c6e-e8d10d65e9c7_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/1592712032
+2025-05-20 11:12:28.175 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:12:28.179 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:12:28.183 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:12:28.184 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:12:28.197 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:12:28.852 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:12:28.854 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:12:28.880 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:12:28.992 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.ptu.resume.gateway]' package. Please check your configuration.
+2025-05-20 11:12:29.047 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1c6c3863-8055-3796-a44c-1fcf858ef74f
+2025-05-20 11:12:29.243 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:12:29.245 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:12:29.246 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:12:30.815 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:12:32.174 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:12:33.481 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:12:34.292 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:12:34.372 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:12:34.458 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:12:34.459 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:12:34.459 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:12:34.459 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:12:34.459 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:12:34.631 [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'webHandler' defined in class path resource [org/springframework/boot/autoconfigure/web/reactive/WebFluxAutoConfiguration$EnableWebFluxConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointWebFluxHandlerMapping' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointReactiveWebExtensionConfiguration$WebFluxAdditionalHealthEndpointPathsConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.web.reactive.AdditionalHealthEndpointPathsWebFluxHandlerMapping]: Factory method 'healthEndpointWebFluxHandlerMapping' threw exception; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthEndpoint' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthEndpoint' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthContributorRegistry' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthContributorRegistry' parameter 2; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dbHealthContributor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/jdbc/DataSourceHealthContributorAutoConfiguration.class]: Unsatisfied dependency expressed through method 'dbHealthContributor' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+2025-05-20 11:12:34.662 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-20 11:12:34.677 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (the profiles dev are currently active).
+
+2025-05-20 11:12:35.644 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2025-05-20 11:12:35.644 [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2025-05-20 11:13:14.052 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:13:15.697 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0
+2025-05-20 11:13:15.736 [main] INFO  org.reflections.Reflections - Reflections took 26 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:13:15.764 [main] INFO  org.reflections.Reflections - Reflections took 15 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:13:15.775 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:13:15.881 [main] INFO  org.reflections.Reflections - Reflections took 104 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:13:15.888 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:13:15.903 [main] INFO  org.reflections.Reflections - Reflections took 12 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:13:15.912 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:13:15.997 [main] INFO  org.reflections.Reflections - Reflections took 83 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:13:15.998 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:13:15.998 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/809383315
+2025-05-20 11:13:15.998 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/1324514662
+2025-05-20 11:13:15.999 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:13:15.999 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:13:16.004 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:13:17.272 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747710797046_127.0.0.1_12594
+2025-05-20 11:13:17.273 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Notify connected event to listeners.
+2025-05-20 11:13:17.273 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:13:17.273 [main] INFO  c.alibaba.nacos.common.remote.client - [7ff9d7fd-e6af-417f-8f78-8bfab7304e62_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/1592712032
+2025-05-20 11:13:17.322 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:13:17.325 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:13:17.331 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:13:17.332 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:13:17.347 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:13:17.990 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:13:17.998 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:13:18.016 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:13:18.125 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.ptu.resume.gateway]' package. Please check your configuration.
+2025-05-20 11:13:18.175 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1c6c3863-8055-3796-a44c-1fcf858ef74f
+2025-05-20 11:13:18.345 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:13:18.346 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:13:18.347 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:13:19.890 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:13:21.206 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:13:22.515 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:13:23.355 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:13:23.422 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:13:23.481 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:13:23.482 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:13:23.482 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:13:23.617 [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'webHandler' defined in class path resource [org/springframework/boot/autoconfigure/web/reactive/WebFluxAutoConfiguration$EnableWebFluxConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointWebFluxHandlerMapping' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointReactiveWebExtensionConfiguration$WebFluxAdditionalHealthEndpointPathsConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.web.reactive.AdditionalHealthEndpointPathsWebFluxHandlerMapping]: Factory method 'healthEndpointWebFluxHandlerMapping' threw exception; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthEndpoint' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthEndpoint' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthContributorRegistry' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthContributorRegistry' parameter 2; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dbHealthContributor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/jdbc/DataSourceHealthContributorAutoConfiguration.class]: Unsatisfied dependency expressed through method 'dbHealthContributor' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+2025-05-20 11:13:23.653 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-20 11:13:23.671 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (the profiles dev are currently active).
+
+2025-05-20 11:13:24.634 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2025-05-20 11:13:24.634 [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2025-05-20 11:13:24.635 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2025-05-20 11:15:54.733 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:15:56.357 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0
+2025-05-20 11:15:56.395 [main] INFO  org.reflections.Reflections - Reflections took 25 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:15:56.422 [main] INFO  org.reflections.Reflections - Reflections took 15 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:15:56.433 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:15:56.537 [main] INFO  org.reflections.Reflections - Reflections took 101 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:15:56.544 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:15:56.558 [main] INFO  org.reflections.Reflections - Reflections took 13 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:15:56.567 [main] INFO  org.reflections.Reflections - Reflections took 6 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:15:56.654 [main] INFO  org.reflections.Reflections - Reflections took 84 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:15:56.655 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:15:56.655 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/97901029
+2025-05-20 11:15:56.656 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/809383315
+2025-05-20 11:15:56.656 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:15:56.657 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:15:56.662 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:15:57.942 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747710957706_127.0.0.1_12872
+2025-05-20 11:15:57.943 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Notify connected event to listeners.
+2025-05-20 11:15:57.943 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:15:57.943 [main] INFO  c.alibaba.nacos.common.remote.client - [6eaf7cb1-6274-43b0-a725-1139e30d557e_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/1682157864
+2025-05-20 11:15:57.991 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:15:57.995 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:15:57.998 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:15:57.999 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:15:58.012 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:15:58.635 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:15:58.637 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:15:58.661 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:15:58.766 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.ptu.resume.gateway]' package. Please check your configuration.
+2025-05-20 11:15:58.814 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1c6c3863-8055-3796-a44c-1fcf858ef74f
+2025-05-20 11:15:58.979 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:15:58.981 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:15:58.982 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:16:00.505 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:16:01.832 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:16:03.143 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:16:03.970 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:16:04.040 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:16:04.104 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:16:04.237 [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'webHandler' defined in class path resource [org/springframework/boot/autoconfigure/web/reactive/WebFluxAutoConfiguration$EnableWebFluxConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointWebFluxHandlerMapping' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointReactiveWebExtensionConfiguration$WebFluxAdditionalHealthEndpointPathsConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.web.reactive.AdditionalHealthEndpointPathsWebFluxHandlerMapping]: Factory method 'healthEndpointWebFluxHandlerMapping' threw exception; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthEndpoint' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthEndpoint' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthContributorRegistry' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthContributorRegistry' parameter 2; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dbHealthContributor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/jdbc/DataSourceHealthContributorAutoConfiguration.class]: Unsatisfied dependency expressed through method 'dbHealthContributor' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+2025-05-20 11:16:04.268 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-20 11:16:04.284 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (the profiles dev are currently active).
+
+2025-05-20 11:16:05.259 [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2025-05-20 11:16:05.259 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2025-05-20 11:16:05.260 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2025-05-20 11:18:08.749 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:18:10.348 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0
+2025-05-20 11:18:10.384 [main] INFO  org.reflections.Reflections - Reflections took 24 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:18:10.407 [main] INFO  org.reflections.Reflections - Reflections took 11 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:18:10.422 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:18:10.524 [main] INFO  org.reflections.Reflections - Reflections took 98 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:18:10.531 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:18:10.544 [main] INFO  org.reflections.Reflections - Reflections took 12 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:18:10.553 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:18:10.637 [main] INFO  org.reflections.Reflections - Reflections took 82 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:18:10.638 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:18:10.639 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/97901029
+2025-05-20 11:18:10.639 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/809383315
+2025-05-20 11:18:10.640 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:18:10.640 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:18:10.646 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:18:11.980 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747711091744_127.0.0.1_13112
+2025-05-20 11:18:11.980 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Notify connected event to listeners.
+2025-05-20 11:18:11.981 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:18:11.981 [main] INFO  c.alibaba.nacos.common.remote.client - [50fe6ec8-f2df-4b3b-afb7-e94fb7e42bc8_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/1682157864
+2025-05-20 11:18:12.026 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:18:12.031 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:18:12.035 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:18:12.035 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:18:12.048 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:18:12.808 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:18:12.810 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:18:12.826 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:18:12.939 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.ptu.resume.gateway]' package. Please check your configuration.
+2025-05-20 11:18:12.989 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1c6c3863-8055-3796-a44c-1fcf858ef74f
+2025-05-20 11:18:13.181 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:18:13.182 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:18:13.183 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:18:14.759 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:18:16.073 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:18:17.404 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:18:18.188 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:18:18.254 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:18:18.314 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:18:18.315 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:18:18.442 [main] WARN  o.s.b.w.r.c.AnnotationConfigReactiveWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'webHandler' defined in class path resource [org/springframework/boot/autoconfigure/web/reactive/WebFluxAutoConfiguration$EnableWebFluxConfiguration.class]: Initialization of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointWebFluxHandlerMapping' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointReactiveWebExtensionConfiguration$WebFluxAdditionalHealthEndpointPathsConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.web.reactive.AdditionalHealthEndpointPathsWebFluxHandlerMapping]: Factory method 'healthEndpointWebFluxHandlerMapping' threw exception; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthEndpoint' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthEndpoint' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'healthContributorRegistry' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: Unsatisfied dependency expressed through method 'healthContributorRegistry' parameter 2; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dbHealthContributor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/jdbc/DataSourceHealthContributorAutoConfiguration.class]: Unsatisfied dependency expressed through method 'dbHealthContributor' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+2025-05-20 11:18:18.480 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-20 11:18:18.495 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (the profiles dev are currently active).
+
+2025-05-20 11:18:19.457 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2025-05-20 11:18:19.457 [Thread-5] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2025-05-20 11:18:19.458 [Thread-13] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2025-05-20 11:21:22.222 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2025-05-20 11:21:23.848 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 77b8248c-c115-4400-9bc4-32f099f262a5_config-0
+2025-05-20 11:21:23.888 [main] INFO  org.reflections.Reflections - Reflections took 25 ms to scan 1 urls, producing 3 keys and 6 values 
+2025-05-20 11:21:23.918 [main] INFO  org.reflections.Reflections - Reflections took 15 ms to scan 1 urls, producing 4 keys and 9 values 
+2025-05-20 11:21:23.928 [main] INFO  org.reflections.Reflections - Reflections took 8 ms to scan 1 urls, producing 3 keys and 10 values 
+2025-05-20 11:21:24.032 [main] INFO  org.reflections.Reflections - Reflections took 102 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:21:24.040 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 1 keys and 5 values 
+2025-05-20 11:21:24.055 [main] INFO  org.reflections.Reflections - Reflections took 13 ms to scan 1 urls, producing 1 keys and 7 values 
+2025-05-20 11:21:24.064 [main] INFO  org.reflections.Reflections - Reflections took 7 ms to scan 1 urls, producing 2 keys and 8 values 
+2025-05-20 11:21:24.152 [main] INFO  org.reflections.Reflections - Reflections took 85 ms to scan 178 urls, producing 0 keys and 0 values 
+2025-05-20 11:21:24.153 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] RpcClient init label, labels = {module=config, Vipserver-Tag=null, source=sdk, Amory-Tag=null, Location-Tag=null, taskId=0, AppName=unknown}
+2025-05-20 11:21:24.154 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$330/1548271808
+2025-05-20 11:21:24.154 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$331/17600354
+2025-05-20 11:21:24.154 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2025-05-20 11:21:24.155 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2025-05-20 11:21:24.160 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:21:25.454 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747711285212_127.0.0.1_13508
+2025-05-20 11:21:25.455 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Notify connected event to listeners.
+2025-05-20 11:21:25.455 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:21:25.455 [main] INFO  c.alibaba.nacos.common.remote.client - [77b8248c-c115-4400-9bc4-32f099f262a5_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/456314134
+2025-05-20 11:21:25.509 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service] & group[DEFAULT_GROUP]
+2025-05-20 11:21:25.513 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:21:25.518 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[gateway-service-dev.yaml] & group[DEFAULT_GROUP]
+2025-05-20 11:21:25.519 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-gateway-service-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-gateway-service,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-common-config.yaml,DEFAULT_GROUP'}]
+2025-05-20 11:21:25.532 [main] INFO  c.p.r.gateway.GatewayApplication - The following 1 profile is active: "dev"
+2025-05-20 11:21:26.134 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-05-20 11:21:26.136 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-05-20 11:21:26.154 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2025-05-20 11:21:26.295 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=d32774bc-81c8-372a-96fa-af70266e7476
+2025-05-20 11:21:26.434 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:21:26.435 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:21:26.436 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-05-20 11:21:27.969 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:21:29.284 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:21:30.595 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:21:31.379 [main] DEBUG o.s.c.g.config.GatewayProperties - Routes supplied from Gateway Properties: [RouteDefinition{id='user-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/user/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://user-service, order=0, metadata={}}, RouteDefinition{id='resume-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/resume/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://resume-service, order=0, metadata={}}, RouteDefinition{id='auth-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/auth/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://auth-service, order=0, metadata={}}, RouteDefinition{id='template-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/template/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://template-service, order=0, metadata={}}, RouteDefinition{id='order-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/order/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://order-service, order=0, metadata={}}, RouteDefinition{id='ai-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/ai/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://ai-service, order=0, metadata={}}, RouteDefinition{id='file-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/file/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://file-service, order=0, metadata={}}, RouteDefinition{id='notification-service', predicates=[PredicateDefinition{name='Path', args={_genkey_0=/notification/**}}], filters=[FilterDefinition{name='StripPrefix', args={_genkey_0=0}}], uri=lb://notification-service, order=0, metadata={}}]
+2025-05-20 11:21:31.458 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayFilter with order: -2147483648
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2025-05-20 11:21:31.518 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2025-05-20 11:21:31.519 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2025-05-20 11:21:31.519 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2025-05-20 11:21:31.519 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-05-20 11:21:31.519 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2025-05-20 11:21:31.519 [main] INFO  o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-05-20 11:21:31.741 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 20 endpoint(s) beneath base path '/actuator'
+2025-05-20 11:21:31.812 [main] INFO  c.a.c.s.g.s.SentinelSCGAutoConfiguration - [Sentinel SpringCloudGateway] register SentinelGatewayBlockExceptionHandler
+2025-05-20 11:21:32.673 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-05-20 11:21:32.743 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf
+2025-05-20 11:21:32.743 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] RpcClient init label, labels = {module=naming, source=sdk}
+2025-05-20 11:21:32.745 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] RpcClient init, ServerListFactory = com.alibaba.nacos.client.naming.core.ServerListManager
+2025-05-20 11:21:32.745 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Registry connection listener to current client:com.alibaba.nacos.client.naming.remote.gprc.redo.NamingGrpcRedoService
+2025-05-20 11:21:32.745 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Register server push request handler:com.alibaba.nacos.client.naming.remote.gprc.NamingPushRequestHandler
+2025-05-20 11:21:32.747 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2025-05-20 11:21:32.862 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1747711292751_127.0.0.1_13524
+2025-05-20 11:21:32.862 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2025-05-20 11:21:32.862 [main] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$340/456314134
+2025-05-20 11:21:32.862 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Notify connected event to listeners.
+2025-05-20 11:21:32.974 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:21:32.974 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:21:32.992 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:32.992 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:32.998 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:21:32.998 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:21:32.998 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:21:32.998 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:21:32.999 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:32.999 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.000 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:21:33.000 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:21:33.000 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:21:33.000 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:21:33.000 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.000 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.001 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:21:33.001 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:21:33.001 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:21:33.001 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:21:33.001 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.001 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.001 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:21:33.001 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:21:33.001 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:21:33.001 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:21:33.002 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.002 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.002 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:21:33.002 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:21:33.002 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:21:33.002 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:21:33.002 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.003 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:21:33.003 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.003 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:21:33.003 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:21:33.003 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.003 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:21:33.004 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:21:33.004 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:21:33.004 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.004 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:21:33.004 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.004 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:21:33.004 [boundedElastic-2] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
+2025-05-20 11:21:33.005 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:33.005 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
+2025-05-20 11:21:33.012 [boundedElastic-2] DEBUG o.s.c.g.filter.GatewayMetricsFilter - New routes count: 8
+2025-05-20 11:21:33.252 [main] INFO  o.s.b.w.e.netty.NettyWebServer - Netty started on port 9000
+2025-05-20 11:21:33.483 [nacos-grpc-client-executor-13] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Receive server push request, request = NotifySubscriberRequest, requestId = 1
+2025-05-20 11:21:33.483 [nacos-grpc-client-executor-13] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Ack server push request, request = NotifySubscriberRequest, requestId = 1
+2025-05-20 11:21:34.563 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:21:35.872 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2025-05-20 11:21:35.885 [main] INFO  c.a.c.n.r.NacosServiceRegistry - nacos registry, DEFAULT_GROUP gateway-service 192.168.174.1:9000 register finished
+2025-05-20 11:21:35.908 [main] INFO  c.p.r.gateway.GatewayApplication - Started GatewayApplication in 15.448 seconds (JVM running for 16.237)
+2025-05-20 11:21:35.912 [boundedElastic-4] DEBUG o.s.c.g.filter.GatewayMetricsFilter - New routes count: 9
+2025-05-20 11:21:35.912 [boundedElastic-5] DEBUG o.s.c.g.filter.GatewayMetricsFilter - New routes count: 9
+2025-05-20 11:21:35.912 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying {pattern=/gateway-service/**} to Path
+2025-05-20 11:21:35.912 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying {pattern=/gateway-service/**} to Path
+2025-05-20 11:21:35.913 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying filter {regexp=/gateway-service/?(?<remaining>.*), replacement=/${remaining}} to RewritePath
+2025-05-20 11:21:35.913 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying filter {regexp=/gateway-service/?(?<remaining>.*), replacement=/${remaining}} to RewritePath
+2025-05-20 11:21:35.917 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=gateway-service-dev.yaml, group=DEFAULT_GROUP
+2025-05-20 11:21:35.918 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=gateway-service, group=DEFAULT_GROUP
+2025-05-20 11:21:35.918 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=gateway-service.yaml, group=DEFAULT_GROUP
+2025-05-20 11:21:35.918 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ReactiveCompositeDiscoveryClient_gateway-service
+2025-05-20 11:21:35.918 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ReactiveCompositeDiscoveryClient_gateway-service
+2025-05-20 11:21:35.919 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:21:35.919 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:21:35.919 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.919 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.920 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:21:35.920 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:21:35.920 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:21:35.920 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:21:35.920 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.920 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.921 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:21:35.921 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:21:35.921 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:21:35.921 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:21:35.921 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.921 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.921 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:21:35.921 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:21:35.921 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:21:35.921 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:21:35.922 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.922 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.922 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:21:35.922 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:21:35.922 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:21:35.922 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:21:35.922 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.922 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.923 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:21:35.923 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:21:35.923 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:21:35.923 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:21:35.923 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.923 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.924 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:21:35.924 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:21:35.924 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:21:35.924 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:21:35.924 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.924 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.924 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:21:35.924 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:21:35.925 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:21:35.925 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:21:35.925 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.925 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:21:35.925 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
+2025-05-20 11:21:35.926 [boundedElastic-3] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
+2025-05-20 11:21:35.929 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=common-config.yaml, group=DEFAULT_GROUP
+2025-05-20 11:21:36.384 [nacos-grpc-client-executor-32] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Receive server push request, request = NotifySubscriberRequest, requestId = 2
+2025-05-20 11:21:36.384 [nacos-grpc-client-executor-32] INFO  c.alibaba.nacos.common.remote.client - [c60b87cc-817c-49e9-a7e3-a7ac8a18d1bf] Ack server push request, request = NotifySubscriberRequest, requestId = 2
+2025-05-20 11:22:03.014 [boundedElastic-5] DEBUG o.s.c.g.filter.GatewayMetricsFilter - New routes count: 9
+2025-05-20 11:22:03.015 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying {pattern=/gateway-service/**} to Path
+2025-05-20 11:22:03.015 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying filter {regexp=/gateway-service/?(?<remaining>.*), replacement=/${remaining}} to RewritePath
+2025-05-20 11:22:03.015 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ReactiveCompositeDiscoveryClient_gateway-service
+2025-05-20 11:22:03.015 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:22:03.016 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:22:03.017 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.017 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:22:03.017 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:22:03.018 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.019 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:22:03.019 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:22:03.019 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:03.020 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
+2025-05-20 11:22:33.029 [boundedElastic-3] DEBUG o.s.c.g.filter.GatewayMetricsFilter - New routes count: 9
+2025-05-20 11:22:33.029 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying {pattern=/gateway-service/**} to Path
+2025-05-20 11:22:33.029 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying filter {regexp=/gateway-service/?(?<remaining>.*), replacement=/${remaining}} to RewritePath
+2025-05-20 11:22:33.030 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ReactiveCompositeDiscoveryClient_gateway-service
+2025-05-20 11:22:33.030 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:22:33.030 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service

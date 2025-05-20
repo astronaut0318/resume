@@ -1,5 +1,23 @@
-# Vue 3 + Vite
+# 智能简历工场
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+一个基于Vue 3 + Vite的简历系统前端项目。
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 技术栈
+
+- Vue 3（使用`<script setup>` SFCs）
+- Vite
+- Element Plus
+- Axios
+
+## 功能特性
+
+- 用户认证与管理
+- 简历模板市场
+- 简历编辑与导出
+- 会员VIP服务
+
+## 开发说明
+
+本项目使用Vue 3 `<script setup>` SFCs，详情请查看[script setup文档](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup)。
+
+关于Vue的IDE支持，请参阅[Vue文档扩展指南](https://vuejs.org/guide/scaling-up/tooling.html#ide-support)。
