@@ -29,7 +29,6 @@
         <druid.version>1.2.8</druid.version>
         
         <!-- Middleware -->
-        <redisson.version>3.17.7</redisson.version>
         <rabbitmq.version>2.4.13</rabbitmq.version>
         
         <!-- Tools -->
@@ -40,10 +39,32 @@
         
         <!-- Third-party -->
         <minio.version>8.4.6</minio.version>
-        <aliyun-oss.version>3.15.1</aliyun-oss.version>
+        
+        <!-- Monitoring & Logging -->
+        <logback.version>1.2.11</logback.version>
+        <log4j2.version>2.17.2</log4j2.version>
+        <slf4j.version>1.7.36</slf4j.version>
     </properties>
     
-            <!-- Modules -->    <modules>        <module>resume-common</module>        <module>resume-gateway</module>        <module>resume-auth</module>        <module>resume-user</module>        <module>resume-resume</module>        <module>resume-template</module>    </modules>
+    <!-- Modules -->
+    <modules>
+        <!-- 公共模块 -->
+        <module>common/core</module>
+        <module>common/web</module>
+        <module>common/service</module>
+        <module>common/security</module>
+        
+        <!-- 服务模块 -->
+        <module>gateway</module>
+<!--        <module>auth</module>-->
+<!--        <module>user</module>-->
+<!--        <module>resume</module>-->
+<!--        <module>template</module>-->
+<!--        <module>order</module>-->
+<!--        <module>ai</module>-->
+<!--        <module>file</module>-->
+<!--        <module>notification</module>-->
+    </modules>
 
     <!-- Dependency Management -->
     <dependencyManagement>
@@ -91,9 +112,9 @@
             </dependency>
             
             <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
             </dependency>
             
             <dependency>
@@ -131,7 +152,64 @@
             </dependency>
             
             <!-- Project modules -->
-            <!-- Project modules -->            <dependency>                <groupId>com.ptu</groupId>                <artifactId>resume-common-core</artifactId>                <version>${project.version}</version>            </dependency>            <dependency>                <groupId>com.ptu</groupId>                <artifactId>resume-common-redis</artifactId>                <version>${project.version}</version>            </dependency>            <dependency>                <groupId>com.ptu</groupId>                <artifactId>resume-common-security</artifactId>                <version>${project.version}</version>            </dependency>            <dependency>                <groupId>com.ptu</groupId>                <artifactId>resume-common-log</artifactId>                <version>${project.version}</version>            </dependency>            <dependency>                <groupId>com.ptu</groupId>                <artifactId>resume-common-feign</artifactId>                <version>${project.version}</version>            </dependency>            <dependency>                <groupId>com.ptu</groupId>                <artifactId>resume-common-web</artifactId>                <version>${project.version}</version>            </dependency>
+            <dependency>
+                <groupId>com.ptu</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ptu</groupId>
+                <artifactId>web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ptu</groupId>
+                <artifactId>service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ptu</groupId>
+                <artifactId>security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            
+            <!-- Spring Cloud Alibaba -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            </dependency>
+            
+            <!-- Spring Cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+            </dependency>
+            
+            <!-- 消息队列 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     
@@ -147,37 +225,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        
-        <!-- 测试依赖问题，临时添加以下依赖 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson-spring-boot-starter</artifactId>
-            <version>${redisson.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webflux-ui</artifactId>
-            <version>${springdoc.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>${minio.version}</version>
         </dependency>
     </dependencies>
 
@@ -210,12 +257,21 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <!-- 添加Maven中央仓库作为备用 -->
         <repository>
             <id>central</id>
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <!-- 添加Spring仓库 -->
         <repository>

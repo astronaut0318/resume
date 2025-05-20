@@ -117,17 +117,15 @@
 
 #### 公共模块结构
 ```
-resume-common/
-├── resume-common-core/        # 核心工具类及通用代码
+common/
+├── core/                      # 核心工具类及通用代码
 │   ├── constants/             # 常量定义
 │   ├── exception/             # 全局异常类
 │   ├── utils/                 # 工具类
 │   └── model/                 # 公共数据模型
-├── resume-common-redis/       # Redis配置及工具
-├── resume-common-security/    # 安全相关配置及工具
-├── resume-common-log/         # 日志组件
-├── resume-common-feign/       # Feign相关配置
-└── resume-common-web/         # Web相关通用配置
+├── service/                   # 数据访问、缓存和服务调用组件
+├── security/                  # 安全相关配置及工具
+└── web/                       # Web应用通用组件和日志处理
 ```
 
 #### 公共模块主要功能
