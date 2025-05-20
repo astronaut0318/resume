@@ -675,3 +675,31 @@ Consider the following:
 2025-05-20 11:22:03.019 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
 2025-05-20 11:22:03.019 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
 2025-05-20 11:22:03.020 [boundedElastic-1] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
+2025-05-20 11:22:33.029 [boundedElastic-3] DEBUG o.s.c.g.filter.GatewayMetricsFilter - New routes count: 9
+2025-05-20 11:22:33.029 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying {pattern=/gateway-service/**} to Path
+2025-05-20 11:22:33.029 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ReactiveCompositeDiscoveryClient_gateway-service applying filter {regexp=/gateway-service/?(?<remaining>.*), replacement=/${remaining}} to RewritePath
+2025-05-20 11:22:33.030 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ReactiveCompositeDiscoveryClient_gateway-service
+2025-05-20 11:22:33.030 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying {_genkey_0=/user/**} to Path
+2025-05-20 11:22:33.030 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition user-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: user-service
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying {_genkey_0=/resume/**} to Path
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition resume-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.033 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: resume-service
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying {_genkey_0=/auth/**} to Path
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition auth-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: auth-service
+2025-05-20 11:22:33.034 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying {_genkey_0=/template/**} to Path
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition template-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: template-service
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying {_genkey_0=/order/**} to Path
+2025-05-20 11:22:33.035 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition order-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: order-service
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying {_genkey_0=/ai/**} to Path
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition ai-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: ai-service
+2025-05-20 11:22:33.036 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying {_genkey_0=/file/**} to Path
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition file-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: file-service
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying {_genkey_0=/notification/**} to Path
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition notification-service applying filter {_genkey_0=0} to StripPrefix
+2025-05-20 11:22:33.037 [boundedElastic-4] DEBUG o.s.c.g.r.RouteDefinitionRouteLocator - RouteDefinition matched: notification-service
