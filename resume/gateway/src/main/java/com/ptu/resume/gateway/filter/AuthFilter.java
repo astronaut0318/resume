@@ -115,6 +115,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
      * @return 是否在白名单中
      */
     private boolean isWhiteListUrl(String url) {
+        // 添加特定端点白名单检查
+        if (url.endsWith("/health") || url.contains("/actuator/")) {
+            return true;
+        }
+        
         List<String> whiteList = securityConfig.getIgnore().getWhites();
         return whiteList.stream().anyMatch(pattern -> 
                 matchPath(url, pattern));

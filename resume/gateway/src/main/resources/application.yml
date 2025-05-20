@@ -95,6 +95,9 @@ security:
     whites:
       - /auth/login
       - /auth/register
+      - /auth/health
+      - /*/health
+      - /*/actuator/**
       - /*/v3/api-docs
       - /*/swagger-ui.html
       - /*/swagger-ui/**
@@ -107,4 +110,4 @@ management:
         include: '*'
   endpoint:
     health:
-      show-details: always 
+      show-details: always

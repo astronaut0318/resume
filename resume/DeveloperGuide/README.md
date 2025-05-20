@@ -3,6 +3,19 @@
 ## 项目简介
 
 本项目是一个基于Spring Cloud的分布式简历系统，旨在为用户提供简历创建、编辑、管理及分享的一站式服务。系统支持多种简历模板，可在线预览、编辑并下载为PDF或Word格式，同时集成AI辅助功能，帮助用户优化简历内容。
+nacos地址: 127.0.0.1:8848
+namespace: f7c0123a-5594-4811-9fa2-0252d3776289
+
+mysql: 
+url: jdbc:mysql://localhost:3306/resume?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+username: root
+password: 1234
+
+redis:
+host: 127.0.0.1
+port: 6379
+database: 0
+timeout: 10000
 
 ## 核心功能
 
@@ -388,18 +401,6 @@ CREATE TABLE `notifications` (
 - 使用统一的返回格式
 - 注释完整，尤其是接口文档注释
 
-### 分支管理
-- master: 主分支，稳定版本
-- develop: 开发分支
-- feature/*: 功能分支
-- bugfix/*: 修复分支
-
-### 开发流程
-1. 从develop分支创建feature分支
-2. 在feature分支开发新功能
-3. 完成开发后提交Pull Request到develop分支
-4. 代码审核通过后合并到develop分支
-5. 发布前将develop分支合并到master分支
 
 ### 接口文档
 
