@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+# Vue 3 + Vite
+
+This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+
+Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+=======
 # resume
+<<<<<<< HEAD
 # 简历系统开发规范
 
 ## 一、项目基本规范
@@ -617,3 +625,7 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
    - 性能优化
    - 安全加固
    - 部署上线
+=======
+简历系统
+>>>>>>> 87bcf36b013608c1e6582d635662661dcdd8ccc1
+>>>>>>> 247a8d6a4b300f2db18cafba860d77f287b1ed26
