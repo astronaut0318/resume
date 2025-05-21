@@ -66,7 +66,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
             Map<String, Object> result = new HashMap<>(3);
             result.put("code", code);
             result.put("message", message);
-            result.put("success", false);
+            result.put("data", null);
             
             // 将结果转换为JSON
             try {

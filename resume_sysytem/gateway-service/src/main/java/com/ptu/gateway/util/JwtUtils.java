@@ -20,18 +20,25 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret:defaultSecretKeydefaultSecretKeydefaultSecretKeydefaultSecretKey}")
+    @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.token-validity-in-seconds:86400}")
+    @Value("${jwt.token-validity-in-seconds}")
     private long tokenValidityInSeconds;
 
     private Key key;
 
     @PostConstruct
     public void init() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        try {
+            // 确保密钥是Base64编码的
+            byte[] keyBytes = Decoders.BASE64.decode(secret);
+            this.key = Keys.hmacShaKeyFor(keyBytes);
+            log.info("JWT密钥初始化成功");
+        } catch (Exception e) {
+            log.error("JWT密钥初始化失败: {}", e.getMessage());
+            throw new RuntimeException("无法初始化JWT密钥", e);
+        }
     }
 
     /**
@@ -45,6 +52,9 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
             return claims.getSubject();
+        } catch (ExpiredJwtException e) {
+            log.warn("从已过期的Token中获取用户名: {}", e.getMessage());
+            return null;
         } catch (Exception e) {
             log.error("从Token中获取用户名失败: {}", e.getMessage());
             return null;
@@ -62,6 +72,9 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
             return Long.parseLong(claims.get("userId", String.class));
+        } catch (ExpiredJwtException e) {
+            log.warn("从已过期的Token中获取用户ID: {}", e.getMessage());
+            return null;
         } catch (Exception e) {
             log.error("从Token中获取用户ID失败: {}", e.getMessage());
             return null;
@@ -79,7 +92,7 @@ public class JwtUtils {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            log.error("Token已过期: {}", e.getMessage());
+            log.warn("Token已过期: {}", e.getMessage());
         } catch (Exception e) {
             log.error("Token验证失败: {}", e.getMessage());
         }
@@ -97,6 +110,9 @@ public class JwtUtils {
                     .parseClaimsJws(token)
                     .getBody();
             return claims.getExpiration();
+        } catch (ExpiredJwtException e) {
+            log.warn("从已过期的Token中获取过期时间: {}", e.getMessage());
+            return e.getClaims().getExpiration();
         } catch (Exception e) {
             log.error("从Token中获取过期时间失败: {}", e.getMessage());
             return null;

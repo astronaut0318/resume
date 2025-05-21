@@ -124,7 +124,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         Map<String, Object> result = new HashMap<>();
         result.put("code", HttpStatus.UNAUTHORIZED.value());
         result.put("message", message);
-        result.put("success", false);
+        result.put("data", null);
         
         try {
             byte[] bytes = objectMapper.writeValueAsBytes(result);
@@ -133,7 +133,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         } catch (JsonProcessingException e) {
             log.error("返回未授权响应失败: {}", e.getMessage());
             
-            byte[] bytes = ("{\"code\":401,\"message\":\"" + message + "\",\"success\":false}").getBytes(StandardCharsets.UTF_8);
+            byte[] bytes = ("{\"code\":401,\"message\":\"" + message + "\",\"data\":null}").getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = response.bufferFactory().wrap(bytes);
             return response.writeWith(Mono.just(buffer));
         }

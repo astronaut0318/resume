@@ -42,99 +42,160 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowed-origins: "*"
-            allowed-methods: "*"
+            allowed-origins:
+              - "http://localhost:8080"
+              - "http://localhost:3000"
+              - "https://*.ptu.com"
+            allowed-methods:
+              - "GET"
+              - "POST"
+              - "PUT" 
+              - "DELETE"
+              - "OPTIONS"
             allowed-headers: "*"
             allow-credentials: true
             max-age: 3600
             
       # 路由配置
       routes:
+        # Auth服务Swagger文档路由
+        - id: auth-swagger-docs
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/v3/api-docs/**,/auth/v2/api-docs/**
+          filters:
+            - StripPrefix=0
+
+        # User服务Swagger文档路由
+        - id: user-swagger-docs
+          uri: lb://user-service
+          predicates:
+            - Path=/user/v3/api-docs/**,/user/v2/api-docs/**
+          filters:
+            - StripPrefix=0
+
+        # Swagger UI资源路由
+        - id: swagger-ui
+          uri: lb://gateway-service
+          predicates:
+            - Path=/swagger-ui/**,/swagger-resources/**,/webjars/**,/swagger-ui.html
+            
         # 用户服务路由
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/user/**
+            - Path=/api/users/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # 认证服务路由
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/auth/**
+            - Path=/api/auth/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # 文件服务路由
         - id: file-service
           uri: lb://file-service
           predicates:
-            - Path=/file/**
+            - Path=/api/files/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # 订单服务路由
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/order/**
+            - Path=/api/orders/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # 模板服务路由
         - id: template-service
           uri: lb://template-service
           predicates:
-            - Path=/template/**
+            - Path=/api/templates/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # 简历服务路由
         - id: resume-service
           uri: lb://resume-service
           predicates:
-            - Path=/resume/**
+            - Path=/api/resumes/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # AI服务路由
         - id: ai-service
           uri: lb://ai-service
           predicates:
-            - Path=/ai/**
+            - Path=/api/ai/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
             
         # 通知服务路由
         - id: notification
           uri: lb://notification
           predicates:
-            - Path=/notification/**
+            - Path=/api/notifications/**
+          filters:
+            - StripPrefix=2
+            
+        # 管理员API路由
+        - id: admin-api
+          uri: lb://user-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
+            
+        # 系统状态与配置路由
+        - id: system-api
+          uri: lb://gateway-service
+          predicates:
+            - Path=/api/status, /api/config/refresh
           filters:
             - StripPrefix=1
-    
-    # Sentinel配置
-    sentinel:
-      transport:
-        dashboard: localhost:8858
-      eager: true
-      # 网关流控适配
-      scg:
-        fallback:
-          mode: response
-          response-status: 429
-          response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","success":false}'
+
+# JWT配置
+jwt:
+  # 使用base64编码的安全密钥
+  secret: cHR1LXJlc3VtZS1zeXN0ZW0tc2VjcmV0LWtleS1mb3Itand0LXRva2VuLWdlbmVyYXRpb24tYW5kLXZlcmlmaWNhdGlvbi1zZWN1cmUxMjM0NTY3ODk=
+  # 令牌有效期（秒）
+  token-validity-in-seconds: 86400
+  # 刷新令牌有效期（秒）
+  refresh-token-validity-in-seconds: 604800
 
 # 白名单接口配置，这些路径无需认证
 gateway:
   security:
     ignore-urls:
-      - /auth/login
-      - /auth/register
-      - /auth/captcha
+      - /api/auth/login
+      - /api/auth/register
+      - /api/auth/captcha
+      - /api/auth/refresh
+      - /api/users/register
+      - /api/templates/categories
+      - /api/templates
       - /*/v3/api-docs
+      - /swagger-ui/**
       - /swagger-ui.html
       - /swagger-resources/**
       - /webjars/**
-      - /actuator/** 
+      - /actuator/**
+      - /favicon.ico
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858
+  eager: true
+  # 网关流控适配
+  scg:
+    fallback:
+      mode: response
+      response-status: 429
+      response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","data":null}' 
