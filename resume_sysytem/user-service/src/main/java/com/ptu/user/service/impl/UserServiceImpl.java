@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ptu.common.exception.BusinessException;
 import com.ptu.common.util.StringUtils;
+import com.ptu.user.dto.RegisterDTO;
 import com.ptu.user.entity.UserEntity;
 import com.ptu.user.mapper.UserMapper;
 import com.ptu.user.service.UserService;
+import com.ptu.user.vo.RegisterVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -137,5 +140,86 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         user.setPassword(encryptedPassword);
         user.setUpdateTime(LocalDateTime.now());
         return updateById(user);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param registerDTO 注册信息
+     * @return 注册成功的用户信息
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public RegisterVO register(RegisterDTO registerDTO) {
+        // 检查用户名是否已存在
+        if (getByUsername(registerDTO.getUsername()) != null) {
+            throw new BusinessException("用户名已存在");
+        }
+
+        // 检查手机号是否已存在
+        if (getByPhone(registerDTO.getPhone()) != null) {
+            throw new BusinessException("手机号已被注册");
+        }
+
+        // 检查邮箱是否已存在
+        if (getByEmail(registerDTO.getEmail()) != null) {
+            throw new BusinessException("邮箱已被注册");
+        }
+
+        // 创建用户实体
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(registerDTO.getUsername())
+                .setPhone(registerDTO.getPhone())
+                .setEmail(registerDTO.getEmail())
+                // 使用MD5加密密码
+                .setPassword(DigestUtils.md5DigestAsHex(registerDTO.getPassword().getBytes(StandardCharsets.UTF_8)))
+                .setRole(0) // 0-普通用户
+                .setStatus(1) // 1-正常
+                .setDeleted(0) // 0-未删除
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now());
+
+        // 保存用户
+        save(userEntity);
+        log.info("用户注册成功：{}", userEntity.getUsername());
+
+        // 返回注册结果
+        return new RegisterVO()
+                .setUserId(userEntity.getId())
+                .setUsername(userEntity.getUsername());
+    }
+    
+    /**
+     * 验证用户密码
+     *
+     * @param userId   用户ID
+     * @param password 密码（明文）
+     * @return 是否匹配
+     */
+    @Override
+    public boolean verifyPassword(Long userId, String password) {
+        if (userId == null || StringUtils.isBlank(password)) {
+            return false;
+        }
+        UserEntity user = getById(userId);
+        if (user == null) {
+            return false;
+        }
+        // 加密密码进行比较
+        String encryptedPassword = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
+        return encryptedPassword.equals(user.getPassword());
+    }
+    
+    /**
+     * 更新用户密码
+     *
+     * @param userId      用户ID
+     * @param newPassword 新密码（明文）
+     * @return 是否成功
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updatePassword(Long userId, String newPassword) {
+        return resetPassword(userId, newPassword);
     }
 } 

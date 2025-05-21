@@ -1,21 +1,21 @@
 package com.ptu.common.api;
 
 /**
- * 业务结果码接口
+ * 响应码接口
  */
 public interface IResultCode {
     
     /**
-     * 获取状态码
+     * 获取响应码
      *
-     * @return 状态码
+     * @return 响应码
      */
-    Integer getCode();
+    int getCode();
 
     /**
-     * 获取提示信息
+     * 获取响应消息
      *
-     * @return 提示信息
+     * @return 响应消息
      */
     String getMessage();
 } 

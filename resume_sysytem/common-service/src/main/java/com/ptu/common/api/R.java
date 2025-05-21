@@ -7,167 +7,238 @@ import java.io.Serializable;
 
 /**
  * 统一API响应结果封装
- *
- * @param <T> 数据类型
  */
 @Data
 @Accessors(chain = true)
 public class R<T> implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
 
     /**
      * 状态码
      */
-    private Integer code;
+    private int code;
 
     /**
-     * 返回消息
+     * 消息
      */
     private String message;
 
     /**
-     * 返回数据
+     * 数据
      */
     private T data;
 
     /**
-     * 是否成功
-     */
-    private boolean success;
-
-    /**
-     * 构造私有化
-     */
-    private R() {
-    }
-
-    /**
-     * 成功返回结果
+     * 成功
      *
      * @param <T> 数据类型
-     * @return 结果对象
+     * @return 响应结果
      */
     public static <T> R<T> ok() {
-        return new R<T>()
-                .setCode(ResultCode.SUCCESS.getCode())
-                .setMessage(ResultCode.SUCCESS.getMessage())
-                .setSuccess(true);
+        return ok(null);
     }
 
     /**
-     * 成功返回结果
+     * 成功
      *
-     * @param data 返回数据
+     * @param data 数据
      * @param <T>  数据类型
-     * @return 结果对象
+     * @return 响应结果
      */
     public static <T> R<T> ok(T data) {
         return new R<T>()
                 .setCode(ResultCode.SUCCESS.getCode())
                 .setMessage(ResultCode.SUCCESS.getMessage())
-                .setData(data)
-                .setSuccess(true);
+                .setData(data);
     }
 
     /**
-     * 成功返回结果
+     * 成功
      *
-     * @param message 提示信息
+     * @param message 消息
+     * @param data    数据
      * @param <T>     数据类型
-     * @return 结果对象
+     * @return 响应结果
      */
-    public static <T> R<T> ok(String message) {
+    public static <T> R<T> ok(String message, T data) {
         return new R<T>()
                 .setCode(ResultCode.SUCCESS.getCode())
                 .setMessage(message)
-                .setSuccess(true);
+                .setData(data);
     }
 
     /**
-     * 成功返回结果
-     *
-     * @param data    返回数据
-     * @param message 提示信息
-     * @param <T>     数据类型
-     * @return 结果对象
-     */
-    public static <T> R<T> ok(T data, String message) {
-        return new R<T>()
-                .setCode(ResultCode.SUCCESS.getCode())
-                .setMessage(message)
-                .setData(data)
-                .setSuccess(true);
-    }
-
-    /**
-     * 失败返回结果
+     * 失败
      *
      * @param <T> 数据类型
-     * @return 结果对象
+     * @return 响应结果
      */
-    public static <T> R<T> fail() {
-        return new R<T>()
-                .setCode(ResultCode.FAILURE.getCode())
-                .setMessage(ResultCode.FAILURE.getMessage())
-                .setSuccess(false);
+    public static <T> R<T> failed() {
+        return failed(ResultCode.FAILURE);
     }
 
     /**
-     * 失败返回结果
+     * 失败
      *
-     * @param message 提示信息
-     * @param <T>     数据类型
-     * @return 结果对象
+     * @param resultCode 响应码
+     * @param <T>        数据类型
+     * @return 响应结果
      */
-    public static <T> R<T> fail(String message) {
+    public static <T> R<T> failed(IResultCode resultCode) {
         return new R<T>()
-                .setCode(ResultCode.FAILURE.getCode())
-                .setMessage(message)
-                .setSuccess(false);
+                .setCode(resultCode.getCode())
+                .setMessage(resultCode.getMessage());
     }
 
     /**
-     * 失败返回结果
+     * 失败
+     *
+     * @param message 消息
+     * @param <T>     数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> failed(String message) {
+        return new R<T>()
+                .setCode(ResultCode.FAILURE.getCode())
+                .setMessage(message);
+    }
+
+    /**
+     * 失败
      *
      * @param code    状态码
-     * @param message 提示信息
+     * @param message 消息
      * @param <T>     数据类型
-     * @return 结果对象
+     * @return 响应结果
      */
-    public static <T> R<T> fail(Integer code, String message) {
+    public static <T> R<T> failed(int code, String message) {
         return new R<T>()
                 .setCode(code)
-                .setMessage(message)
-                .setSuccess(false);
+                .setMessage(message);
     }
 
     /**
-     * 失败返回结果
+     * 参数错误
      *
-     * @param resultCode 返回码枚举
-     * @param <T>        数据类型
-     * @return 结果对象
+     * @param <T> 数据类型
+     * @return 响应结果
      */
-    public static <T> R<T> fail(IResultCode resultCode) {
-        return new R<T>()
-                .setCode(resultCode.getCode())
-                .setMessage(resultCode.getMessage())
-                .setSuccess(false);
+    public static <T> R<T> paramError() {
+        return failed(ResultCode.PARAM_ERROR);
     }
 
     /**
-     * 失败返回结果
+     * 参数错误
      *
-     * @param resultCode 返回码枚举
-     * @param message    提示信息
-     * @param <T>        数据类型
-     * @return 结果对象
+     * @param message 消息
+     * @param <T>     数据类型
+     * @return 响应结果
      */
-    public static <T> R<T> fail(IResultCode resultCode, String message) {
+    public static <T> R<T> paramError(String message) {
         return new R<T>()
-                .setCode(resultCode.getCode())
-                .setMessage(message)
-                .setSuccess(false);
+                .setCode(ResultCode.PARAM_ERROR.getCode())
+                .setMessage(message);
+    }
+
+    /**
+     * 未授权
+     *
+     * @param <T> 数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> unauthorized() {
+        return failed(ResultCode.UNAUTHORIZED);
+    }
+
+    /**
+     * 未授权
+     *
+     * @param message 消息
+     * @param <T>     数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> unauthorized(String message) {
+        return new R<T>()
+                .setCode(ResultCode.UNAUTHORIZED.getCode())
+                .setMessage(message);
+    }
+
+    /**
+     * 权限不足
+     *
+     * @param <T> 数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> forbidden() {
+        return failed(ResultCode.FORBIDDEN);
+    }
+
+    /**
+     * 权限不足
+     *
+     * @param message 消息
+     * @param <T>     数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> forbidden(String message) {
+        return new R<T>()
+                .setCode(ResultCode.FORBIDDEN.getCode())
+                .setMessage(message);
+    }
+
+    /**
+     * 资源不存在
+     *
+     * @param <T> 数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> notFound() {
+        return failed(ResultCode.NOT_FOUND);
+    }
+
+    /**
+     * 资源不存在
+     *
+     * @param message 消息
+     * @param <T>     数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> notFound(String message) {
+        return new R<T>()
+                .setCode(ResultCode.NOT_FOUND.getCode())
+                .setMessage(message);
+    }
+
+    /**
+     * 服务器内部错误
+     *
+     * @param <T> 数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> error() {
+        return failed(ResultCode.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * 服务器内部错误
+     *
+     * @param message 消息
+     * @param <T>     数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> error(String message) {
+        return new R<T>()
+                .setCode(ResultCode.INTERNAL_SERVER_ERROR.getCode())
+                .setMessage(message);
+    }
+
+    /**
+     * 判断响应是否成功
+     *
+     * @return 是否成功
+     */
+    public boolean isSuccess() {
+        return this.code == ResultCode.SUCCESS.getCode();
     }
 } 

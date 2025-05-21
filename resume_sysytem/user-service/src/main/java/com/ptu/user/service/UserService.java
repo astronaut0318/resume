@@ -2,12 +2,22 @@ package com.ptu.user.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ptu.user.dto.RegisterDTO;
 import com.ptu.user.entity.UserEntity;
+import com.ptu.user.vo.RegisterVO;
 
 /**
  * 用户服务接口
  */
 public interface UserService extends IService<UserEntity> {
+
+    /**
+     * 用户注册
+     *
+     * @param registerDTO 注册信息
+     * @return 注册成功的用户信息
+     */
+    RegisterVO register(RegisterDTO registerDTO);
 
     /**
      * 根据用户名查询用户
@@ -62,4 +72,22 @@ public interface UserService extends IService<UserEntity> {
      * @return 是否成功
      */
     boolean resetPassword(Long userId, String newPassword);
+    
+    /**
+     * 验证用户密码
+     *
+     * @param userId   用户ID
+     * @param password 密码（明文）
+     * @return 是否匹配
+     */
+    boolean verifyPassword(Long userId, String password);
+    
+    /**
+     * 更新用户密码
+     *
+     * @param userId      用户ID
+     * @param newPassword 新密码（明文）
+     * @return 是否成功
+     */
+    boolean updatePassword(Long userId, String newPassword);
 } 

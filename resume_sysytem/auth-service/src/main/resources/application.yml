@@ -1,0 +1,94 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /auth
+
+spring:
+  application:
+    name: auth-service
+  
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/resume_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 1234
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall
+  
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 10000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+  
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+        group: DEFAULT_GROUP
+      config:
+        server-addr: localhost:8848
+        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+        group: DEFAULT_GROUP
+        file-extension: yaml
+  
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+# MyBatis Plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.ptu.auth.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT配置
+jwt:
+  secret: ptu-resume-system-secret-key-for-jwt-token-generation-and-verification
+  expiration: 3600 # 1小时
+  refresh-expiration: 86400 # 24小时
+  header: Authorization
+  token-prefix: Bearer 
+
+# Swagger配置
+swagger:
+  enabled: true
+  title: 认证服务API文档
+  description: 认证服务相关接口文档
+  version: 1.0
+  base-package: com.ptu.auth.controller 

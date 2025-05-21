@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: auth-service
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+        group: DEFAULT_GROUP
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+        group: DEFAULT_GROUP
+        shared-configs:
+          - data-id: auth-dev.yaml
+            group: DEFAULT_GROUP
+            refresh: true 

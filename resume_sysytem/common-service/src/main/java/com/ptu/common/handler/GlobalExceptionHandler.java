@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R<String> handleBaseException(BaseException e) {
         log.error("BaseException: {}", e.getMessage(), e);
-        return R.fail(e.getResultCode(), e.getMessage());
+        return R.failed(e.getResultCode());
     }
 
     /**
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R<String> handleBusinessException(BusinessException e) {
         log.error("BusinessException: {}", e.getMessage(), e);
-        return R.fail(e.getResultCode(), e.getMessage());
+        return R.failed(e.getMessage());
     }
 
     /**
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
         if (msg.length() > 2) {
             msg = msg.substring(0, msg.length() - 2);
         }
-        return R.fail(ResultCode.PARAM_ERROR, msg);
+        return R.paramError(msg);
     }
 
     /**
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
         if (msg.length() > 2) {
             msg = msg.substring(0, msg.length() - 2);
         }
-        return R.fail(ResultCode.PARAM_ERROR, msg);
+        return R.paramError(msg);
     }
 
     /**
@@ -114,7 +114,7 @@ public class GlobalExceptionHandler {
         if (msg.length() > 2) {
             msg = msg.substring(0, msg.length() - 2);
         }
-        return R.fail(ResultCode.PARAM_ERROR, msg);
+        return R.paramError(msg);
     }
 
     /**
@@ -127,6 +127,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R<String> handleException(Exception e) {
         log.error("Exception: {}", e.getMessage(), e);
-        return R.fail(ResultCode.INTERNAL_SERVER_ERROR, "服务器内部错误");
+        return R.error("服务器内部错误");
     }
 } 

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@TableName("users")
+@TableName("user")
 public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,12 +39,6 @@ public class UserEntity implements Serializable {
     private String password;
 
     /**
-     * 真实姓名
-     */
-    @TableField("real_name")
-    private String realName;
-
-    /**
      * 手机号码
      */
     @TableField("phone")
@@ -63,13 +57,13 @@ public class UserEntity implements Serializable {
     private String avatar;
 
     /**
-     * 性别：0-未知，1-男，2-女
+     * 角色：0-普通用户，1-VIP用户，2-管理员
      */
-    @TableField("gender")
-    private Integer gender;
+    @TableField("role")
+    private Integer role;
 
     /**
-     * 账号状态：0-正常，1-禁用
+     * 账号状态：0-禁用，1-正常
      */
     @TableField("status")
     private Integer status;

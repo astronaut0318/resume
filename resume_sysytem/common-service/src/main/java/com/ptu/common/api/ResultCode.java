@@ -4,21 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 业务状态码枚举
+ * 响应码枚举
  */
 @Getter
 @AllArgsConstructor
 public enum ResultCode implements IResultCode {
 
     /**
-     * 操作成功
+     * 成功
      */
     SUCCESS(200, "操作成功"),
 
     /**
-     * 操作失败
+     * 失败
      */
-    FAILURE(400, "操作失败"),
+    FAILURE(500, "操作失败"),
+
+    /**
+     * 参数错误
+     */
+    PARAM_ERROR(400, "请求参数错误"),
 
     /**
      * 未授权
@@ -26,9 +31,9 @@ public enum ResultCode implements IResultCode {
     UNAUTHORIZED(401, "未授权"),
 
     /**
-     * 禁止访问
+     * 权限不足
      */
-    FORBIDDEN(403, "禁止访问"),
+    FORBIDDEN(403, "权限不足"),
 
     /**
      * 资源不存在
@@ -39,11 +44,6 @@ public enum ResultCode implements IResultCode {
      * 服务器内部错误
      */
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
-
-    /**
-     * 参数错误
-     */
-    PARAM_ERROR(1000, "参数错误"),
 
     /**
      * 用户名或密码错误
@@ -68,10 +68,10 @@ public enum ResultCode implements IResultCode {
     /**
      * 状态码
      */
-    private final Integer code;
+    private final int code;
 
     /**
-     * 消息内容
+     * 消息
      */
     private final String message;
 } 
