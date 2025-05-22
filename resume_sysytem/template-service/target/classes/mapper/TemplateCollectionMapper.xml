@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ptu.template.mapper.TemplateCollectionMapper">
+
+    <!-- 分页查询用户收藏的模板列表 -->
+    <select id="selectUserCollectionPage" resultType="com.ptu.template.vo.TemplateCollectionVO">
+        SELECT 
+            c.id,
+            t.id as template_id,
+            t.name,
+            t.thumbnail,
+            t.price,
+            t.is_free,
+            c.create_time as collect_time
+        FROM 
+            template_collection c
+        LEFT JOIN 
+            templates t ON c.template_id = t.id
+        WHERE 
+            c.user_id = #{userId}
+        AND 
+            t.status = 1
+        ORDER BY 
+            c.create_time DESC
+    </select>
+
+</mapper> 

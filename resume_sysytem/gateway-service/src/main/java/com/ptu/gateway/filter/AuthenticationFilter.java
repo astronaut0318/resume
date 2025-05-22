@@ -48,10 +48,32 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
         
+        // 直接放行doc.html和swagger相关资源
+        if (path.endsWith("/doc.html") || 
+            path.endsWith("/swagger-ui.html") || 
+            path.contains("/swagger-resources") || 
+            path.contains("/webjars/") || 
+            path.contains("/v2/api-docs") || 
+            path.contains("/v3/api-docs")) {
+            // 降低日志级别，避免日志爆炸
+            if(log.isDebugEnabled()) {
+                log.debug("直接放行Swagger资源: {}", path);
+            }
+            return chain.filter(exchange);
+        }
+        
         // 1. 白名单路径直接放行
         List<String> ignoreUrls = gatewayConfig.getIgnoreUrls();
-        if (ignoreUrls != null && ignoreUrls.stream().anyMatch(ignoreUrl -> pathMatcher.match(ignoreUrl, path))) {
-            return chain.filter(exchange);
+        
+        // 输出路径匹配过程，便于调试
+        log.debug("当前请求路径: {}", path);
+        if (ignoreUrls != null) {
+            for (String ignoreUrl : ignoreUrls) {
+                if (pathMatcher.match(ignoreUrl, path)) {
+                    log.debug("路径匹配白名单: {} 匹配 {}, 直接放行", ignoreUrl, path);
+                    return chain.filter(exchange);
+                }
+            }
         }
         
         // 2. 获取token

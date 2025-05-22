@@ -1,9 +1,38 @@
 server:
-  port: 8000
+  port: 9000
+  # 增加HTTP头部大小限制，解决431 REQUEST_HEADER_FIELDS_TOO_LARGE问题
+  max-http-header-size: 65536
+  # 设置最大请求大小
+  undertow:
+    max-http-post-size: 10485760 # 10MB
 
 spring:
   application:
     name: gateway-service
+  
+  # 允许Bean覆盖，避免因Bean冲突导致启动失败
+  main:
+    allow-bean-definition-overriding: true
+  
+  # 解决Swagger与Spring Boot的兼容性问题
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  
+  # Knife4j配置
+  knife4j:
+    enable: true
+    setting:
+      language: zh-CN
+      enableSwaggerModels: true
+      enableDocumentManage: true
+      swaggerModelName: 实体类列表
+      enableVersion: false
+      enableRequestCache: true
+      enableHost: false
+      enableUrlAuth: false
+      enableHomeCustom: false
+      enableSearch: true
   
   # Redis配置
   redis:
@@ -33,6 +62,11 @@ spring:
     
     # Gateway配置
     gateway:
+      # 调整Netty Http头部大小限制和超时时间
+      httpclient:
+        response-timeout: 60000  # 60秒超时
+        connect-timeout: 30000   # 30秒连接超时
+      
       discovery:
         locator:
           enabled: true  # 启用服务发现
@@ -42,43 +76,83 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowed-origins:
-              - "http://localhost:8080"
-              - "http://localhost:3000"
-              - "https://*.ptu.com"
-            allowed-methods:
-              - "GET"
-              - "POST"
-              - "PUT" 
-              - "DELETE"
-              - "OPTIONS"
+            allowed-origins: "*"
+            allowed-methods: "*"
             allowed-headers: "*"
             allow-credentials: true
             max-age: 3600
             
       # 路由配置
       routes:
-        # Auth服务Swagger文档路由
-        - id: auth-swagger-docs
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth/v3/api-docs/**,/auth/v2/api-docs/**
-          filters:
-            - StripPrefix=0
-
-        # User服务Swagger文档路由
-        - id: user-swagger-docs
+        # 用户服务Swagger文档路由
+        - id: user-service-docs
           uri: lb://user-service
           predicates:
-            - Path=/user/v3/api-docs/**,/user/v2/api-docs/**
+            - Path=/user/v2/api-docs/**,/user/v3/api-docs/**
           filters:
-            - StripPrefix=0
+            - SwaggerHeaderFilter
+
+        # 认证服务Swagger文档路由
+        - id: auth-service-docs
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/v2/api-docs/**,/auth/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
+
+        # 模板服务Swagger文档路由
+        - id: template-service-docs
+          uri: lb://template-service
+          predicates:
+            - Path=/template/v2/api-docs/**,/template/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
+
+        # 简历服务Swagger文档路由
+        - id: resume-service-docs
+          uri: lb://resume-service
+          predicates:
+            - Path=/resume/v2/api-docs/**,/resume/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
+
+        # 文件服务Swagger文档路由
+        - id: file-service-docs
+          uri: lb://file-service
+          predicates:
+            - Path=/file/v2/api-docs/**,/file/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
+
+        # 订单服务Swagger文档路由
+        - id: order-service-docs
+          uri: lb://order-service
+          predicates:
+            - Path=/order/v2/api-docs/**,/order/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
+
+        # AI服务Swagger文档路由
+        - id: ai-service-docs
+          uri: lb://ai-service
+          predicates:
+            - Path=/ai/v2/api-docs/**,/ai/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
+
+        # 通知服务Swagger文档路由  
+        - id: notification-service-docs
+          uri: lb://notification-service
+          predicates:
+            - Path=/notification/v2/api-docs/**,/notification/v3/api-docs/**
+          filters:
+            - SwaggerHeaderFilter
 
         # Swagger UI资源路由
-        - id: swagger-ui
+        - id: gateway-swagger
           uri: lb://gateway-service
           predicates:
-            - Path=/swagger-ui/**,/swagger-resources/**,/webjars/**,/swagger-ui.html
+            - Path=/swagger-ui/**,/swagger-resources/**,/webjars/**,/swagger-ui.html,/doc.html,/v2/api-docs,/v3/api-docs
             
         # 用户服务路由
         - id: user-service
@@ -137,8 +211,8 @@ spring:
             - StripPrefix=2
             
         # 通知服务路由
-        - id: notification
-          uri: lb://notification
+        - id: notification-service
+          uri: lb://notification-service
           predicates:
             - Path=/api/notifications/**
           filters:
@@ -180,13 +254,17 @@ gateway:
       - /api/users/register
       - /api/templates/categories
       - /api/templates
+      - /*/v2/api-docs
       - /*/v3/api-docs
+      - /v2/api-docs
+      - /v3/api-docs
       - /swagger-ui/**
       - /swagger-ui.html
       - /swagger-resources/**
       - /webjars/**
-      - /actuator/**
-      - /favicon.ico
+      - /doc.html
+      - /**/swagger-ui/**
+      - /**/swagger-ui.html
 
 # Sentinel配置
 sentinel:
@@ -198,4 +276,26 @@ sentinel:
     fallback:
       mode: response
       response-status: 429
-      response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","data":null}' 
+      response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","data":null}'
+
+# 与Swagger相关的配置
+springfox:
+  documentation:
+    enabled: true
+    swagger-ui:
+      base-url: /
+
+# 添加详细的日志配置
+logging:
+  level:
+    root: INFO
+    com.ptu.gateway: DEBUG
+    com.ptu.gateway.filter: DEBUG
+    org.springframework.cloud.gateway: INFO
+    org.springframework.http.server.reactive: INFO
+    # 降低Swagger相关日志级别，减少日志输出
+    springfox.documentation: WARN
+    springfox.documentation.swagger: WARN
+  # 控制台日志格式
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" 

@@ -1,0 +1,102 @@
+server:
+  port: 8004
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/resume_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 1234
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      max-evictable-idle-time-millis: 900000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filter:
+        stat:
+          enabled: true
+          slow-sql-millis: 1000
+          log-slow-sql: true
+        wall:
+          enabled: true
+  
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    password: 
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+  
+  # 服务名称
+  application:
+    name: template-service
+  
+  # 文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 40MB
+
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ptu.template.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto  # 主键自增
+
+# MinIO配置
+minio:
+  endpoint: http://localhost:9001
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket: 
+    template: resume-templates  # 模板文件存储桶
+    thumbnail: resume-thumbnails  # 缩略图存储桶
+
+# 日志配置
+logging:
+  level:
+    com.ptu.template: debug
+    org.springframework: info 
+
+# Swagger配置
+swagger:
+  enabled: true
+  title: 认证服务API文档
+  description: 认证服务相关接口文档
+  version: 1.0
+  base-package: com.ptu.template.controller
+
+# knife4j接口文档配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    swagger-model-name: 实体类列表
+    enable-footer: false
+  basic:
+    enable: false

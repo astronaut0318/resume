@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ptu.template.mapper.TemplateMapper">
+
+    <!-- 分页查询模板列表，支持筛选条件 -->
+    <select id="selectTemplatePage" resultType="com.ptu.template.entity.TemplateEntity">
+        SELECT *
+        FROM templates
+        WHERE status = 1
+        <if test="categoryId != null">
+            AND category_id = #{categoryId}
+        </if>
+        <if test="isFree != null">
+            AND is_free = #{isFree}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (
+                name LIKE CONCAT('%', #{keyword}, '%')
+                OR description LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper> 

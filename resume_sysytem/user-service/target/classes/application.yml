@@ -47,8 +47,17 @@ spring:
   # SpringFox配置
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ant-path-matcher
 
+# MinIO配置
+minio:
+  endpoint: http://localhost:9001
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket:
+    template: resume-templates
+    thumbnail: resume-thumbnails
+      
 # MyBatis-Plus配置
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml

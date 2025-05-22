@@ -1,10 +1,14 @@
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\handler\GlobalExceptionHandler.java
+D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\config\RedisConfig.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\exception\BaseException.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\exception\BusinessException.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\api\IResultCode.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\api\R.java
-D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\util\DateTimeUtils.java
+D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\util\MinioUtils.java
+D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\util\RedisUtils.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\CommonServiceApplication.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\util\StringUtils.java
-D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\config\SwaggerConfig.java
+D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\config\MinioConfig.java
 D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\api\ResultCode.java
+D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\util\DateTimeUtils.java
+D:\code\Cursor\resume_sysytem\common-service\src\main\java\com\ptu\common\util\PasswordUtil.java

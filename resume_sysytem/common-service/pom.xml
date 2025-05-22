@@ -79,20 +79,6 @@
             <scope>provided</scope>
         </dependency>
         
-        <!-- swagger文档 - 使用更兼容的版本 -->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>3.0.3</version>
-        </dependency>
-        
-        <!-- 添加缺失的springfox依赖 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        
         <!-- 数据库相关依赖 -->
         <dependency>
             <groupId>mysql</groupId>
@@ -108,6 +94,19 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.2.8</version>
+        </dependency>
+
+        <!-- Redis缓存 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- MinIO SDK 用于存储模板文件 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.2</version>
         </dependency>
     </dependencies>
 

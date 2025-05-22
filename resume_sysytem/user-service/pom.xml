@@ -23,6 +23,13 @@
             <groupId>com.ptu</groupId>
             <artifactId>common-service</artifactId>
         </dependency>
+        
+        <!-- MinIO SDK 用于存储模板文件 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.2</version>
+        </dependency>
 
         <!-- Spring Cloud Bootstrap 支持 -->
         <dependency>
