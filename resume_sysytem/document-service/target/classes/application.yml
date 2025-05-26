@@ -1,0 +1,122 @@
+server:
+  port: 8002
+  servlet:
+    context-path: /
+  max-http-header-size: 131072
+  undertow:
+    max-http-header-size: 131072
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  application:
+    name: document-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/resume_system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1234
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall
+  
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    password: 
+    timeout: 10000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.ptu.document.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# MinIO配置
+minio:
+  endpoint: http://localhost:9001
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket:
+    document: resume-documents  # 文档存储桶
+    version: resume-document-versions  # 版本存储桶
+
+# OnlyOffice配置
+onlyoffice:
+  document-server-url: http://localhost:8085
+  callback-url: http://localhost:9000/api/documents/callback
+  jwt-secret: your_secure_jwt_secret
+  token-ttl: 300 # 秒
+  document:
+    storage-path: documents
+    versions-enabled: true
+    max-versions: 10  # 每个文档最多保存的历史版本数
+
+# Swagger配置
+knife4j:
+  enable: true
+  production: false
+  basic:
+    enable: false
+  setting:
+    language: zh-CN
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    swaggerModelName: 实体类列表
+    enableVersion: false
+    enableReloadCacheParameter: false
+    enableAfterScript: true
+    enableFilterMultipartApiMethodType: POST
+
+# 日志配置
+logging:
+  level:
+    com.ptu.document: debug
+    org.springframework: warn
+
+# 白名单放行swagger相关路径
+security:
+  ignore-urls:
+    - /doc.html
+    - /swagger-ui.html
+    - /swagger-resources/**
+    - /webjars/**
+    - /v2/api-docs
+    - /v3/api-docs
+    - /swagger-ui/**
+    - /**/doc.html
+    - /**/swagger-ui.html
+    - /**/swagger-resources/**
+    - /**/webjars/**
+    - /**/v2/api-docs
+    - /**/v3/api-docs
+    - /**/swagger-ui/** 

@@ -1,10 +1,18 @@
+# 添加JVM启动参数说明
+# 
+# java -jar gateway-service.jar --spring.profiles.active=dev
+# 
+# Windows PowerShell使用如下方式:
+# java -jar .\gateway-service.jar --spring.profiles.active=dev
+#
 server:
   port: 9000
   # 增加HTTP头部大小限制，解决431 REQUEST_HEADER_FIELDS_TOO_LARGE问题
-  max-http-header-size: 65536
+  max-http-header-size: 131072
   # 设置最大请求大小
   undertow:
     max-http-post-size: 10485760 # 10MB
+    max-http-header-size: 131072
 
 spring:
   application:
@@ -13,6 +21,15 @@ spring:
   # 允许Bean覆盖，避免因Bean冲突导致启动失败
   main:
     allow-bean-definition-overriding: true
+  
+  # 禁用数据库相关自动配置
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+      - com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration
   
   # 解决Swagger与Spring Boot的兼容性问题
   mvc:
@@ -33,6 +50,39 @@ spring:
       enableUrlAuth: false
       enableHomeCustom: false
       enableSearch: true
+    # Gateway聚合配置
+    gateway:
+      enabled: true
+      api-docs-path: /v2/api-docs
+      api-docs-version: 2.0
+      discovery:
+        enabled: true
+        version: openapi3
+      routes:
+        - name: 用户服务
+          url: /user/v2/api-docs
+          order: 1
+        - name: 认证服务
+          url: /auth/v2/api-docs
+          order: 2
+        - name: 简历服务
+          url: /resume/v2/api-docs
+          order: 3
+        - name: 模板服务
+          url: /template/v2/api-docs
+          order: 4
+        - name: 文件服务
+          url: /file/v2/api-docs
+          order: 5
+        - name: 订单服务
+          url: /order/v2/api-docs
+          order: 6
+        - name: AI服务
+          url: /ai/v2/api-docs
+          order: 7
+        - name: 通知服务
+          url: /notification/v2/api-docs
+          order: 8
   
   # Redis配置
   redis:
@@ -64,6 +114,7 @@ spring:
     gateway:
       # 调整Netty Http头部大小限制和超时时间
       httpclient:
+        max-header-size: 131072
         response-timeout: 60000  # 60秒超时
         connect-timeout: 30000   # 30秒连接超时
       
@@ -76,7 +127,9 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowed-origins: "*"
+            # 使用allowedOriginPatterns代替allowedOrigins通配符
+            # allowed-origins: "*"
+            allowed-origin-patterns: "*"
             allowed-methods: "*"
             allowed-headers: "*"
             allow-credentials: true
@@ -89,64 +142,48 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/user/v2/api-docs/**,/user/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # 认证服务Swagger文档路由
         - id: auth-service-docs
           uri: lb://auth-service
           predicates:
             - Path=/auth/v2/api-docs/**,/auth/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # 模板服务Swagger文档路由
         - id: template-service-docs
           uri: lb://template-service
           predicates:
             - Path=/template/v2/api-docs/**,/template/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # 简历服务Swagger文档路由
         - id: resume-service-docs
           uri: lb://resume-service
           predicates:
             - Path=/resume/v2/api-docs/**,/resume/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # 文件服务Swagger文档路由
         - id: file-service-docs
           uri: lb://file-service
           predicates:
             - Path=/file/v2/api-docs/**,/file/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # 订单服务Swagger文档路由
         - id: order-service-docs
           uri: lb://order-service
           predicates:
             - Path=/order/v2/api-docs/**,/order/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # AI服务Swagger文档路由
         - id: ai-service-docs
           uri: lb://ai-service
           predicates:
             - Path=/ai/v2/api-docs/**,/ai/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # 通知服务Swagger文档路由  
         - id: notification-service-docs
           uri: lb://notification-service
           predicates:
             - Path=/notification/v2/api-docs/**,/notification/v3/api-docs/**
-          filters:
-            - SwaggerHeaderFilter
 
         # Swagger UI资源路由
         - id: gateway-swagger
@@ -193,6 +230,15 @@ spring:
             - Path=/api/templates/**
           filters:
             - StripPrefix=2
+            
+        # 模板文件服务路由
+        - id: template-file-service
+          uri: lb://template-service
+          predicates:
+            - Path=/api/templates/template-files/**
+          filters:
+            - StripPrefix=2
+            - RewritePath=/template-files/(?<segment>.*), /template-files/$\{segment}
             
         # 简历服务路由
         - id: resume-service
@@ -265,6 +311,9 @@ gateway:
       - /doc.html
       - /**/swagger-ui/**
       - /**/swagger-ui.html
+      - /**/swagger-resources/**
+      - /**/webjars/**
+      - /**/doc.html
 
 # Sentinel配置
 sentinel:
@@ -278,13 +327,6 @@ sentinel:
       response-status: 429
       response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","data":null}'
 
-# 与Swagger相关的配置
-springfox:
-  documentation:
-    enabled: true
-    swagger-ui:
-      base-url: /
-
 # 添加详细的日志配置
 logging:
   level:
@@ -293,9 +335,11 @@ logging:
     com.ptu.gateway.filter: DEBUG
     org.springframework.cloud.gateway: INFO
     org.springframework.http.server.reactive: INFO
-    # 降低Swagger相关日志级别，减少日志输出
-    springfox.documentation: WARN
-    springfox.documentation.swagger: WARN
   # 控制台日志格式
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" 
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# 微服务专用配置
+minio:
+  enabled: false
+  endpoint: "" 

@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `templates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='模板表';
 
 -- 模板收藏表
-CREATE TABLE IF NOT EXISTS `template_collection` (
+CREATE TABLE IF NOT EXISTS `template_collections` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `template_id` bigint(20) NOT NULL COMMENT '模板ID',

@@ -1,7 +1,6 @@
 package com.ptu.gateway.util;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -30,100 +29,46 @@ public class JwtUtils {
 
     @PostConstruct
     public void init() {
-        try {
-            // 确保密钥是Base64编码的
-            byte[] keyBytes = Decoders.BASE64.decode(secret);
-            this.key = Keys.hmacShaKeyFor(keyBytes);
-            log.info("JWT密钥初始化成功");
-        } catch (Exception e) {
-            log.error("JWT密钥初始化失败: {}", e.getMessage());
-            throw new RuntimeException("无法初始化JWT密钥", e);
-        }
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        log.info("JWT密钥初始化成功");
     }
 
     /**
-     * 获取用户名
+     * 从token中获取JWT中的负载
      */
-    public String getUsernameFromToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            return claims.getSubject();
-        } catch (ExpiredJwtException e) {
-            log.warn("从已过期的Token中获取用户名: {}", e.getMessage());
-            return null;
-        } catch (Exception e) {
-            log.error("从Token中获取用户名失败: {}", e.getMessage());
-            return null;
-        }
+    public Claims getClaimsFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
-     * 获取用户ID
+     * 验证token是否过期
+     */
+    public boolean isTokenExpired(Claims claims) {
+        return claims.getExpiration().before(new Date());
+    }
+
+    /**
+     * 从token中获取用户ID
      */
     public Long getUserIdFromToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            return Long.parseLong(claims.get("userId", String.class));
-        } catch (ExpiredJwtException e) {
-            log.warn("从已过期的Token中获取用户ID: {}", e.getMessage());
-            return null;
-        } catch (Exception e) {
-            log.error("从Token中获取用户ID失败: {}", e.getMessage());
-            return null;
-        }
+        Claims claims = getClaimsFromToken(token);
+        return Long.parseLong(claims.getSubject());
     }
 
     /**
-     * 验证令牌
+     * 验证token是否有效
      */
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException e) {
-            log.warn("Token已过期: {}", e.getMessage());
+            Claims claims = getClaimsFromToken(token);
+            return !isTokenExpired(claims);
         } catch (Exception e) {
-            log.error("Token验证失败: {}", e.getMessage());
+            log.error("JWT验证失败: {}", e.getMessage());
+            return false;
         }
-        return false;
-    }
-
-    /**
-     * 获取token的过期时间
-     */
-    public Date getExpirationDateFromToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            return claims.getExpiration();
-        } catch (ExpiredJwtException e) {
-            log.warn("从已过期的Token中获取过期时间: {}", e.getMessage());
-            return e.getClaims().getExpiration();
-        } catch (Exception e) {
-            log.error("从Token中获取过期时间失败: {}", e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * 判断token是否过期
-     */
-    public boolean isTokenExpired(String token) {
-        Date expiration = getExpirationDateFromToken(token);
-        return expiration != null && expiration.before(new Date());
     }
 } 

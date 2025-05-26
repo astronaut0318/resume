@@ -13,7 +13,7 @@
             t.is_free,
             c.create_time as collect_time
         FROM 
-            template_collection c
+            template_collections c
         LEFT JOIN 
             templates t ON c.template_id = t.id
         WHERE 

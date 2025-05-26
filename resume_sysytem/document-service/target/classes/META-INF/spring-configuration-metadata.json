@@ -1,0 +1,99 @@
+{
+  "groups": [
+    {
+      "name": "minio",
+      "type": "com.ptu.document.config.MinioConfig",
+      "sourceType": "com.ptu.document.config.MinioConfig"
+    },
+    {
+      "name": "minio.bucket",
+      "type": "com.ptu.document.config.MinioConfig$Bucket",
+      "sourceType": "com.ptu.document.config.MinioConfig"
+    },
+    {
+      "name": "onlyoffice",
+      "type": "com.ptu.document.config.OnlyOfficeConfig",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
+      "name": "onlyoffice.document",
+      "type": "com.ptu.document.config.OnlyOfficeConfig$Document",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "minio.access-key",
+      "type": "java.lang.String",
+      "description": "访问密钥",
+      "sourceType": "com.ptu.document.config.MinioConfig"
+    },
+    {
+      "name": "minio.bucket.document",
+      "type": "java.lang.String",
+      "description": "文档存储桶",
+      "sourceType": "com.ptu.document.config.MinioConfig$Bucket"
+    },
+    {
+      "name": "minio.bucket.version",
+      "type": "java.lang.String",
+      "description": "版本存储桶",
+      "sourceType": "com.ptu.document.config.MinioConfig$Bucket"
+    },
+    {
+      "name": "minio.endpoint",
+      "type": "java.lang.String",
+      "description": "服务地址",
+      "sourceType": "com.ptu.document.config.MinioConfig"
+    },
+    {
+      "name": "minio.secret-key",
+      "type": "java.lang.String",
+      "description": "密钥",
+      "sourceType": "com.ptu.document.config.MinioConfig"
+    },
+    {
+      "name": "onlyoffice.callback-url",
+      "type": "java.lang.String",
+      "description": "回调URL",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
+      "name": "onlyoffice.document-server-url",
+      "type": "java.lang.String",
+      "description": "文档服务器地址",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
+      "name": "onlyoffice.document.max-versions",
+      "type": "java.lang.Integer",
+      "description": "最大版本数",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig$Document"
+    },
+    {
+      "name": "onlyoffice.document.storage-path",
+      "type": "java.lang.String",
+      "description": "存储路径",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig$Document"
+    },
+    {
+      "name": "onlyoffice.document.versions-enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用版本控制",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig$Document"
+    },
+    {
+      "name": "onlyoffice.jwt-secret",
+      "type": "java.lang.String",
+      "description": "JWT密钥",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
+      "name": "onlyoffice.token-ttl",
+      "type": "java.lang.Integer",
+      "description": "Token有效期（秒）",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    }
+  ],
+  "hints": []
+}

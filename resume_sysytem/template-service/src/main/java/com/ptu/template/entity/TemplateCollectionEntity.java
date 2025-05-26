@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 模板收藏实体类
  */
 @Data
-@TableName("template_collection")
+@TableName("template_collections")
 @ApiModel(description = "模板收藏实体")
 public class TemplateCollectionEntity implements Serializable {
 

@@ -17,6 +17,7 @@
         <module name="user-service" />
         <module name="file-service" />
         <module name="ai-service" />
+        <module name="document-service" />
       </profile>
     </annotationProcessing>
   </component>

@@ -1,7 +1,10 @@
 server:
   port: 8001
   servlet:
-    context-path: /auth
+    context-path: /
+  max-http-header-size: 131072
+  undertow:
+    max-http-header-size: 131072
 
 spring:
   application:
@@ -10,7 +13,7 @@ spring:
   # 解决Springfox 3.0.0与Spring Boot 2.7.x的兼容性问题
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ANT_PATH_MATCHER
   
   # 数据源配置
   datasource:
@@ -97,3 +100,25 @@ swagger:
   description: 认证服务相关接口文档
   version: 1.0
   base-package: com.ptu.auth.controller 
+
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+# 白名单放行swagger相关路径
+security:
+  ignore-urls:
+    - /doc.html
+    - /swagger-ui.html
+    - /swagger-resources/**
+    - /webjars/**
+    - /v2/api-docs
+    - /v3/api-docs
+    - /swagger-ui/**
+    - /**/doc.html
+    - /**/swagger-ui.html
+    - /**/swagger-resources/**
+    - /**/webjars/**
+    - /**/v2/api-docs
+    - /**/v3/api-docs
+    - /**/swagger-ui/** 

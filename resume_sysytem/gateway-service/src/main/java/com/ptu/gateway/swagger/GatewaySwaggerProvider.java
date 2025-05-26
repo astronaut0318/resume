@@ -3,62 +3,89 @@ package com.ptu.gateway.swagger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import springfox.documentation.swagger.web.SwaggerResource;
-import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
- * 网关服务Swagger资源提供者
+ * 网关服务Swagger资源提供者 - 基于Knife4j
  */
 @Slf4j
 @Component
-@Primary
 @RequiredArgsConstructor
-public class GatewaySwaggerProvider implements SwaggerResourcesProvider {
-
-    private final RouteLocator routeLocator;
+public class GatewaySwaggerProvider {
     
     /**
      * API文档版本
      */
-    @Value("${swagger.api-docs-version:v2}")
+    @Value("${knife4j.gateway.api-docs-version:2.0}")
     private String apiDocsVersion;
 
     /**
      * API文档路径
      */
-    @Value("${swagger.api-docs-path:/api-docs}")
+    @Value("${knife4j.gateway.api-docs-path:/v2/api-docs}")
     private String apiDocsPath;
 
-    @Override
-    public List<SwaggerResource> get() {
-        List<SwaggerResource> resources = new ArrayList<>();
+    /**
+     * 是否支持v3 API文档
+     */
+    @Value("${knife4j.gateway.support-v3:true}")
+    private boolean supportV3;
+    
+    /**
+     * 从Knife4j配置中读取服务列表
+     */
+    @Value("${knife4j.gateway.routes[0].name:用户服务}")
+    private String defaultServiceName;
+    
+    /**
+     * 微服务列表
+     */
+    private static final String[] SERVICES = {
+        "user", "auth", "resume", "template", "file", "order", "ai", "notification"
+    };
+    
+    /**
+     * 微服务显示名称
+     */
+    private static final String[] SERVICE_NAMES = {
+        "用户服务", "认证服务", "简历服务", "模板服务", "文件服务", "订单服务", "AI服务", "通知服务"
+    };
+
+    /**
+     * 获取Swagger资源列表
+     */
+    public List<Map<String, String>> getSwaggerResources() {
+        List<Map<String, String>> resources = new ArrayList<>();
         
-        // 手动添加各服务的Swagger资源
-        resources.add(createResource("Gateway API", "/v2/api-docs"));
-        resources.add(createResource("用户服务", "/user/v2/api-docs"));
-        resources.add(createResource("认证服务", "/auth/v2/api-docs"));
-        resources.add(createResource("简历服务", "/resume/v2/api-docs"));
-        resources.add(createResource("模板服务", "/template/v2/api-docs"));
-        resources.add(createResource("文件服务", "/file/v2/api-docs"));
-        resources.add(createResource("订单服务", "/order/v2/api-docs"));
-        resources.add(createResource("AI服务", "/ai/v2/api-docs"));
-        resources.add(createResource("通知服务", "/notification/v2/api-docs"));
+        // 添加服务的v2版本API文档
+        for (int i = 0; i < SERVICES.length; i++) {
+            resources.add(createResource(SERVICE_NAMES[i], "/" + SERVICES[i] + apiDocsPath));
+        }
         
-        log.debug("Swagger资源列表: {}", resources);
+        // 如果支持v3，添加v3版本API文档
+        if (supportV3) {
+            String v3Path = apiDocsPath.replace("/v2/", "/v3/");
+            for (int i = 0; i < SERVICES.length; i++) {
+                resources.add(createResource(SERVICE_NAMES[i] + "(OpenAPI3)", "/" + SERVICES[i] + v3Path));
+            }
+        }
+        
+        log.debug("Knife4j Swagger资源列表: {}", resources);
         return resources;
     }
     
-    private SwaggerResource createResource(String name, String location) {
-        SwaggerResource swaggerResource = new SwaggerResource();
-        swaggerResource.setName(name);
-        swaggerResource.setLocation(location);
-        swaggerResource.setSwaggerVersion("2.0");
-        return swaggerResource;
+    private Map<String, String> createResource(String name, String location) {
+        Map<String, String> resource = new HashMap<>();
+        resource.put("name", name);
+        resource.put("location", location);
+        resource.put("version", apiDocsVersion);
+        return resource;
     }
 } 

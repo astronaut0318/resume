@@ -49,13 +49,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         String path = request.getURI().getPath();
         
         // 直接放行doc.html和swagger相关资源
-        if (path.endsWith("/doc.html") || 
-            path.endsWith("/swagger-ui.html") || 
-            path.contains("/swagger-resources") || 
-            path.contains("/webjars/") || 
-            path.contains("/v2/api-docs") || 
-            path.contains("/v3/api-docs")) {
-            // 降低日志级别，避免日志爆炸
+        if (isSwaggerRequest(path)) {
             if(log.isDebugEnabled()) {
                 log.debug("直接放行Swagger资源: {}", path);
             }
@@ -88,29 +82,31 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
         
         // 4. 获取用户信息
-        String username = jwtUtils.getUsernameFromToken(token);
-        Long userId = jwtUtils.getUserIdFromToken(token);
-        if (username == null || userId == null) {
-            return unauthorized(exchange, "Token中不包含有效的用户信息");
+        try {
+            Long userId = jwtUtils.getUserIdFromToken(token);
+            if (userId == null) {
+                return unauthorized(exchange, "Token中不包含有效的用户信息");
+            }
+            
+            // 5. 检查Redis中是否存在该token（退出登录会删除Redis中的token）
+            String redisTokenKey = "token:" + userId;
+            Object redisToken = redisTemplate.opsForValue().get(redisTokenKey);
+            if (redisToken == null || !token.equals(redisToken.toString())) {
+                return unauthorized(exchange, "Token已失效，请重新登录");
+            }
+            
+            // 6. 延长token在Redis中的过期时间
+            redisTemplate.expire(redisTokenKey, 24, TimeUnit.HOURS);
+            
+            // 7. 将用户信息传递到下游服务
+            ServerHttpRequest mutatedRequest = request.mutate()
+                    .header("X-User-Id", String.valueOf(userId))
+                    .build();
+            
+            return chain.filter(exchange.mutate().request(mutatedRequest).build());
+        } catch (Exception e) {
+            return unauthorized(exchange, "获取用户信息失败: " + e.getMessage());
         }
-        
-        // 5. 检查Redis中是否存在该token（退出登录会删除Redis中的token）
-        String redisTokenKey = "token:" + userId;
-        Object redisToken = redisTemplate.opsForValue().get(redisTokenKey);
-        if (redisToken == null || !token.equals(redisToken.toString())) {
-            return unauthorized(exchange, "Token已失效，请重新登录");
-        }
-        
-        // 6. 延长token在Redis中的过期时间
-        redisTemplate.expire(redisTokenKey, 24, TimeUnit.HOURS);
-        
-        // 7. 将用户信息传递到下游服务
-        ServerHttpRequest mutatedRequest = request.mutate()
-                .header("X-User-Id", String.valueOf(userId))
-                .header("X-Username", username)
-                .build();
-        
-        return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
 
     @Override
@@ -159,5 +155,18 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             DataBuffer buffer = response.bufferFactory().wrap(bytes);
             return response.writeWith(Mono.just(buffer));
         }
+    }
+
+    /**
+     * 判断是否为Swagger相关请求
+     */
+    private boolean isSwaggerRequest(String path) {
+        return path.endsWith("/doc.html") ||
+               path.endsWith("/swagger-ui.html") ||
+               path.contains("/swagger-resources") ||
+               path.contains("/webjars/") ||
+               path.contains("/v2/api-docs") ||
+               path.contains("/v3/api-docs") ||
+               path.contains("/swagger-ui/");
     }
 } 
