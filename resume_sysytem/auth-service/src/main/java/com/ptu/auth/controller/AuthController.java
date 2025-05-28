@@ -37,7 +37,7 @@ public class AuthController {
     @PostMapping("/login")
     public R<TokenVO> login(@Valid @RequestBody LoginDTO loginDTO) {
         TokenVO tokenVO = authService.login(loginDTO);
-        return R.ok("登录成功", tokenVO);
+        return R.ok(tokenVO, "登录成功");
     }
 
     /**
@@ -50,7 +50,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public R<TokenVO> refresh(@Valid @RequestBody RefreshTokenDTO refreshTokenDTO) {
         TokenVO tokenVO = authService.refresh(refreshTokenDTO);
-        return R.ok("刷新成功", tokenVO);
+        return R.ok(tokenVO, "刷新成功");
     }
 
     /**
@@ -68,10 +68,10 @@ public class AuthController {
             if (token != null) {
                 Long userId = jwtTokenUtil.getUserIdFromToken(token);
                 boolean result = authService.logout(userId);
-                return R.ok("退出成功", result);
+                return R.ok(result, "退出成功");
             }
         }
-        return R.ok("退出成功", true);
+        return R.ok(true, "退出成功");
     }
 
     /**
@@ -90,7 +90,7 @@ public class AuthController {
             if (token != null) {
                 Long userId = jwtTokenUtil.getUserIdFromToken(token);
                 boolean result = authService.changePassword(userId, changePasswordDTO);
-                return result ? R.ok("密码修改成功", true) : R.failed("密码修改失败");
+                return result ? R.ok(true, "密码修改成功") : R.failed("密码修改失败");
             }
         }
         return R.failed("未授权");

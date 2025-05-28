@@ -161,6 +161,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ptu</groupId>
+            <artifactId>common-service</artifactId>
+        </dependency>
     </dependencies>
     
     <build>

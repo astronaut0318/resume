@@ -1,7 +1,7 @@
 package com.ptu.document.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ptu.document.common.R;
+import com.ptu.common.api.R;
 import com.ptu.document.common.constants.DocumentConstant;
 import com.ptu.document.dto.DocumentEditorConfig;
 import com.ptu.document.service.DocumentService;
@@ -126,19 +126,19 @@ public class DocumentController {
         
         // 检查参数
         if (!StringUtils.hasText(sourceType) || sourceId == null || userId == null) {
-            return R.badRequest("参数错误");
+            return R.paramError("参数错误");
         }
         
         // 检查模式
         if (!DocumentConstant.MODE_VIEW.equals(mode) && !DocumentConstant.MODE_EDIT.equals(mode)
                 && !DocumentConstant.MODE_COMMENT.equals(mode)) {
-            return R.badRequest("不支持的模式");
+            return R.paramError("不支持的模式");
         }
         
         // 获取编辑器配置
         DocumentEditorConfig config = documentService.getEditorConfig(sourceType, sourceId, mode, userId, userName);
         if (config == null) {
-            return R.serverError("获取编辑器配置失败");
+            return R.error("获取编辑器配置失败");
         }
         
         return R.ok(config);
@@ -195,13 +195,13 @@ public class DocumentController {
         
         // 检查参数
         if (!StringUtils.hasText(sourceType) || sourceId == null || userId == null) {
-            return R.badRequest("参数错误");
+            return R.paramError("参数错误");
         }
         
         // 创建版本
         Long versionId = documentService.createDocumentVersion(sourceType, sourceId, userId);
         if (versionId == null) {
-            return R.serverError("创建版本失败");
+            return R.error("创建版本失败");
         }
         
         return R.ok(versionId);
@@ -226,7 +226,7 @@ public class DocumentController {
         
         // 检查参数
         if (!StringUtils.hasText(sourceType) || sourceId == null) {
-            return R.badRequest("参数错误");
+            return R.paramError("参数错误");
         }
         
         // 获取版本列表
@@ -250,7 +250,7 @@ public class DocumentController {
         
         // 检查参数
         if (versionId == null) {
-            return R.badRequest("参数错误");
+            return R.paramError("参数错误");
         }
         
         // 获取版本详情
@@ -284,13 +284,13 @@ public class DocumentController {
         
         // 检查参数
         if (versionId == null || userId == null) {
-            return R.badRequest("参数错误");
+            return R.paramError("参数错误");
         }
         
         // 获取预览配置
         DocumentEditorConfig config = documentService.previewVersion(versionId, userId, userName);
         if (config == null) {
-            return R.serverError("获取预览配置失败");
+            return R.error("获取预览配置失败");
         }
         
         return R.ok(config);

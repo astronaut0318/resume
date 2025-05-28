@@ -100,3 +100,8 @@ knife4j:
     enable-footer: false
   basic:
     enable: false
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858

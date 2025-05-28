@@ -88,4 +88,9 @@ springfox:
   documentation:
     enabled: true
     swagger-ui:
-      enabled: true 
+      enabled: true
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858 

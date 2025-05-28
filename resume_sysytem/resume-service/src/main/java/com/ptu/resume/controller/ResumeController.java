@@ -1,7 +1,7 @@
 package com.ptu.resume.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ptu.common.utils.R;
+import com.ptu.common.api.R;
 import com.ptu.resume.dto.ResumeDTO;
 import com.ptu.resume.service.ResumeService;
 import com.ptu.resume.vo.ResumeVO;

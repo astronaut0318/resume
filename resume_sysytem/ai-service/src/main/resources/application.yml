@@ -1,5 +1,5 @@
 server:
-  port: 8087
+  port: 8089
 
 spring:
   application:
@@ -24,4 +24,9 @@ feign:
 # JWT配置（如需）
 # jwt:
 #   secret: xxx
-#   expire: 86400 
+#   expire: 86400
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858 

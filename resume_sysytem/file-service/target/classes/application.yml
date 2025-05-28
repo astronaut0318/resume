@@ -1,0 +1,19 @@
+
+spring:
+  mvc:
+    path match:
+      matching-strategy: ANT_PATH_MATCHER
+  application:
+    name: file-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/resume_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858
+server:
+  port: 8003

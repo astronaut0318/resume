@@ -2,6 +2,7 @@ package com.ptu.auth.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;

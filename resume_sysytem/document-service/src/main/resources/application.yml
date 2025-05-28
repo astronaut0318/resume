@@ -119,4 +119,9 @@ security:
     - /**/webjars/**
     - /**/v2/api-docs
     - /**/v3/api-docs
-    - /**/swagger-ui/** 
+    - /**/swagger-ui/**
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858 

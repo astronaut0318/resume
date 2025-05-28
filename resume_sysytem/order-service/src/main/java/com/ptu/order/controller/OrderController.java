@@ -59,7 +59,7 @@ public class OrderController {
     public R<Void> cancelOrder(@PathVariable String orderNo) {
         Long userId = 1L; // TODO: 获取当前登录用户ID
         orderService.cancelOrder(orderNo, userId);
-        return R.ok("取消成功", null);
+        return R.ok(null, "取消成功");
     }
 
     /**
@@ -70,6 +70,6 @@ public class OrderController {
         // TODO: 解析orderNo
         String orderNo = "";
         orderService.handlePaymentNotify(orderNo, payType, notifyData);
-        return R.ok("回调处理成功", null);
+        return R.ok(null, "回调处理成功");
     }
 } 

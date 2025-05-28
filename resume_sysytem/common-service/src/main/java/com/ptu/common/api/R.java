@@ -1,5 +1,6 @@
 package com.ptu.common.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -7,9 +8,11 @@ import java.io.Serializable;
 
 /**
  * 统一API响应结果封装
+ * 兼容所有微服务，字段包含：code、message、data、timestamp、success
  */
 @Data
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class R<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +33,20 @@ public class R<T> implements Serializable {
     private T data;
 
     /**
+     * 时间戳
+     */
+    private long timestamp;
+
+    /**
+     * 是否成功
+     */
+    private boolean success;
+
+    private R() {
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    /**
      * 成功
      *
      * @param <T> 数据类型
@@ -47,25 +64,24 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> ok(T data) {
-        return new R<T>()
-                .setCode(ResultCode.SUCCESS.getCode())
-                .setMessage(ResultCode.SUCCESS.getMessage())
-                .setData(data);
+        return ok(data, "操作成功");
     }
 
     /**
      * 成功
      *
-     * @param message 消息
      * @param data    数据
+     * @param message 消息
      * @param <T>     数据类型
      * @return 响应结果
      */
-    public static <T> R<T> ok(String message, T data) {
-        return new R<T>()
-                .setCode(ResultCode.SUCCESS.getCode())
-                .setMessage(message)
-                .setData(data);
+    public static <T> R<T> ok(T data, String message) {
+        R<T> r = new R<>();
+        r.setCode(200);
+        r.setData(data);
+        r.setMessage(message);
+        r.setSuccess(true);
+        return r;
     }
 
     /**
@@ -75,20 +91,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> failed() {
-        return failed(ResultCode.FAILURE);
-    }
-
-    /**
-     * 失败
-     *
-     * @param resultCode 响应码
-     * @param <T>        数据类型
-     * @return 响应结果
-     */
-    public static <T> R<T> failed(IResultCode resultCode) {
-        return new R<T>()
-                .setCode(resultCode.getCode())
-                .setMessage(resultCode.getMessage());
+        return failed("操作失败");
     }
 
     /**
@@ -99,9 +102,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> failed(String message) {
-        return new R<T>()
-                .setCode(ResultCode.FAILURE.getCode())
-                .setMessage(message);
+        return failed(500, message);
     }
 
     /**
@@ -113,9 +114,11 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> failed(int code, String message) {
-        return new R<T>()
-                .setCode(code)
-                .setMessage(message);
+        R<T> r = new R<>();
+        r.setCode(code);
+        r.setMessage(message);
+        r.setSuccess(false);
+        return r;
     }
 
     /**
@@ -125,7 +128,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> paramError() {
-        return failed(ResultCode.PARAM_ERROR);
+        return failed(ResultCode.PARAM_ERROR.getCode(), ResultCode.PARAM_ERROR.getMessage());
     }
 
     /**
@@ -148,7 +151,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> unauthorized() {
-        return failed(ResultCode.UNAUTHORIZED);
+        return failed(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage());
     }
 
     /**
@@ -171,7 +174,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> forbidden() {
-        return failed(ResultCode.FORBIDDEN);
+        return failed(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage());
     }
 
     /**
@@ -194,7 +197,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> notFound() {
-        return failed(ResultCode.NOT_FOUND);
+        return failed(ResultCode.NOT_FOUND.getCode(), ResultCode.NOT_FOUND.getMessage());
     }
 
     /**
@@ -217,7 +220,7 @@ public class R<T> implements Serializable {
      * @return 响应结果
      */
     public static <T> R<T> error() {
-        return failed(ResultCode.INTERNAL_SERVER_ERROR);
+        return failed(ResultCode.INTERNAL_SERVER_ERROR.getCode(), ResultCode.INTERNAL_SERVER_ERROR.getMessage());
     }
 
     /**
@@ -239,6 +242,17 @@ public class R<T> implements Serializable {
      * @return 是否成功
      */
     public boolean isSuccess() {
-        return this.code == ResultCode.SUCCESS.getCode();
+        return this.success;
+    }
+
+    /**
+     * 修正ResultCode重载调用
+     *
+     * @param resultCode 结果码
+     * @param <T>        数据类型
+     * @return 响应结果
+     */
+    public static <T> R<T> failed(IResultCode resultCode) {
+        return failed(resultCode.getCode(), resultCode.getMessage());
     }
 } 

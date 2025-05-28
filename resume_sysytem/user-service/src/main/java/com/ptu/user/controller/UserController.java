@@ -41,7 +41,7 @@ public class UserController {
     @PostMapping("/register")
     public R<RegisterVO> register(@Valid @RequestBody RegisterDTO registerDTO) {
         RegisterVO registerVO = userService.register(registerDTO);
-        return R.ok("注册成功", registerVO);
+        return R.ok(registerVO, "注册成功");
     }
 
     /**
@@ -90,7 +90,7 @@ public class UserController {
             @ApiParam(value = "用户ID", required = true) @PathVariable Long id,
             @ApiParam(value = "状态：0-正常，1-禁用", required = true) @PathVariable Integer status) {
         boolean result = userService.updateStatus(id, status);
-        return result ? R.ok("修改状态成功", true) : R.failed("修改状态失败");
+        return result ? R.ok(true, "修改状态成功") : R.failed("修改状态失败");
     }
 
     /**
@@ -102,7 +102,7 @@ public class UserController {
             @ApiParam(value = "用户ID", required = true) @PathVariable Long id,
             @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
         boolean result = userService.resetPassword(id, newPassword);
-        return result ? R.ok("重置密码成功", true) : R.failed("重置密码失败");
+        return result ? R.ok(true, "重置密码成功") : R.failed("重置密码失败");
     }
     
     /**
@@ -126,7 +126,7 @@ public class UserController {
             @ApiParam(value = "用户ID", required = true) @RequestParam Long userId,
             @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
         boolean result = userService.updatePassword(userId, newPassword);
-        return result ? R.ok("更新密码成功", true) : R.failed("更新密码失败");
+        return result ? R.ok(true, "更新密码成功") : R.failed("更新密码失败");
     }
     
     /**
@@ -149,7 +149,7 @@ public class UserController {
             @ApiParam(value = "用户ID", required = true) @PathVariable Long userId,
             @Valid @RequestBody UserDetailUpdateDTO userDetailUpdateDTO) {
         boolean result = userDetailService.updateDetail(userId, userDetailUpdateDTO);
-        return result ? R.ok("更新成功", true) : R.failed("更新失败");
+        return result ? R.ok(true, "更新成功") : R.failed("更新失败");
     }
     
     /**
@@ -175,7 +175,7 @@ public class UserController {
             @ApiParam(value = "开通月数", required = true) 
             @RequestParam @Min(1) Integer months) {
         boolean result = userVipService.openVip(userId, level, months);
-        return result ? R.ok("开通成功", true) : R.failed("开通失败");
+        return result ? R.ok(true, "开通成功") : R.failed("开通失败");
     }
     
     /**
@@ -188,7 +188,7 @@ public class UserController {
             @ApiParam(value = "续费月数", required = true) 
             @RequestParam @Min(1) Integer months) {
         boolean result = userVipService.renewVip(userId, months);
-        return result ? R.ok("续费成功", true) : R.failed("续费失败");
+        return result ? R.ok(true, "续费成功") : R.failed("续费失败");
     }
     
     /**
@@ -201,6 +201,6 @@ public class UserController {
             @ApiParam(value = "新VIP等级：1-初级，2-中级，3-高级", required = true) 
             @RequestParam @Min(1) @Max(3) Integer level) {
         boolean result = userVipService.upgradeVip(userId, level);
-        return result ? R.ok("升级成功", true) : R.failed("升级失败");
+        return result ? R.ok(true, "升级成功") : R.failed("升级失败");
     }
 } 

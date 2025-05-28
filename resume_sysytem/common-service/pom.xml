@@ -108,6 +108,12 @@
             <artifactId>minio</artifactId>
             <version>8.5.2</version>
         </dependency>
+
+        <!-- 支持Java8时间类型序列化 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

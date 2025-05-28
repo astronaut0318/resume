@@ -1,0 +1,7 @@
+server:
+  port: 8006 
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8858 

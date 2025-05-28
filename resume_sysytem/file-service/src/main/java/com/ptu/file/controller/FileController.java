@@ -4,7 +4,7 @@ import com.ptu.file.dto.OnlyOfficeSaveDTO;
 import com.ptu.file.service.FileService;
 import com.ptu.file.vo.FileUploadVO;
 import com.ptu.file.vo.FileVO;
-import com.ptu.file.util.R;
+import com.ptu.common.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,7 +60,7 @@ public class FileController {
     @DeleteMapping("/{fileId}")
     public R<Void> deleteFile(@PathVariable("fileId") Long fileId) {
         boolean success = fileService.deleteFile(fileId);
-        return success ? R.ok(null, "删除成功") : R.fail("删除失败");
+        return success ? R.ok(null, "删除成功") : R.failed("删除失败");
     }
 
     /**
@@ -90,6 +90,6 @@ public class FileController {
     @PostMapping("/onlyoffice/save")
     public R<Void> onlyOfficeSave(@RequestBody OnlyOfficeSaveDTO saveDTO) {
         boolean success = fileService.handleOnlyOfficeSave(saveDTO);
-        return success ? R.ok(null, "保存成功") : R.fail("保存失败");
+        return success ? R.ok(null, "保存成功") : R.failed("保存失败");
     }
 } 
