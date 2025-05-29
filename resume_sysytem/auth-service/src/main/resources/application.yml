@@ -1,7 +1,5 @@
 server:
   port: 8001
-  servlet:
-    context-path: /
   max-http-header-size: 131072
   undertow:
     max-http-header-size: 131072

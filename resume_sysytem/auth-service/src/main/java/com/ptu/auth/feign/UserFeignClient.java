@@ -19,7 +19,7 @@ public interface UserFeignClient {
      * @param username 用户名
      * @return 用户信息
      */
-    @GetMapping("/users/by-username/{username}")
+    @GetMapping("/by-username/{username}")
     R<?> getUserByUsername(@PathVariable("username") String username);
     
     /**
@@ -29,7 +29,7 @@ public interface UserFeignClient {
      * @param password 密码(明文，会在用户服务中加密后比较)
      * @return 是否匹配
      */
-    @PostMapping("/users/verify-password")
+    @PostMapping("/verify-password")
     R<Boolean> verifyPassword(@RequestParam("userId") Long userId, @RequestParam("password") String password);
     
     /**
@@ -39,6 +39,6 @@ public interface UserFeignClient {
      * @param newPassword 新密码(明文，会在用户服务中加密)
      * @return 是否成功
      */
-    @PostMapping("/users/update-password")
+    @PostMapping("/update-password")
     R<Boolean> updatePassword(@RequestParam("userId") Long userId, @RequestParam("newPassword") String newPassword);
 } 

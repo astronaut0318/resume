@@ -58,11 +58,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         
         // 1. 白名单路径直接放行
         List<String> ignoreUrls = gatewayConfig.getIgnoreUrls();
-        
-        // 输出路径匹配过程，便于调试
+        // 输出白名单列表和路径匹配过程，便于调试
+        log.debug("白名单列表: {}", ignoreUrls);
         log.debug("当前请求路径: {}", path);
         if (ignoreUrls != null) {
             for (String ignoreUrl : ignoreUrls) {
+                log.debug("尝试匹配: {} <-> {}", ignoreUrl, path);
                 if (pathMatcher.match(ignoreUrl, path)) {
                     log.debug("路径匹配白名单: {} 匹配 {}, 直接放行", ignoreUrl, path);
                     return chain.filter(exchange);

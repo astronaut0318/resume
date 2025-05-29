@@ -51,71 +51,71 @@ api.interceptors.response.use(
 // 用户注册
 export const register = (data) => {
   // 使用mock数据
-  return Promise.resolve(mockRegister(data))
+  // return Promise.resolve(mockRegister(data))
   // 实际接口
-  // return api.post('/users/register', data)
+  return api.post('/users/register', data)
 }
 
 // 用户登录
 export const login = (data) => {
   // 使用mock数据
-  const response = mockLogin(data)
-  if (response.code === 200) {
-    localStorage.setItem('token', response.data.token)
-    localStorage.setItem('refreshToken', response.data.refreshToken)
-    localStorage.setItem('userId', response.data.userId)
-  }
-  return Promise.resolve(response)
+  // const response = mockLogin(data)
+  // if (response.code === 200) {
+  //   localStorage.setItem('token', response.data.token)
+  //   localStorage.setItem('refreshToken', response.data.refreshToken)
+  //   localStorage.setItem('userId', response.data.userId)
+  // }
+  // return Promise.resolve(response)
   // 实际接口
-  // return api.post('/auth/login', data)
+  return api.post('/auth/login', data)
 }
 
 // 获取用户信息
 export const getUserInfo = (userId) => {
   // 使用mock数据
-  return Promise.resolve(mockGetUserInfo(userId))
+  // return Promise.resolve(mockGetUserInfo(userId))
   // 实际接口
-  // return api.get(`/users/${userId}`)
+  return api.get(`/users/${userId}`)
 }
 
 // 获取用户详细信息
 export const getUserDetails = (userId) => {
   // 使用mock数据
-  return Promise.resolve(mockGetUserDetails(userId))
+  // return Promise.resolve(mockGetUserDetails(userId))
   // 实际接口
-  // return api.get(`/users/${userId}/details`)
+  return api.get(`/users/${userId}/details`)
 }
 
 // 更新用户信息
 export const updateUserInfo = (userId, data) => {
   // 使用mock数据
-  return Promise.resolve(mockUpdateUserInfo(userId, data))
+  // return Promise.resolve(mockUpdateUserInfo(userId, data))
   // 实际接口
-  // return api.put(`/users/${userId}`, data)
+  return api.put(`/users/${userId}`, data)
 }
 
 // 更新用户详细信息
 export const updateUserDetails = (userId, data) => {
   // 使用mock数据
-  return Promise.resolve(mockUpdateUserDetails(userId, data))
+  // return Promise.resolve(mockUpdateUserDetails(userId, data))
   // 实际接口
-  // return api.put(`/users/${userId}/details`, data)
+  return api.put(`/users/${userId}/details`, data)
 }
 
 // 获取VIP状态
 export const getVipStatus = (userId) => {
   // 使用mock数据
-  return Promise.resolve(mockGetVipStatus(userId))
+  // return Promise.resolve(mockGetVipStatus(userId))
   // 实际接口
-  // return api.get(`/users/${userId}/vip`)
+  return api.get(`/users/${userId}/vip`)
 }
 
 // 刷新token
 export const refreshToken = (refreshToken) => {
   // 使用mock数据
-  return Promise.resolve(mockRefreshToken(refreshToken))
+  // return Promise.resolve(mockRefreshToken(refreshToken))
   // 实际接口
-  // return api.post('/auth/refresh', { refreshToken })
+  return api.post('/auth/refresh', { refreshToken })
 }
 
 // 退出登录
@@ -124,7 +124,7 @@ export const logout = () => {
   localStorage.removeItem('token')
   localStorage.removeItem('refreshToken')
   localStorage.removeItem('userId')
-  return Promise.resolve(mockLogout())
+  // return Promise.resolve(mockLogout())
   // 实际接口
-  // return api.post('/auth/logout')
+  return api.post('/auth/logout')
 } 

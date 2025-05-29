@@ -2,8 +2,7 @@ package com.ptu.gateway.config;
 
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -23,27 +22,30 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 网关配置类
+ * 网关配置类，支持白名单路径自动注入
  */
 @Configuration
+@ConfigurationProperties(prefix = "gateway.security")
 public class GatewayConfig {
-
-    @Value("${gateway.security.ignore-urls:#{null}}")
+    /**
+     * 网关安全白名单（无需认证的接口），自动从application.yml注入
+     */
     private List<String> ignoreUrls;
+
+    public List<String> getIgnoreUrls() {
+        return ignoreUrls;
+    }
+
+    public void setIgnoreUrls(List<String> ignoreUrls) {
+        this.ignoreUrls = ignoreUrls;
+    }
 
     /**
      * 限流的key解析器，使用请求IP作为限流键
      */
     @Bean
-    public KeyResolver ipKeyResolver() {
+    public org.springframework.cloud.gateway.filter.ratelimit.KeyResolver ipKeyResolver() {
         return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
-    }
-
-    /**
-     * 获取白名单路径（不需要认证的路径）
-     */
-    public List<String> getIgnoreUrls() {
-        return ignoreUrls;
     }
 
     /**
@@ -82,7 +84,7 @@ public class GatewayConfig {
             if (CorsUtils.isCorsRequest(request)) {
                 HttpHeaders requestHeaders = request.getHeaders();
                 ServerHttpResponse response = exchange.getResponse();
-                HttpHeaders headers = response.getHeaders();
+                org.springframework.http.HttpHeaders headers = response.getHeaders();
                 headers.add("Access-Control-Allow-Origin", requestHeaders.getOrigin());
                 headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
                 headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization");

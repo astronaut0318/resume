@@ -26,7 +26,7 @@ import javax.validation.constraints.Min;
  */
 @Api(tags = "用户管理接口")
 @RestController
-@RequestMapping("/users")
+@RequestMapping
 @RequiredArgsConstructor
 public class UserController {
 

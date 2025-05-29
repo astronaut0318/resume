@@ -81,6 +81,14 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtTokenUtil.generateAccessToken(user.getId(), user.getUsername(), user.getRole());
         String refreshToken = jwtTokenUtil.generateRefreshToken(user.getId());
 
+        // 将accessToken存入Redis，key为token:{userId}，value为accessToken
+        redisTemplate.opsForValue().set(
+            "token:" + user.getId(),
+            accessToken,
+            jwtTokenUtil.getExpirationDateFromToken(accessToken).getTime() - System.currentTimeMillis(),
+            TimeUnit.MILLISECONDS
+        );
+
         // 将刷新令牌存入Redis
         redisTemplate.opsForValue().set(
                 REFRESH_TOKEN_PREFIX + user.getId(),

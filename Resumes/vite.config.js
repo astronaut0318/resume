@@ -9,7 +9,7 @@ export default defineConfig({
     vue(),
     viteMockServe({
       mockPath: 'src/mock',
-      localEnabled: true,
+      localEnabled: false,
       prodEnabled: false,
       supportTs: false,
       logger: true,
@@ -29,7 +29,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:5173',
+        target: 'http://localhost:9000',
         changeOrigin: true,
         rewrite: (path) => path
       }

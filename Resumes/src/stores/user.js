@@ -24,6 +24,9 @@ export const useUserStore = defineStore('user', () => {
       if (res.code === 200) {
         token.value = res.data.token
         userId.value = res.data.userId
+        // 持久化到localStorage，保证后续请求都能带上token
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('userId', res.data.userId)
         await loadUserInfo()
         return res
       }

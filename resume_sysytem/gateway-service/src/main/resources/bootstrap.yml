@@ -6,18 +6,10 @@ spring:
   # Nacos服务注册发现
   cloud:
     nacos:
+      config:
+        enabled: false  # 关闭Nacos配置中心，防止覆盖本地路由配置
       discovery:
         server-addr: 127.0.0.1:8848
         namespace: d0e61529-b169-481a-8e64-6c652f5729c8
-      config:
-        enabled: true
-        server-addr: 127.0.0.1:8848
-        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
-        group: DEFAULT_GROUP
-        file-extension: yaml
-        shared-configs:
-          - data-id: gateway-dev.yaml
-            group: DEFAULT_GROUP
-            refresh: true
 
 

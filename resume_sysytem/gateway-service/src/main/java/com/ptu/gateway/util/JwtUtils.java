@@ -29,7 +29,7 @@ public class JwtUtils {
 
     @PostConstruct
     public void init() {
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         log.info("JWT密钥初始化成功");
     }
 

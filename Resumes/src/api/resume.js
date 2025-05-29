@@ -49,47 +49,47 @@ api.interceptors.response.use(
 // 创建简历
 export const createResume = (data) => {
   // 使用mock数据
-  return Promise.resolve(mockCreateResume(data))
+  // return Promise.resolve(mockCreateResume(data))
   // 实际接口
-  // return api.post('/resumes', data)
+  return api.post('/resumes', data)
 }
 
 // 获取简历列表
 export const getResumeList = (params) => {
   // 使用mock数据
-  return Promise.resolve(mockGetResumeList(params))
+  // return Promise.resolve(mockGetResumeList(params))
   // 实际接口
-  // return api.get('/resumes', { params })
+  return api.get('/resumes', { params })
 }
 
 // 获取简历详情
 export const getResumeDetail = (resumeId) => {
   // 使用mock数据
-  return Promise.resolve(mockGetResumeDetail(resumeId))
+  // return Promise.resolve(mockGetResumeDetail(resumeId))
   // 实际接口
-  // return api.get(`/resumes/${resumeId}`)
+  return api.get(`/resumes/${resumeId}`)
 }
 
 // 更新简历
 export const updateResume = (resumeId, data) => {
   // 使用mock数据
-  return Promise.resolve(mockUpdateResume(resumeId, data))
+  // return Promise.resolve(mockUpdateResume(resumeId, data))
   // 实际接口
-  // return api.put(`/resumes/${resumeId}`, data)
+  return api.put(`/resumes/${resumeId}`, data)
 }
 
 // 删除简历
 export const deleteResume = (resumeId) => {
   // 使用mock数据
-  return Promise.resolve(mockDeleteResume(resumeId))
+  // return Promise.resolve(mockDeleteResume(resumeId))
   // 实际接口
-  // return api.delete(`/resumes/${resumeId}`)
+  return api.delete(`/resumes/${resumeId}`)
 }
 
 // 设置默认简历
 export const setDefaultResume = (resumeId) => {
   // 使用mock数据
-  return Promise.resolve(mockSetDefaultResume(resumeId))
+  // return Promise.resolve(mockSetDefaultResume(resumeId))
   // 实际接口
-  // return api.put(`/resumes/${resumeId}/default`)
+  return api.put(`/resumes/${resumeId}/default`)
 } 
