@@ -1,0 +1,80 @@
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import './style.css'
+import App from './App.vue'
+import router from './router'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import axios from 'axios'
+
+// 配置axios
+axios.defaults.timeout = 30000 // 增加超时时间到30秒
+axios.defaults.retry = 2 // 增加重试次数到2次
+axios.defaults.retryDelay = 1500 // 增加重试延时到1.5秒
+axios.defaults.maxContentLength = 10485760 // 设置最大响应内容长度为10MB
+
+// 添加请求拦截器
+axios.interceptors.request.use(
+  config => {
+    // 设置请求阶段的超时处理
+    if (config.url.includes('/download') || config.responseType === 'blob') {
+      config.timeout = 60000 // 下载文件时使用更长的超时时间
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+// 添加响应拦截器，处理重试逻辑
+axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
+  const config = err.config
+  // 如果配置不存在或重试次数未设置，则拒绝
+  if (!config || !config.retry) return Promise.reject(err)
+  
+  // 设置变量追踪重试次数
+  config.__retryCount = config.__retryCount || 0
+  
+  // 如果已经达到重试次数上限，则拒绝
+  if (config.__retryCount >= config.retry) {
+    return Promise.reject(err)
+  }
+  
+  // 增加重试次数
+  config.__retryCount += 1
+  
+  console.log(`请求重试: ${config.url}, 第 ${config.__retryCount} 次重试`)
+  
+  // 创建新的Promise以处理延时
+  const backoff = new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve()
+    }, config.retryDelay || 1)
+  })
+  
+  // 返回重试的Promise
+  return backoff.then(function() {
+    // 对于下载类请求特殊处理
+    if (config.responseType === 'blob') {
+      // 确保请求头和响应类型正确设置
+      config.headers = { ...config.headers }
+      config.responseType = 'blob'
+    }
+    return axios(config)
+  })
+})
+
+const app = createApp(App)
+const pinia = createPinia()
+
+// 注册所有图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+app.use(pinia)
+app.use(ElementPlus)
+app.use(router)
+app.mount('#app')
