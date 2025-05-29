@@ -7,12 +7,17 @@ const users = [
     email: 'admin@example.com',
     phone: '13800138000',
     avatar: 'https://picsum.photos/100/100?random=1',
+<<<<<<< HEAD
     role: 2, // 0-普通用户，1-VIP用户，2-超级vip
+=======
+    role: 3, // 0-普通用户，1-VIP用户，2-终身会员，3-管理员
+>>>>>>> upstream/master
     status: 1,
     createTime: '2023-01-01 12:00:00'
   },
   {
     id: 2,
+<<<<<<< HEAD
     username: 'test',
     password: '123456',
     email: 'test@example.com',
@@ -21,6 +26,27 @@ const users = [
     role: 0,
     status: 1,
     createTime: '2023-01-02 12:00:00'
+=======
+    username: 'super',
+    password: '123456',
+    email: 'super@example.com',
+    phone: '13800138001',
+    avatar: 'https://picsum.photos/100/100?random=2',
+    role: 2, // 0-普通用户，1-VIP用户，2-终身会员，3-管理员
+    status: 1,
+    createTime: '2023-01-02 12:00:00'
+  },
+  {
+    id: 3,
+    username: 'test',
+    password: '123456',
+    email: 'test@example.com',
+    phone: '13800138002',
+    avatar: 'https://picsum.photos/100/100?random=3',
+    role: 0,
+    status: 1,
+    createTime: '2023-01-03 12:00:00'
+>>>>>>> upstream/master
   }
 ]
 
@@ -29,26 +55,56 @@ const userDetails = [
   {
     id: 1,
     userId: 1,
+<<<<<<< HEAD
     realName: '张三',
+=======
+    realName: '管理员',
+>>>>>>> upstream/master
     gender: 1,
     birthday: '1990-01-01',
     education: '本科',
     workYears: 5,
     address: '北京市朝阳区',
+<<<<<<< HEAD
     profile: '资深前端开发工程师，具有丰富的项目经验...',
     createTime: '2023-01-01 12:00:00'
+=======
+    profile: '系统管理员',
+    createTime: '2023-01-01 12:00:00'
+  },
+  {
+    id: 2,
+    userId: 2,
+    realName: '张三',
+    gender: 1,
+    birthday: '1992-01-01',
+    education: '本科',
+    workYears: 3,
+    address: '上海市浦东新区',
+    profile: '资深前端开发工程师，具有丰富的项目经验...',
+    createTime: '2023-01-02 12:00:00'
+>>>>>>> upstream/master
   }
 ]
 
 // 模拟VIP信息
 const vipInfo = [
   {
+<<<<<<< HEAD
     userId: 1,
     isVip: true,
     level: 2,
     startTime: '2023-01-01 00:00:00',
     endTime: '2023-12-31 23:59:59',
     remainingDays: 300
+=======
+    userId: 2,
+    isVip: true,
+    level: 2,
+    startTime: '2023-01-01 00:00:00',
+    endTime: '2099-12-31 23:59:59',
+    remainingDays: 9999
+>>>>>>> upstream/master
   }
 ]
 

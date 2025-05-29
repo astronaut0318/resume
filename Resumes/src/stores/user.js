@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia'
+<<<<<<< HEAD
 import { ref, computed } from 'vue'
+=======
+import { ref, computed, watch } from 'vue'
+>>>>>>> upstream/master
 import * as userApi from '../api/user'
 
 export const useUserStore = defineStore('user', () => {
@@ -12,6 +16,7 @@ export const useUserStore = defineStore('user', () => {
 
   // 计算属性
   const isLoggedIn = computed(() => !!token.value)
+<<<<<<< HEAD
   const isVip = computed(() => {
     // 根据数据库表vip_members的字段调整判断逻辑
     return userInfo.value?.role > 0 || vipInfo.value?.status === 1
@@ -19,6 +24,27 @@ export const useUserStore = defineStore('user', () => {
   const avatar = computed(() => userInfo.value?.avatar || '')
   const username = computed(() => userInfo.value?.username || '')
 
+=======
+  const isVip = computed(() => vipInfo.value?.isVip || false)
+  const isAdmin = computed(() => userInfo.value?.role === 3) // 角色为3表示管理员
+  const avatar = computed(() => userInfo.value?.avatar || '')
+  const username = computed(() => userInfo.value?.username || '')
+
+  // 监听VIP状态变化，同步到localStorage
+  watch(vipInfo, (newVal) => {
+    if (newVal) {
+      localStorage.setItem('vipStatus', JSON.stringify(newVal))
+    }
+  }, { deep: true })
+
+  // 监听用户信息变化，同步到localStorage
+  watch(userInfo, (newVal) => {
+    if (newVal) {
+      localStorage.setItem('userInfo', JSON.stringify(newVal))
+    }
+  }, { deep: true })
+
+>>>>>>> upstream/master
   // 方法
   // 登录
   const login = async (data) => {
@@ -27,9 +53,12 @@ export const useUserStore = defineStore('user', () => {
       if (res.code === 200) {
         token.value = res.data.token
         userId.value = res.data.userId
+<<<<<<< HEAD
         // 持久化到localStorage，保证后续请求都能带上token
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('userId', res.data.userId)
+=======
+>>>>>>> upstream/master
         await loadUserInfo()
         return res
       }
@@ -56,6 +85,7 @@ export const useUserStore = defineStore('user', () => {
   const loadUserInfo = async () => {
     if (!userId.value) return
     try {
+<<<<<<< HEAD
       // 获取用户基本信息
       const userRes = await userApi.getUserInfo(userId.value)
       if (userRes.code === 200) {
@@ -87,6 +117,25 @@ export const useUserStore = defineStore('user', () => {
       }
     } catch (error) {
       console.error('加载用户基本信息失败:', error)
+=======
+      const [userRes, detailsRes, vipRes] = await Promise.all([
+        userApi.getUserInfo(userId.value),
+        userApi.getUserDetails(userId.value),
+        userApi.getVipStatus(userId.value)
+      ])
+      
+      if (userRes.code === 200) {
+        userInfo.value = userRes.data
+      }
+      if (detailsRes.code === 200) {
+        userDetails.value = detailsRes.data
+      }
+      if (vipRes.code === 200) {
+        vipInfo.value = vipRes.data
+      }
+    } catch (error) {
+      console.error('加载用户信息失败:', error)
+>>>>>>> upstream/master
     }
   }
 
@@ -118,6 +167,38 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+<<<<<<< HEAD
+=======
+  // 直接更新VIP状态 (用于支付成功后立即更新状态)
+  const updateVipStatus = (vipData) => {
+    vipInfo.value = {
+      ...vipInfo.value,
+      ...vipData
+    }
+    // 不需要await，因为我们已经直接更新了状态
+    // 实际环境中可能需要调用API
+  }
+
+  // 检查是否需要从localStorage恢复状态
+  const restoreFromLocalStorage = () => {
+    try {
+      // 尝试从localStorage恢复VIP状态
+      const savedVipStatus = localStorage.getItem('vipStatus')
+      if (savedVipStatus && (!vipInfo.value || !vipInfo.value.isVip)) {
+        vipInfo.value = JSON.parse(savedVipStatus)
+      }
+
+      // 尝试从localStorage恢复用户信息
+      const savedUserInfo = localStorage.getItem('userInfo')
+      if (savedUserInfo && !userInfo.value) {
+        userInfo.value = JSON.parse(savedUserInfo)
+      }
+    } catch (error) {
+      console.error('从localStorage恢复状态失败:', error)
+    }
+  }
+
+>>>>>>> upstream/master
   // 退出登录
   const logout = async () => {
     try {
@@ -128,6 +209,14 @@ export const useUserStore = defineStore('user', () => {
         vipInfo.value = null
         token.value = null
         userId.value = null
+<<<<<<< HEAD
+=======
+        
+        // 清除localStorage中的相关数据
+        localStorage.removeItem('vipStatus')
+        localStorage.removeItem('userInfo')
+        
+>>>>>>> upstream/master
         return res
       }
       return Promise.reject(res)
@@ -138,7 +227,18 @@ export const useUserStore = defineStore('user', () => {
 
   // 初始化：如果有token则加载用户信息
   if (token.value) {
+<<<<<<< HEAD
     loadUserInfo()
+=======
+    loadUserInfo().then(() => {
+      // 加载完成后检查是否需要从localStorage恢复状态
+      restoreFromLocalStorage()
+    })
+  } else {
+    // 即使没有token，也尝试从localStorage恢复状态
+    // 这对于页面刷新后但token已过期的情况很有用
+    restoreFromLocalStorage()
+>>>>>>> upstream/master
   }
 
   return {
@@ -152,6 +252,10 @@ export const useUserStore = defineStore('user', () => {
     // 计算属性
     isLoggedIn,
     isVip,
+<<<<<<< HEAD
+=======
+    isAdmin,
+>>>>>>> upstream/master
     avatar,
     username,
     
@@ -161,6 +265,11 @@ export const useUserStore = defineStore('user', () => {
     loadUserInfo,
     updateInfo,
     updateDetails,
+<<<<<<< HEAD
+=======
+    updateVipStatus,
+    restoreFromLocalStorage,
+>>>>>>> upstream/master
     logout
   }
 }) 

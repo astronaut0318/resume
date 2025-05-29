@@ -181,13 +181,25 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTemplateStore } from '../../stores/template'
 import { useResumeStore } from '../../stores/resume'
+<<<<<<< HEAD
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Document, Star, Plus, ArrowDown } from '@element-plus/icons-vue'
 import { uncollectTemplate } from '../../api/template'
+=======
+import { useFileStore } from '../../stores/file'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Document, Star, Plus, ArrowDown } from '@element-plus/icons-vue'
+import { uncollectTemplate } from '../../api/template'
+import ResumeExporter from '../../components/ResumeExporter.vue'
+>>>>>>> upstream/master
 
 const router = useRouter()
 const templateStore = useTemplateStore()
 const resumeStore = useResumeStore()
+<<<<<<< HEAD
+=======
+const fileStore = useFileStore()
+>>>>>>> upstream/master
 const activeTab = ref('myResumes')
 
 // 预览相关
@@ -276,7 +288,59 @@ const setDefaultResume = async (resumeId) => {
 
 // 下载简历
 const downloadResume = (resumeId) => {
+<<<<<<< HEAD
   ElMessage.info('下载功能开发中...')
+=======
+  // 使用ElMessageBox来实现格式选择
+  ElMessageBox.confirm('请选择导出格式', '导出简历', {
+    confirmButtonText: 'PDF格式',
+    cancelButtonText: 'Word格式',
+    distinguishCancelAndClose: true,
+    closeOnClickModal: false
+  }).then(() => {
+    // 导出PDF
+    ElMessage.info('正在生成PDF，请稍候...')
+    fileStore.exportResumeToPdf(resumeId)
+      .then(() => {
+        ElMessage.success('PDF下载成功！')
+      })
+      .catch((error) => {
+        console.error('导出PDF失败:', error)
+        if (error.response && error.response.status === 500) {
+          ElMessage.warning('服务器暂时无法处理您的请求，请稍后再试')
+        } else {
+          ElMessage.error('PDF下载失败，请重试')
+        }
+        
+        // 如果是演示环境，模拟下载成功
+        if (import.meta.env.MODE === 'development') {
+          ElMessage.success('在演示环境中模拟PDF下载成功')
+        }
+      })
+  }).catch(action => {
+    if (action === 'cancel') {
+      // 导出Word
+      ElMessage.info('正在生成Word文档，请稍候...')
+      fileStore.exportResumeToWord(resumeId)
+        .then(() => {
+          ElMessage.success('Word文档下载成功！')
+        })
+        .catch((error) => {
+          console.error('导出Word失败:', error)
+          if (error.response && error.response.status === 500) {
+            ElMessage.warning('服务器暂时无法处理您的请求，请稍后再试')
+          } else {
+            ElMessage.error('Word下载失败，请重试')
+          }
+          
+          // 如果是演示环境，模拟下载成功
+          if (import.meta.env.MODE === 'development') {
+            ElMessage.success('在演示环境中模拟Word下载成功')
+          }
+        })
+    }
+  })
+>>>>>>> upstream/master
 }
 
 // 确认删除简历

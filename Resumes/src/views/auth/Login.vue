@@ -92,7 +92,17 @@ const handleLogin = async () => {
     const res = await userStore.login(loginForm.value)
     
     ElMessage.success('登录成功')
+<<<<<<< HEAD
     router.push('/')
+=======
+    
+    // 判断是否是管理员，如果是则直接跳转到管理后台
+    if (userStore.isAdmin) {
+      router.push('/admin')
+    } else {
+      router.push('/')
+    }
+>>>>>>> upstream/master
   } catch (error) {
     ElMessage.error(error.message || '登录失败')
   } finally {

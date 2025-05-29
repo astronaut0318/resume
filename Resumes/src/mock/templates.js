@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import mockjs from 'mockjs'
 const Random = mockjs.Random
+=======
+import Mock from 'mockjs'
+const Random = Mock.Random
+>>>>>>> upstream/master
 
 // 模板分类数据
 const categories = [
@@ -24,8 +29,46 @@ export const templates = Array.from({ length: 16 }, (_, index) => ({
   updateTime: Random.datetime()
 }))
 
+<<<<<<< HEAD
 // Mock API接口
 export default [
+=======
+// 根据ID获取模板
+export const getTemplateById = (id) => {
+  try {
+    if (!id) {
+      console.error('getTemplateById: ID参数为空')
+      return null
+    }
+    
+    const templateId = parseInt(id)
+    if (isNaN(templateId)) {
+      console.error(`getTemplateById: 无效的ID格式 - ${id}`)
+      return null
+    }
+    
+    const template = templates.find(t => t.id === templateId)
+    if (!template) {
+      console.error(`getTemplateById: 未找到ID为${templateId}的模板`)
+    }
+    return template
+  } catch (error) {
+    console.error('getTemplateById: 查询模板时出错', error)
+    return null
+  }
+}
+
+// 格式化数字显示
+export const formatNumber = (num) => {
+  if (num >= 10000) {
+    return (num / 10000).toFixed(1) + 'w'
+  }
+  return num.toString()
+}
+
+// Mock API接口列表
+const templatesApiList = [
+>>>>>>> upstream/master
   // 获取模板分类列表
   {
     url: '/api/templates/categories',
@@ -186,6 +229,7 @@ export default [
   }
 ]
 
+<<<<<<< HEAD
 // 格式化数字显示
 export const formatNumber = (num) => {
   if (num >= 10000) {
@@ -193,3 +237,6 @@ export const formatNumber = (num) => {
   }
   return num.toString()
 } 
+=======
+export default templatesApiList 
+>>>>>>> upstream/master
