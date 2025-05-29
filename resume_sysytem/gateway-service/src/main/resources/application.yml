@@ -54,13 +54,15 @@ spring:
           predicates:
             - Path=/api/orders/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
+
         - id: template-service
           uri: lb://template-service
           predicates:
             - Path=/api/templates/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
+            
         - id: template-file-service
           uri: lb://template-service
           predicates:

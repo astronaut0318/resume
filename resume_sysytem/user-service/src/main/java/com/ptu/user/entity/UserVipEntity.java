@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@TableName("user_vip")
+@TableName("vip_members")
 public class UserVipEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

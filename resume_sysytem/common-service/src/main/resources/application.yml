@@ -51,9 +51,9 @@ spring:
 
 # MinIO配置
 minio:
-  endpoint: http://localhost:9001
-  accessKey: minioadmin
-  secretKey: minioadmin
+  endpoint: http://127.0.0.1:9090
+  accessKey: ZMlUgS6Z3d4raCN3pVeT
+  secretKey: VOHLtWjk1WBFdiCpG06VPVTVgKsSp5Nl9w2D8vg8
 
 # MyBatis-Plus配置
 mybatis-plus:

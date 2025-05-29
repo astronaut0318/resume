@@ -12,7 +12,10 @@ export const useUserStore = defineStore('user', () => {
 
   // 计算属性
   const isLoggedIn = computed(() => !!token.value)
-  const isVip = computed(() => vipInfo.value?.isVip || false)
+  const isVip = computed(() => {
+    // 根据数据库表vip_members的字段调整判断逻辑
+    return userInfo.value?.role > 0 || vipInfo.value?.status === 1
+  })
   const avatar = computed(() => userInfo.value?.avatar || '')
   const username = computed(() => userInfo.value?.username || '')
 
@@ -53,23 +56,37 @@ export const useUserStore = defineStore('user', () => {
   const loadUserInfo = async () => {
     if (!userId.value) return
     try {
-      const [userRes, detailsRes, vipRes] = await Promise.all([
-        userApi.getUserInfo(userId.value),
-        userApi.getUserDetails(userId.value),
-        userApi.getVipStatus(userId.value)
-      ])
-      
+      // 获取用户基本信息
+      const userRes = await userApi.getUserInfo(userId.value)
       if (userRes.code === 200) {
         userInfo.value = userRes.data
       }
-      if (detailsRes.code === 200) {
-        userDetails.value = detailsRes.data
+      
+      try {
+        // 尝试获取详细信息，如果失败不影响整体流程
+        const detailsRes = await userApi.getUserDetails(userId.value)
+        if (detailsRes.code === 200) {
+          userDetails.value = detailsRes.data
+        }
+      } catch (detailError) {
+        console.warn('获取用户详情失败，可能是表不存在:', detailError)
+        // 设置默认空值，防止前端引用报错
+        userDetails.value = {}
       }
-      if (vipRes.code === 200) {
-        vipInfo.value = vipRes.data
+      
+      try {
+        // 尝试获取VIP信息，如果失败不影响整体流程
+        const vipRes = await userApi.getVipStatus(userId.value)
+        if (vipRes.code === 200) {
+          vipInfo.value = vipRes.data
+        }
+      } catch (vipError) {
+        console.warn('获取VIP信息失败，可能是表不存在:', vipError)
+        // 设置默认空值，防止前端引用报错
+        vipInfo.value = {}
       }
     } catch (error) {
-      console.error('加载用户信息失败:', error)
+      console.error('加载用户基本信息失败:', error)
     }
   }
 

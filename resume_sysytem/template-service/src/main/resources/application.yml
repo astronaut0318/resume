@@ -70,9 +70,9 @@ mybatis-plus:
 
 # MinIO配置
 minio:
-  endpoint: http://localhost:9001
-  access-key: minioadmin
-  secret-key: minioadmin
+  endpoint: http://127.0.0.1:9090
+  access-key: ZMlUgS6Z3d4raCN3pVeT
+  secret-key: VOHLtWjk1WBFdiCpG06VPVTVgKsSp5Nl9w2D8vg8
   bucket: 
     template: resume-templates  # 模板文件存储桶
     thumbnail: resume-thumbnails  # 缩略图存储桶

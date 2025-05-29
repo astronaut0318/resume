@@ -16,6 +16,7 @@ const paymentMethod = ref('wechat')
 const isLoggedIn = computed(() => userStore.isLoggedIn)
 const isVip = computed(() => userStore.isVip)
 const userInfo = computed(() => userStore.userInfo)
+const vipInfo = computed(() => userStore.vipInfo)
 
 // 会员套餐数据
 const vipPlans = ref([
@@ -65,6 +66,23 @@ const vipPlans = ref([
   }
 ])
 
+// 会员状态展示（示例，可根据实际业务调整）
+const vipLevelText = computed(() => {
+  if (!isLoggedIn.value) return '普通用户'
+  if (userInfo.value?.role === 2) return '终身会员'
+  if (userInfo.value?.role === 1) return '月度会员'
+  return '普通用户'
+})
+const vipExpireText = computed(() => {
+  if (!isLoggedIn.value) return '无'
+  if (userInfo.value?.role === 2) return '永久有效'
+  if (userInfo.value?.role === 1) {
+    // 从vip_members表获取到期时间
+    return vipInfo.value?.end_date || '无'
+  }
+  return '无'
+})
+
 // 处理会员购买
 const handleBuyVip = (plan) => {
   if (!isLoggedIn.value) {
@@ -73,7 +91,20 @@ const handleBuyVip = (plan) => {
     return
   }
   
-  // 直接显示支付对话框
+  // 检查现有会员状态
+  if (isVip.value) {
+    if (userInfo.value?.role === 2) {
+      ElMessage.warning('您已经是终身会员，无需再次购买')
+      return
+    }
+    
+    if (userInfo.value?.role === 1 && plan.id === 'monthly') {
+      ElMessage.warning('您已经是月度会员，如需续费请等待即将到期')
+      return
+    }
+  }
+  
+  // 显示支付对话框
   selectedPlan.value = plan
   showPaymentDialog.value = true
 }

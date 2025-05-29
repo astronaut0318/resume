@@ -178,8 +178,8 @@ const fetchTemplates = async () => {
       keyword: searchKeyword.value || undefined
     }
     const res = await getTemplates(params)
-    templates.value = res.data.list
-    total.value = res.data.total
+    templates.value = res.data.records || []
+    total.value = res.data.total || 0
   } catch (error) {
     console.error('获取模板列表失败:', error)
     ElMessage.error('获取模板列表失败')

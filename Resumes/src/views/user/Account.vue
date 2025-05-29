@@ -75,7 +75,30 @@
             <el-form-item label="用户名" prop="username">
               <el-input v-model="form.username" placeholder="请输入用户名" />
             </el-form-item>
-            
+            <el-form-item label="真实姓名">
+              <el-input v-model="userDetails.real_name" placeholder="请输入真实姓名" />
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-select v-model="userDetails.gender" placeholder="请选择性别">
+                <el-option label="男" :value="1" />
+                <el-option label="女" :value="2" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="生日">
+              <el-date-picker v-model="userDetails.birthday" type="date" placeholder="请选择生日" />
+            </el-form-item>
+            <el-form-item label="学历">
+              <el-input v-model="userDetails.education" placeholder="请输入学历" />
+            </el-form-item>
+            <el-form-item label="工作年限">
+              <el-input v-model="userDetails.work_years" placeholder="请输入工作年限" />
+            </el-form-item>
+            <el-form-item label="地址">
+              <el-input v-model="userDetails.address" placeholder="请输入地址" />
+            </el-form-item>
+            <el-form-item label="简介">
+              <el-input v-model="userDetails.profile" type="textarea" placeholder="请输入个人简介" />
+            </el-form-item>
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" />
             </el-form-item>
@@ -151,12 +174,12 @@
                 </div>
               </div>
               
-              <div class="vip-expire" v-if="vipInfo?.isVip && userInfo?.role === 1">
+              <div class="vip-expire" v-if="vipInfo && userInfo?.role === 1">
                 <div class="expire-title">到期时间</div>
-                <div class="expire-value">{{ vipInfo?.endTime }}</div>
+                <div class="expire-value">{{ vipInfo?.end_time }}</div>
               </div>
               
-              <div class="vip-expire" v-if="vipInfo?.isVip && userInfo?.role === 2">
+              <div class="vip-expire" v-if="vipInfo && userInfo?.role === 2">
                 <div class="expire-title">会员状态</div>
                 <div class="expire-value">永久有效</div>
               </div>
@@ -217,7 +240,11 @@ const activeTab = ref('basic')
 const fileInput = ref(null)
 
 // 获取用户信息
+// 用户基本信息
 const userInfo = computed(() => userStore.userInfo)
+// 用户详细信息（如真实姓名、性别、生日等）
+const userDetails = computed(() => userStore.userDetails)
+// VIP信息
 const vipInfo = computed(() => userStore.vipInfo)
 
 // 表单相关
