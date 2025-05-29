@@ -181,25 +181,16 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTemplateStore } from '../../stores/template'
 import { useResumeStore } from '../../stores/resume'
-<<<<<<< HEAD
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Document, Star, Plus, ArrowDown } from '@element-plus/icons-vue'
-import { uncollectTemplate } from '../../api/template'
-=======
 import { useFileStore } from '../../stores/file'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Document, Star, Plus, ArrowDown } from '@element-plus/icons-vue'
 import { uncollectTemplate } from '../../api/template'
 import ResumeExporter from '../../components/ResumeExporter.vue'
->>>>>>> upstream/master
 
 const router = useRouter()
 const templateStore = useTemplateStore()
 const resumeStore = useResumeStore()
-<<<<<<< HEAD
-=======
 const fileStore = useFileStore()
->>>>>>> upstream/master
 const activeTab = ref('myResumes')
 
 // 预览相关
@@ -288,9 +279,6 @@ const setDefaultResume = async (resumeId) => {
 
 // 下载简历
 const downloadResume = (resumeId) => {
-<<<<<<< HEAD
-  ElMessage.info('下载功能开发中...')
-=======
   // 使用ElMessageBox来实现格式选择
   ElMessageBox.confirm('请选择导出格式', '导出简历', {
     confirmButtonText: 'PDF格式',
@@ -340,7 +328,6 @@ const downloadResume = (resumeId) => {
         })
     }
   })
->>>>>>> upstream/master
 }
 
 // 确认删除简历

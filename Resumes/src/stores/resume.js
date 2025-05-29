@@ -72,15 +72,6 @@ export const useResumeStore = defineStore('resume', () => {
   }
   
   // 更新简历
-<<<<<<< HEAD
-  const updateResume = async (resumeId, data) => {
-    loading.value = true
-    try {
-      const res = await resumeApi.updateResume(resumeId, data)
-      if (res.code === 200) {
-        // 如果当前编辑的是这个简历，更新当前简历
-        if (currentResume.value && currentResume.value.id === resumeId) {
-=======
   const updateResume = async (data) => {
     loading.value = true
     try {
@@ -88,7 +79,6 @@ export const useResumeStore = defineStore('resume', () => {
       if (res.code === 200) {
         // 如果当前编辑的是这个简历，更新当前简历
         if (currentResume.value && currentResume.value.id === data.id) {
->>>>>>> upstream/master
           currentResume.value = { ...currentResume.value, ...data }
         }
         // 刷新列表

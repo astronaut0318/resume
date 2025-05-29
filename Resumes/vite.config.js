@@ -39,7 +39,7 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5173',
+        target: 'http://localhost:9000',
         changeOrigin: true,
         rewrite: (path) => path,
         configure: (proxy, options) => {
@@ -48,33 +48,6 @@ export default defineConfig({
           proxy.maxSockets = 100
           proxy.keepAlive = true
         }
-      }
-    }
-  }
-})
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
-
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue()
-    // vite-plugin-mock 已移除，彻底关闭 mock
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src')
-    }
-  },
-  server: {
-    port: 5173,
-    host: true,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:9000',
-        changeOrigin: true,
-        rewrite: (path) => path
       }
     }
   }

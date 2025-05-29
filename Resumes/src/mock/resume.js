@@ -83,13 +83,9 @@ export const createResume = (data) => {
   return {
     code: 200,
     message: "创建成功",
-<<<<<<< HEAD
     data: {
       resumeId: newResume.id
     }
-=======
-    data: newResume
->>>>>>> upstream/master
   };
 };
 
