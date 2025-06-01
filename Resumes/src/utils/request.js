@@ -26,11 +26,20 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   response => {
+    // 兼容文件流下载（blob）
+    if (
+      response.config.responseType === 'blob' ||
+      response.data instanceof Blob
+    ) {
+      return response
+    }
     const res = response.data
+    
     // 这里可以根据后端的数据结构进行调整
     if (res.code === 200) {
       return res
     }
+    
     ElMessage.error(res.message || '请求失败')
     return Promise.reject(new Error(res.message || '请求失败'))
   },

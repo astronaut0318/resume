@@ -6,6 +6,9 @@ import com.ptu.file.vo.FileUploadVO;
 import com.ptu.file.vo.FileVO;
 import com.ptu.common.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.List;
  * </p>
  */
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping
 public class FileController {
 
     @Autowired
@@ -91,5 +94,21 @@ public class FileController {
     public R<Void> onlyOfficeSave(@RequestBody OnlyOfficeSaveDTO saveDTO) {
         boolean success = fileService.handleOnlyOfficeSave(saveDTO);
         return success ? R.ok(null, "保存成功") : R.failed("保存失败");
+    }
+
+    /**
+     * 导出简历为Word
+     * @param resumeId 简历ID
+     * @return Word文件二进制流
+     */
+    @GetMapping("/resume/{resumeId}/word")
+    public ResponseEntity<byte[]> exportResumeToWord(@PathVariable("resumeId") Long resumeId) {
+        byte[] wordBytes = fileService.exportResumeToWord(resumeId); // 业务逻辑后续完善
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "resume_" + resumeId + ".docx");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(wordBytes);
     }
 } 

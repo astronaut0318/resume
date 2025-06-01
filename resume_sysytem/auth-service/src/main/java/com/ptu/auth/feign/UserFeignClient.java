@@ -19,7 +19,7 @@ public interface UserFeignClient {
      * @param username 用户名
      * @return 用户信息
      */
-    @GetMapping("/by-username/{username}")
+    @GetMapping("/users/by-username/{username}")
     R<?> getUserByUsername(@PathVariable("username") String username);
     
     /**

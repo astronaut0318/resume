@@ -24,6 +24,15 @@ import java.util.List;
 @RequestMapping("/resumes")
 public class ResumeController {
 
+    @ApiOperation("获取所有简历列表")
+    @GetMapping
+    public R<IPage<ResumeVO>> getAllResumes(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        IPage<ResumeVO> pageResult = resumeService.pageAllResumes(page, size);
+        return R.ok(pageResult);
+    }
+
     @Autowired
     private ResumeService resumeService;
 

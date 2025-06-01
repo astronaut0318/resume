@@ -1,4 +1,4 @@
-import axios from 'axios'
+import request from '../utils/request'
 
 /**
  * 上传文件
@@ -14,7 +14,7 @@ export function uploadFile(file, type = '') {
     formData.append('type', type)
   }
   
-  return axios.post('/api/files/upload', formData, {
+  return request.post('/api/files/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -69,7 +69,7 @@ export function downloadFile(fileId, fileName) {
   }
   
   // 生产环境使用实际请求
-  return axios.get(`/api/files/${fileId}/download`, {
+  return request.get(`/api/files/${fileId}/download`, {
     responseType: 'blob'
   }).then(response => {
     // 创建blob链接并下载
@@ -96,7 +96,7 @@ export function downloadFile(fileId, fileName) {
  * @returns {Promise}
  */
 export function exportResumeToPdf(resumeId) {
-  return axios.get(`/api/files/resume/${resumeId}/pdf`, {
+  return request.get(`/api/files/resume/${resumeId}/pdf`, {
     responseType: 'blob'
   })
 }
@@ -107,9 +107,26 @@ export function exportResumeToPdf(resumeId) {
  * @returns {Promise}
  */
 export function exportResumeToWord(resumeId) {
-  return axios.get(`/api/files/resume/${resumeId}/word`, {
+  return request.get(`/api/files/resume/${resumeId}/word`, {
     responseType: 'blob'
-  })
+  }).then(response => {
+    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    // 从响应头获取文件名
+    const disposition = response.headers['content-disposition'];
+    let filename = 'resume.docx';
+    if (disposition) {
+      const match = disposition.match(/filename="?([^";]+)"?/);
+      if (match) filename = decodeURIComponent(match[1]);
+    }
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  });
 }
 
 /**
@@ -121,7 +138,7 @@ export function exportResumeToWord(resumeId) {
  * @returns {Promise}
  */
 export function getFileList(params = {}) {
-  return axios.get('/api/files', { params })
+  return request.get('/api/files', { params })
 }
 
 /**
@@ -130,5 +147,5 @@ export function getFileList(params = {}) {
  * @returns {Promise}
  */
 export function deleteFile(fileId) {
-  return axios.delete(`/api/files/${fileId}`)
+  return request.delete(`/api/files/${fileId}`)
 } 

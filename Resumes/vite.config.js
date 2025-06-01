@@ -1,30 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { viteMockServe } from 'vite-plugin-mock'
 import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
-    viteMockServe({
-      mockPath: 'src/mock',
-      localEnabled: true,
-      prodEnabled: false,
-      supportTs: false,
-      logger: true,
-      watchFiles: true,
-      injectCode: `
-        import { setupProdMockServer } from './mock';
-        setupProdMockServer();
-      `,
-      requestHeaders: {
-        'Content-Type': 'application/json'
-      },
-      responseHeaders: {
-        'Content-Type': 'application/json'
-      }
-    })
+    vue()
   ],
   resolve: {
     alias: {
@@ -39,7 +20,7 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:9000',
+        target: 'http://127.0.0.1:9000',
         changeOrigin: true,
         rewrite: (path) => path,
         configure: (proxy, options) => {

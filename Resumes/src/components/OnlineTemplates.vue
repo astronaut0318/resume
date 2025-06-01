@@ -18,7 +18,7 @@ const fetchTemplates = async () => {
   try {
     const res = await getTemplates({ page: 1, size: 8 }) // 获取前8个模板
     console.log('获取首页模板列表成功:', res)
-    templateList.value = res.data.list
+    templateList.value = res.data.records
   } catch (error) {
     console.error('获取模板列表失败:', error)
     ElMessage.error('获取模板列表失败')

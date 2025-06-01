@@ -13,7 +13,7 @@ import java.util.List;
  * 简历服务接口
  */
 public interface ResumeService extends IService<ResumeEntity> {
-    
+
     /**
      * 创建简历
      *
@@ -21,7 +21,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 简历ID
      */
     Long createResume(ResumeDTO resumeDTO);
-    
+
     /**
      * 分页查询用户的简历列表
      *
@@ -31,7 +31,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 简历列表
      */
     IPage<ResumeVO> pageUserResumes(Long userId, Integer page, Integer size);
-    
+
     /**
      * 获取简历详情
      *
@@ -39,7 +39,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 简历详情
      */
     ResumeVO getResumeDetail(Long id);
-    
+
     /**
      * 获取用户默认简历
      *
@@ -47,7 +47,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 默认简历
      */
     ResumeVO getUserDefaultResume(Long userId);
-    
+
     /**
      * 更新简历
      *
@@ -55,7 +55,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 是否成功
      */
     boolean updateResume(ResumeDTO resumeDTO);
-    
+
     /**
      * 删除简历
      *
@@ -64,7 +64,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 是否成功
      */
     boolean deleteResume(Long id, Long userId);
-    
+
     /**
      * 设置默认简历
      *
@@ -73,7 +73,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 是否成功
      */
     boolean setDefaultResume(Long id, Long userId);
-    
+
     /**
      * 创建简历版本
      *
@@ -81,7 +81,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 版本号
      */
     Integer createResumeVersion(Long resumeId);
-    
+
     /**
      * 获取简历版本列表
      *
@@ -89,7 +89,7 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 版本列表
      */
     List<ResumeVersionVO> listResumeVersions(Long resumeId);
-    
+
     /**
      * 获取指定版本的简历内容
      *
@@ -98,4 +98,12 @@ public interface ResumeService extends IService<ResumeEntity> {
      * @return 简历版本
      */
     ResumeVersionVO getResumeVersion(Long resumeId, Integer version);
-} 
+
+    /**
+     * 分页查询所有简历列表
+     * @param page 页码
+     * @param size 每页大小
+     * @return 简历列表
+     */
+    IPage<ResumeVO> pageAllResumes(Integer page, Integer size);
+}

@@ -42,7 +42,7 @@ spring:
           predicates:
             - Path=/api/users/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: file-service
           uri: lb://file-service
           predicates:
@@ -75,7 +75,7 @@ spring:
           predicates:
             - Path=/api/resumes/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: ai-service
           uri: lb://ai-service
           predicates:
@@ -87,7 +87,7 @@ spring:
           predicates:
             - Path=/api/notifications/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: admin-api
           uri: lb://user-service
           predicates:

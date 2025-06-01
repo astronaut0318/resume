@@ -9,11 +9,12 @@ import com.ptu.user.mapper.UserDetailMapper;
 import com.ptu.user.service.UserDetailService;
 import com.ptu.user.service.UserService;
 import com.ptu.user.vo.UserDetailVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
@@ -22,10 +23,11 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserDetailServiceImpl extends ServiceImpl<UserDetailMapper, UserDetailEntity> implements UserDetailService {
 
-    private final UserService userService;
+    @Lazy
+    @Autowired
+    private UserService userService;
 
     /**
      * 根据用户ID获取用户详细信息

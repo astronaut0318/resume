@@ -1,5 +1,5 @@
-import mockjs from 'mockjs'
-const Random = mockjs.Random
+import Mock from 'mockjs'
+const Random = Mock.Random
 
 // 模板分类数据
 const categories = [
@@ -219,4 +219,4 @@ const templatesApiList = [
   }
 ]
 
-export default templatesApiList
+export default templatesApiList 

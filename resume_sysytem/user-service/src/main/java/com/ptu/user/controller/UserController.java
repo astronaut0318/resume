@@ -26,7 +26,7 @@ import javax.validation.constraints.Min;
  */
 @Api(tags = "用户管理接口")
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -202,5 +202,18 @@ public class UserController {
             @RequestParam @Min(1) @Max(3) Integer level) {
         boolean result = userVipService.upgradeVip(userId, level);
         return result ? R.ok(true, "升级成功") : R.failed("升级失败");
+    }
+
+    /**
+     * 通用用户信息更新
+     */
+    @ApiOperation("更新用户信息")
+    @PutMapping("/{id}")
+    public R<Boolean> updateUser(
+            @ApiParam(value = "用户ID", required = true) @PathVariable Long id,
+            @Valid @RequestBody UserEntity userEntity) {
+        userEntity.setId(id);
+        boolean result = userService.updateById(userEntity);
+        return result ? R.ok(true, "用户信息更新成功") : R.failed("用户信息更新失败");
     }
 } 

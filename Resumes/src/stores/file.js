@@ -41,31 +41,6 @@ export const useFileStore = defineStore('file', () => {
       }
     } catch (error) {
       console.error('获取文件列表失败:', error)
-      
-      // 检查是否是网络错误或服务器错误
-      if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK' || 
-          (error.response && error.response.status >= 500)) {
-        // 在开发环境中使用模拟数据
-        if (import.meta.env.MODE === 'development') {
-          // 创建模拟数据
-          const mockList = Array(10).fill(0).map((_, i) => ({
-            id: i + 1,
-            originalName: `模拟文件${i + 1}.jpg`,
-            fileName: `mock_file_${i + 1}.jpg`,
-            filePath: 'https://via.placeholder.com/200',
-            fileSize: 102400,
-            fileType: 'image/jpeg',
-            createTime: new Date().toISOString()
-          }))
-          
-          fileList.value = mockList
-          total.value = 35
-          
-          ElMessage.warning('使用模拟数据显示文件列表')
-          return { success: true, data: { list: mockList, total: 35 } }
-        }
-      }
-      
       ElMessage.error('获取文件列表失败，请重试')
       return { success: false, error }
     } finally {
@@ -110,7 +85,6 @@ export const useFileStore = defineStore('file', () => {
       return { success: true }
     } catch (error) {
       console.error('下载文件失败:', error)
-      
       // 区分不同类型的错误
       if (error.code === 'ECONNABORTED') {
         ElMessage.warning('下载请求超时，文件可能过大或网络不稳定')
@@ -121,7 +95,6 @@ export const useFileStore = defineStore('file', () => {
       } else {
         ElMessage.error('下载文件失败，请重试')
       }
-      
       return { success: false, error }
     } finally {
       loading.value = false
@@ -156,26 +129,7 @@ export const useFileStore = defineStore('file', () => {
   const exportResumeToPdf = async (resumeId) => {
     loading.value = true
     try {
-      // 在开发环境中模拟成功
-      if (import.meta.env.MODE === 'development') {
-        // 创建模拟下载
-        const mockPdf = new Blob(['模拟PDF内容'], { type: 'application/pdf' })
-        const url = window.URL.createObjectURL(mockPdf)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = `简历_${resumeId}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        window.URL.revokeObjectURL(url)
-        
-        // 返回成功
-        return { success: true }
-      }
-      
-      // 正常处理
       const response = await fileApi.exportResumeToPdf(resumeId)
-      
       // 处理文件下载
       const blob = new Blob([response.data])
       const url = window.URL.createObjectURL(blob)
@@ -186,7 +140,6 @@ export const useFileStore = defineStore('file', () => {
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
-      
       return { success: true }
     } catch (error) {
       console.error('导出PDF失败:', error)
@@ -200,26 +153,7 @@ export const useFileStore = defineStore('file', () => {
   const exportResumeToWord = async (resumeId) => {
     loading.value = true
     try {
-      // 在开发环境中模拟成功
-      if (import.meta.env.MODE === 'development') {
-        // 创建模拟下载
-        const mockWord = new Blob(['模拟Word内容'], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' })
-        const url = window.URL.createObjectURL(mockWord)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = `简历_${resumeId}.docx`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        window.URL.revokeObjectURL(url)
-        
-        // 返回成功
-        return { success: true }
-      }
-      
-      // 正常处理
       const response = await fileApi.exportResumeToWord(resumeId)
-      
       // 处理文件下载
       const blob = new Blob([response.data])
       const url = window.URL.createObjectURL(blob)
@@ -230,7 +164,6 @@ export const useFileStore = defineStore('file', () => {
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
-      
       return { success: true }
     } catch (error) {
       console.error('导出Word失败:', error)

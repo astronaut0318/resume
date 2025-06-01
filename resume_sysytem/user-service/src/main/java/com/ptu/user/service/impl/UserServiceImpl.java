@@ -8,11 +8,16 @@ import com.ptu.common.exception.BusinessException;
 import com.ptu.common.util.StringUtils;
 import com.ptu.user.dto.RegisterDTO;
 import com.ptu.user.entity.UserEntity;
+import com.ptu.user.entity.UserDetailEntity;
+import com.ptu.user.entity.UserVipEntity;
 import com.ptu.user.mapper.UserMapper;
 import com.ptu.user.service.UserService;
+import com.ptu.user.service.UserDetailService;
+import com.ptu.user.service.UserVipService;
 import com.ptu.user.vo.RegisterVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -25,8 +30,14 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements UserService {
+
+    @Lazy
+    @Autowired
+    private UserDetailService userDetailService;
+    @Lazy
+    @Autowired
+    private UserVipService userVipService;
 
     /**
      * 根据用户名查询用户
@@ -182,6 +193,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // 保存用户
         save(userEntity);
         log.info("用户注册成功：{}", userEntity.getUsername());
+
+        // 注册时自动插入用户详情
+        UserDetailEntity detail = new UserDetailEntity();
+        detail.setUserId(userEntity.getId());
+        detail.setCreateTime(LocalDateTime.now());
+        detail.setUpdateTime(LocalDateTime.now());
+        detail.setDeleted(0);
+        userDetailService.save(detail);
+
+        // 注册时可选插入VIP信息（如不想默认开通VIP可注释掉）
+        UserVipEntity vip = new UserVipEntity();
+        vip.setUserId(userEntity.getId());
+        vip.setLevel(0); // 默认VIP等级
+        vip.setStartTime(LocalDateTime.now());
+        vip.setEndTime(LocalDateTime.now().plusMonths(1)); // 默认1个月有效期
+        vip.setCreateTime(LocalDateTime.now());
+        vip.setUpdateTime(LocalDateTime.now());
+        vip.setDeleted(0);
+        userVipService.save(vip);
 
         // 返回注册结果
         return new RegisterVO()

@@ -26,7 +26,8 @@
           />
           <div class="user-name">{{ userInfo?.username }}</div>
           <div class="user-level">
-            <el-tag v-if="userInfo?.role === 2" type="danger">管理员</el-tag>
+            <el-tag v-if="userInfo?.role === 3" type="danger">管理员</el-tag>
+            <el-tag v-else-if="userInfo?.role === 2" type="success">终身会员</el-tag>
             <el-tag v-else-if="userInfo?.role === 1" type="warning">VIP会员</el-tag>
             <el-tag v-else type="info">普通用户</el-tag>
           </div>
@@ -57,6 +58,14 @@
             <el-icon><Star /></el-icon>
             <span>会员信息</span>
           </div>
+          <div 
+            class="menu-item" 
+            :class="{ active: activeTab === 'notification' }" 
+            @click="activeTab = 'notification'"
+          >
+            <el-icon><Bell /></el-icon>
+            <span>通知设置</span>
+          </div>
         </div>
       </div>
 
@@ -75,6 +84,7 @@
             <el-form-item label="用户名" prop="username">
               <el-input v-model="form.username" placeholder="请输入用户名" />
             </el-form-item>
+            
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" />
             </el-form-item>
@@ -150,12 +160,12 @@
                 </div>
               </div>
               
-              <div class="vip-expire" v-if="vipInfo && userInfo?.role === 1">
+              <div class="vip-expire" v-if="vipInfo?.isVip && userInfo?.role === 1">
                 <div class="expire-title">到期时间</div>
-                <div class="expire-value">{{ vipInfo?.end_time }}</div>
+                <div class="expire-value">{{ vipInfo?.endTime }}</div>
               </div>
               
-              <div class="vip-expire" v-if="vipInfo && userInfo?.role === 2">
+              <div class="vip-expire" v-if="vipInfo?.isVip && userInfo?.role === 2">
                 <div class="expire-title">会员状态</div>
                 <div class="expire-value">永久有效</div>
               </div>
@@ -198,29 +208,86 @@
             </ul>
           </div>
         </div>
+
+        <!-- 通知设置 -->
+        <div v-if="activeTab === 'notification'" class="tab-content">
+          <h3 class="tab-title">通知设置</h3>
+          
+          <div class="notification-settings">
+            <el-card class="notification-card">
+              <template #header>
+                <div class="card-header">
+                  <span>测试通知功能</span>
+                </div>
+              </template>
+              
+              <p class="notification-desc">您可以通过点击下面的按钮来测试系统通知功能。</p>
+              
+              <div class="notification-actions">
+                <el-button @click="sendTestNotification(1)" type="primary">
+                  发送系统通知
+                </el-button>
+                <el-button @click="sendTestNotification(2)" type="success">
+                  发送订单通知
+                </el-button>
+                <el-button @click="sendTestNotification(3)" type="warning">
+                  发送其他通知
+                </el-button>
+              </div>
+            </el-card>
+            
+            <el-card class="notification-card">
+              <template #header>
+                <div class="card-header">
+                  <span>通知偏好设置</span>
+                </div>
+              </template>
+              
+              <div class="notification-preferences">
+                <el-form label-position="left" label-width="120px">
+                  <el-form-item label="系统通知">
+                    <el-switch v-model="notificationPreferences.system" />
+                  </el-form-item>
+                  <el-form-item label="订单通知">
+                    <el-switch v-model="notificationPreferences.order" />
+                  </el-form-item>
+                  <el-form-item label="邮件提醒">
+                    <el-switch v-model="notificationPreferences.email" />
+                  </el-form-item>
+                </el-form>
+                
+                <div class="save-preferences">
+                  <el-button type="primary" @click="saveNotificationPreferences">
+                    保存设置
+                  </el-button>
+                </div>
+              </div>
+            </el-card>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { useUserStore } from '../../stores/user'
-import { ElMessage } from 'element-plus'
-import { User, Lock, Star, Check, Camera } from '@element-plus/icons-vue'
+import { useNotificationStore } from '../../stores/notification'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { User, Lock, Star, Check, Camera, Bell } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
+import { uploadFile } from '../../api/file'
 
 const userStore = useUserStore()
+const notificationStore = useNotificationStore()
 const router = useRouter()
 const activeTab = ref('basic')
 const fileInput = ref(null)
+const profileLoading = ref(false)
 
 // 获取用户信息
-// 用户基本信息
 const userInfo = computed(() => userStore.userInfo)
-// 用户详细信息（如真实姓名、性别、生日等）
-const userDetails = computed(() => userStore.userDetails)
-// VIP信息
 const vipInfo = computed(() => userStore.vipInfo)
 
 // 表单相关
@@ -237,6 +304,13 @@ const passwordForm = ref({
   oldPassword: '',
   newPassword: '',
   confirmPassword: ''
+})
+
+// 通知设置
+const notificationPreferences = reactive({
+  system: true,
+  order: true,
+  email: false
 })
 
 // 表单验证规则
@@ -348,41 +422,75 @@ const triggerUpload = () => {
 
 // 处理头像变更
 const handleAvatarChange = async (e) => {
-  const file = e.target.files[0]
-  if (!file) return
+  if (!e.target.files || !e.target.files.length) return
   
-  // 验证文件类型
-  if (!file.type.startsWith('image/')) {
-    ElMessage.error('请选择图片文件')
+  const file = e.target.files[0]
+  
+  // 文件类型检查
+  const acceptTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  if (!acceptTypes.includes(file.type)) {
+    ElMessage.error('请上传 JPG、PNG、GIF 或 WebP 格式的图片')
     return
   }
   
-  // 验证文件大小（限制为2MB）
+  // 文件大小检查(2MB)
   if (file.size > 2 * 1024 * 1024) {
     ElMessage.error('图片大小不能超过2MB')
     return
   }
   
+  profileLoading.value = true
+  
   try {
-    // 创建临时URL以预览图片
-    const avatarUrl = URL.createObjectURL(file)
+    // 使用文件上传API
+    const response = await uploadFile(file, 'avatar')
+    const { code, data, message } = response.data
     
-    // 这里应该调用API上传头像
-    // 模拟上传成功
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // 更新用户信息
-    await userStore.updateInfo({
-      avatar: avatarUrl
-    })
-    
-    ElMessage.success('头像更新成功')
+    if (code === 200) {
+      // 更新用户头像
+      const updateRes = await userStore.updateInfo({
+        avatar: data.filePath
+      })
+      
+      if (updateRes.code === 200) {
+        ElMessage.success('头像更新成功')
+      }
+    } else {
+      ElMessage.error(message || '头像上传失败')
+    }
   } catch (error) {
     console.error('头像上传失败:', error)
-    ElMessage.error('头像上传失败')
+    ElMessage.error('头像上传失败，请重试')
   } finally {
-    // 清空文件输入，以便重复选择同一文件时也能触发change事件
-    e.target.value = ''
+    profileLoading.value = false
+  }
+}
+
+// 保存通知设置
+const saveNotificationPreferences = () => {
+  ElMessage.success('通知设置已保存')
+}
+
+// 发送测试通知
+const sendTestNotification = (type) => {
+  const notificationTypes = {
+    1: { title: '系统通知测试', content: '这是一条系统通知测试，您可以在通知中心查看所有通知。', type: 1 },
+    2: { title: '订单通知测试', content: '您的订单 TEST123456 已创建，请尽快完成支付。', type: 2 },
+    3: { title: '其他通知测试', content: '这是一条其他类型的通知测试，感谢您使用我们的服务！', type: 3 }
+  }
+  
+  const notification = notificationTypes[type]
+  if (notification) {
+    notificationStore.receiveNewNotification({
+      id: Date.now(),
+      title: notification.title,
+      content: notification.content,
+      type: notification.type,
+      isRead: 0,
+      createTime: new Date().toISOString().replace('T', ' ').substring(0, 19)
+    })
+    
+    ElMessage.success('测试通知已发送')
   }
 }
 
@@ -586,6 +694,43 @@ onMounted(() => {
   margin-right: 8px;
 }
 
+.notification-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.notification-card {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-desc {
+  color: #606266;
+  margin-bottom: 20px;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.notification-preferences {
+  padding: 10px 0;
+}
+
+.save-preferences {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media (max-width: 768px) {
   .account-content {
     flex-direction: column;
@@ -626,6 +771,10 @@ onMounted(() => {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
+  }
+  
+  .notification-actions {
+    flex-direction: column;
   }
 }
 </style> 

@@ -9,8 +9,9 @@ import com.ptu.user.mapper.UserVipMapper;
 import com.ptu.user.service.UserService;
 import com.ptu.user.service.UserVipService;
 import com.ptu.user.vo.UserVipVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +23,11 @@ import java.time.temporal.ChronoUnit;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVipEntity> implements UserVipService {
 
-    private final UserService userService;
+    @Lazy
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取用户VIP会员信息

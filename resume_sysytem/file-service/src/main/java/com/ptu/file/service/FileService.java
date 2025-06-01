@@ -60,4 +60,11 @@ public interface FileService {
      * @return 是否保存成功
      */
     boolean handleOnlyOfficeSave(OnlyOfficeSaveDTO saveDTO);
+
+    /**
+     * 导出简历为Word
+     * @param resumeId 简历ID
+     * @return Word文件二进制流
+     */
+    byte[] exportResumeToWord(Long resumeId);
 } 

@@ -1,13 +1,20 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ArrowDown, Trophy } from '@element-plus/icons-vue'
 import { useUserStore } from '../stores/user'
 import { ElMessage } from 'element-plus'
+import NotificationIcon from './notification/NotificationIcon.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
 const isLoggedIn = computed(() => userStore.isLoggedIn)
+const isVip = computed(() => userStore.isVip)
+const isAdmin = computed(() => userStore.isAdmin)
+const vipLevel = computed(() => userStore.userInfo?.role || 0)
+
+// 定期检查VIP状态
+let vipCheckInterval = null
 
 const navigateTo = (path) => {
   router.push(path)
@@ -31,6 +38,44 @@ const handleLogout = async () => {
     ElMessage.error('退出失败')
   }
 }
+
+// 定期检查并刷新用户VIP状态
+const setupVipStatusCheck = () => {
+  if (vipCheckInterval) {
+    clearInterval(vipCheckInterval)
+  }
+  
+  // 每60秒检查一次VIP状态
+  vipCheckInterval = setInterval(() => {
+    if (isLoggedIn.value) {
+      // 尝试从localStorage恢复状态，确保实时更新
+      userStore.restoreFromLocalStorage()
+    }
+  }, 60000)
+}
+
+// 监听登录状态变化
+watch(isLoggedIn, (newVal) => {
+  if (newVal) {
+    // 用户登录后，启动VIP状态检查
+    setupVipStatusCheck()
+  } else {
+    // 用户登出后，清除检查
+    if (vipCheckInterval) {
+      clearInterval(vipCheckInterval)
+    }
+  }
+})
+
+onMounted(() => {
+  // 组件挂载时，如果用户已登录，启动VIP状态检查
+  if (isLoggedIn.value) {
+    setupVipStatusCheck()
+  }
+  
+  // 确保页面加载时从localStorage恢复状态
+  userStore.restoreFromLocalStorage()
+})
 </script>
 
 <template>
@@ -44,8 +89,7 @@ const handleLogout = async () => {
           <li><router-link to="/">首页</router-link></li>
           <li><router-link to="/templates">模板中心</router-link></li>
           <li><router-link to="/create">在线制作</router-link></li>
-          <li><router-link to="/ai">AI简历<span class="badge">免费</span></router-link></li>
-          <li><router-link to="/expert">简历行家</router-link></li>
+          <li v-if="isAdmin"><router-link to="/admin" class="admin-link">管理后台</router-link></li>
         </ul>
       </nav>
       <div class="user-actions">
@@ -55,18 +99,40 @@ const handleLogout = async () => {
           <el-button link @click="handleRegister">注册</el-button>
         </template>
         <template v-else>
+          <NotificationIcon />
+          
           <div class="user-menu">
             <el-dropdown>
               <span class="user-dropdown-link">
                 <el-avatar :size="32" :src="userStore.avatar" />
-                <span class="username">{{ userStore.username }}</span>
+                <span class="username">
+                  {{ userStore.username }}
+                  <span v-if="isVip" class="vip-badge" :class="{ 'lifetime': vipLevel === 2 }">
+                    <el-icon><Trophy /></el-icon>
+                    <span>{{ vipLevel === 2 ? '终身会员' : '会员' }}</span>
+                  </span>
+                  <span v-if="isAdmin" class="admin-badge">
+                    <span>管理员</span>
+                  </span>
+                </span>
                 <el-icon><arrow-down /></el-icon>
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="navigateTo('/resume')">我的简历</el-dropdown-item>
                   <el-dropdown-item @click="navigateTo('/orders')">我的订单</el-dropdown-item>
+                  <el-dropdown-item @click="navigateTo('/files')">文件管理</el-dropdown-item>
+                  <el-dropdown-item @click="navigateTo('/notifications')">通知中心</el-dropdown-item>
                   <el-dropdown-item @click="navigateTo('/account')">账户信息</el-dropdown-item>
+                  <el-dropdown-item v-if="!isVip" @click="navigateTo('/vip')">
+                    <span style="color: #f5a623">开通会员</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-else-if="vipLevel === 1" @click="navigateTo('/vip')">
+                    <span style="color: #f5a623">升级会员</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="isAdmin" divided @click="navigateTo('/admin')">
+                    <span style="color: #1890ff">管理后台</span>
+                  </el-dropdown-item>
                   <el-dropdown-item divided @click="handleLogout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -150,6 +216,11 @@ const handleLogout = async () => {
   color: #1890ff;
 }
 
+.admin-link {
+  color: #1890ff !important;
+  font-weight: bold;
+}
+
 .badge {
   position: absolute;
   top: -10px;
@@ -187,5 +258,40 @@ const handleLogout = async () => {
 .username {
   font-size: 14px;
   margin-right: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.vip-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f5a623;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  margin-left: 6px;
+  line-height: 1.5;
+}
+
+.vip-badge.lifetime {
+  background-color: #722ed1;
+}
+
+.vip-badge .el-icon {
+  margin-right: 2px;
+  font-size: 12px;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  margin-left: 6px;
+  line-height: 1.5;
 }
 </style> 

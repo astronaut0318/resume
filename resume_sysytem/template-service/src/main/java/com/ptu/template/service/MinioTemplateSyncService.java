@@ -78,12 +78,57 @@ public class MinioTemplateSyncService {
     }
 
     /**
+     * 扫描MinIO缩略图桶，将缩略图URL补全到templates表的thumbnail字段
+     * 假设缩略图文件名与模板file_path或模板名有可匹配关系
+     */
+    public void syncThumbnailsFromMinio() throws Exception {
+        MinioClient minioClient = MinioClient.builder()
+                .endpoint(ENDPOINT)
+                .credentials(ACCESS_KEY, SECRET_KEY)
+                .build();
+        String thumbnailBucket = "resume-thumbnails";
+        // 1. 获取所有缩略图对象名
+        Set<String> thumbnailFiles = new HashSet<>();
+        for (io.minio.Result<Item> result : minioClient.listObjects(ListObjectsArgs.builder().bucket(thumbnailBucket).build())) {
+            Item item = result.get();
+            String objectName = item.objectName();
+            thumbnailFiles.add(objectName);
+        }
+        // 2. 遍历templates表，尝试为每个模板补全thumbnail字段
+        jdbcTemplate.query("SELECT id, file_path, name FROM templates", rs -> {
+            Long id = rs.getLong("id");
+            String filePath = rs.getString("file_path");
+            String name = rs.getString("name");
+            // 匹配缩略图文件名（可根据实际规则调整）
+            String possibleThumbnail = name + ".png"; // 例如模板名.png
+            if (thumbnailFiles.contains(possibleThumbnail)) {
+                // 生成可访问URL（如公开桶可直接拼接，否则用presigned url）
+                String url = ENDPOINT + "/" + thumbnailBucket + "/" + possibleThumbnail;
+                jdbcTemplate.update("UPDATE templates SET thumbnail = ? WHERE id = ?", url, id);
+            }
+        });
+    }
+
+    /**
      * 定时任务：每10秒自动同步一次
      */
     @Scheduled(cron = "*/10 * * * * ?")
     public void scheduledSync() {
         try {
             syncTemplatesFromMinio();
+        } catch (Exception e) {
+            // 记录日志
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 定时任务：每10秒自动同步缩略图到数据库
+     */
+    @Scheduled(cron = "*/10 * * * * ?")
+    public void scheduledThumbnailSync() {
+        try {
+            syncThumbnailsFromMinio();
         } catch (Exception e) {
             // 记录日志
             e.printStackTrace();

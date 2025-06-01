@@ -26,11 +26,7 @@ const goToCreate = () => {
         <h1 class="banner-title">职场新机遇，从一份简历开始</h1>
         <p class="banner-subtitle">超适合求职的简历设计，1000+海量参考案例，超高求职通过率的用户反馈</p>
         <el-button type="primary" size="large" class="create-btn" @click="goToCreate">
-<<<<<<< HEAD
-          简历免费在线制作
-=======
           简历在线制作
->>>>>>> upstream/master
         </el-button>
         
         <div class="feature-cards">
