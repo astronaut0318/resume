@@ -15,6 +15,11 @@ service.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
+    // 自动加 userId
+    const userId = localStorage.getItem('userId')
+    if (userId) {
+      config.headers['userId'] = userId
+    }
     return config
   },
   error => {

@@ -154,12 +154,12 @@ export const useFileStore = defineStore('file', () => {
     loading.value = true
     try {
       const response = await fileApi.exportResumeToWord(resumeId)
-      // 处理文件下载
-      const blob = new Blob([response.data])
+      const blob = response.data // 关键：拿到真正的 Blob
+      let filename = `简历_${resumeId}.docx`
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `简历_${resumeId}.docx`
+      link.download = filename
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -167,6 +167,7 @@ export const useFileStore = defineStore('file', () => {
       return { success: true }
     } catch (error) {
       console.error('导出Word失败:', error)
+      ElMessage.error('Word下载失败，请重试')
       return Promise.reject(error)
     } finally {
       loading.value = false

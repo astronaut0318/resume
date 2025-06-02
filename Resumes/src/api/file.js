@@ -104,29 +104,13 @@ export function exportResumeToPdf(resumeId) {
 /**
  * 导出简历为Word
  * @param {number|string} resumeId - 简历ID
- * @returns {Promise}
+ * @returns {Promise<Blob>} 直接返回后端的blob数据
  */
 export function exportResumeToWord(resumeId) {
   return request.get(`/api/files/resume/${resumeId}/word`, {
     responseType: 'blob'
-  }).then(response => {
-    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    // 从响应头获取文件名
-    const disposition = response.headers['content-disposition'];
-    let filename = 'resume.docx';
-    if (disposition) {
-      const match = disposition.match(/filename="?([^";]+)"?/);
-      if (match) filename = decodeURIComponent(match[1]);
-    }
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  });
+  })
+    .then(blob => blob); // request.js 拦截器已返回 blob
 }
 
 /**
