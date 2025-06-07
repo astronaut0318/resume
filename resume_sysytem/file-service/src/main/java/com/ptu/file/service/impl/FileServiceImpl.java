@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -210,7 +211,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public byte[] downloadFile(Long fileId) {
+    public byte[] downloadFile(String fileId) {
         try {
             // 1. 查询文件信息
             FileEntity file = fileMapper.selectById(fileId);
@@ -244,17 +245,18 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public boolean deleteFile(Long fileId) {
-        if (fileId == null) {
-            log.error("文件删除失败: fileId为null");
+    public boolean deleteFile(String fileId) {
+        if (fileId == null || fileId.isEmpty()) {
+            log.error("文件删除失败: fileId为null或空");
             return false;
         }
         
         log.info("开始删除文件, fileId: {}", fileId);
         
         try {
-            // 1. 查询文件信息
-            FileEntity file = fileMapper.selectById(fileId);
+            // 使用原生SQL查询，完全避免ORM框架类型转换问题
+            FileEntity file = fileMapper.selectByRawId(fileId);
+            
             if (file == null) {
                 log.warn("文件不存在, fileId: {}", fileId);
                 // 数据库记录不存在，但实际上可以认为删除目标已达成
@@ -290,10 +292,11 @@ public class FileServiceImpl implements FileService {
                 return false;
             }
             
-            // 4. MinIO删除成功后，再删除数据库记录
+            // 4. MinIO删除成功后，再删除数据库记录 - 使用原生SQL删除
             if (minioDeleteSuccess) {
                 log.info("准备删除数据库记录, fileId: {}", fileId);
-                int result = fileMapper.deleteById(fileId);
+                // 使用原生SQL删除
+                int result = fileMapper.deleteByRawId(fileId);
                 boolean dbDeleteSuccess = result > 0;
                 log.info("数据库记录删除结果: {}, 影响行数: {}", dbDeleteSuccess ? "成功" : "失败", result);
                 

@@ -127,6 +127,9 @@ const handleUploadSuccess = (data) => {
 // 使用超链接形式进行删除的处理函数
 const handleAlternativeDelete = async (fileId) => {
   try {
+    // 确保ID以字符串形式处理
+    const idString = String(fileId);
+    
     // 用户确认删除
     await ElMessageBox.confirm('确定要删除该文件吗？此操作不可恢复。', '提示', {
       confirmButtonText: '确定',
@@ -142,10 +145,10 @@ const handleAlternativeDelete = async (fileId) => {
     });
     
     try {
-      console.log(`尝试使用标准DELETE方法删除文件ID: ${fileId}`);
+      console.log(`尝试使用标准DELETE方法删除文件ID(字符串): ${idString}`);
       
       // 使用axios直接发送DELETE请求，确保URL路径正确
-      const response = await axios.delete(`/files/de/${fileId}`);
+      const response = await axios.delete(`/files/de/${idString}`);
       
       console.log('删除文件响应:', response);
       loadingMsg.close();
@@ -186,6 +189,9 @@ const handleAlternativeDelete = async (fileId) => {
 // 处理文件删除
 const handleDeleteFile = async (fileId) => {
   try {
+    // 确保ID以字符串形式传递
+    const idString = String(fileId);
+    
     // 用户确认删除操作
     await ElMessageBox.confirm('确定要删除该文件吗？此操作不可恢复。', '提示', {
       confirmButtonText: '确定',
@@ -201,13 +207,13 @@ const handleDeleteFile = async (fileId) => {
     });
     
     try {
-      console.log('开始删除文件:', fileId);
+      console.log('开始删除文件(字符串ID):', idString);
       
       // 添加网络请求调试信息
       const deleteStartTime = Date.now();
-      console.log(`[${new Date().toLocaleTimeString()}] 发起删除请求: ID=${fileId}`);
+      console.log(`[${new Date().toLocaleTimeString()}] 发起删除请求: ID=${idString}`);
       
-      const result = await fileStore.deleteFile(fileId)
+      const result = await fileStore.deleteFile(idString)
       
       // 日志记录删除请求完成时间
       console.log(`[${new Date().toLocaleTimeString()}] 删除请求完成: 耗时=${Date.now() - deleteStartTime}ms`);

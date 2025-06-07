@@ -11,10 +11,10 @@
           <div class="avatar-wrapper">
             <el-avatar 
               :size="80" 
-              :src="userInfo?.avatar"
+              :src="avatarUrl"
               @error="handleAvatarError"
             >
-              <img src="../../../public/static/default-thumbnail1.png"/>
+              <img :src="defaultResources.avatar"/>
             </el-avatar>
             <div class="avatar-loading" v-if="profileLoading">
               <el-icon class="is-loading"><Loading /></el-icon>
@@ -285,6 +285,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { User, Lock, Star, Check, Camera, Bell, Loading } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { uploadFile } from '../../api/file'
+import { getFileUrl, defaultResources } from '../../utils/config'
+import { defaultAvatarBase64 } from '../../assets/defaultAvatar'
 
 const userStore = useUserStore()
 const notificationStore = useNotificationStore()
@@ -296,6 +298,21 @@ const profileLoading = ref(false)
 // 获取用户信息
 const userInfo = computed(() => userStore.userInfo)
 const vipInfo = computed(() => userStore.vipInfo)
+
+// 获取处理后的头像URL
+const avatarUrl = computed(() => {
+  if (!userInfo.value || !userInfo.value.avatar) {
+    // 返回默认头像
+    return defaultResources.avatar;
+  }
+  
+  // 如果已经是完整URL则直接使用，否则构建URL
+  if (userInfo.value.avatar.startsWith('http')) {
+    return userInfo.value.avatar;
+  } else {
+    return getFileUrl(userInfo.value.avatar, 'thumbnail');
+  }
+})
 
 // 表单相关
 const formRef = ref(null)
@@ -555,8 +572,14 @@ const sendTestNotification = (type) => {
 
 // 处理头像加载错误
 const handleAvatarError = () => {
-  console.error('头像加载失败:', userInfo.value?.avatar)
-  // 不显示错误通知，避免打扰用户体验
+  console.error('头像加载失败:', userInfo.value?.avatar);
+  ElMessage.warning({
+    message: '头像加载失败，已显示默认头像',
+    duration: 2000,
+    showClose: true,
+    grouping: true,
+  });
+  // 不更新全局状态，只是在UI层面使用默认头像
 }
 
 // 触发文件选择框

@@ -1,6 +1,9 @@
 package com.ptu.file.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ptu.file.dto.OnlyOfficeSaveDTO;
+import com.ptu.file.entity.FileEntity;
+import com.ptu.file.mapper.FileMapper;
 import com.ptu.file.service.FileService;
 import com.ptu.file.vo.FileUploadVO;
 import com.ptu.file.vo.FileVO;
@@ -13,8 +16,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * 文件接口控制器
@@ -30,6 +37,9 @@ public class FileController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private FileMapper fileMapper;
 
     /**
      * 文件上传接口
@@ -55,7 +65,7 @@ public class FileController {
      * @return 文件二进制流
      */
     @GetMapping("/{fileId}/download")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileId") Long fileId) {
+    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileId") String fileId) {
         byte[] fileBytes = fileService.downloadFile(fileId);
         
         HttpHeaders headers = new HttpHeaders();
@@ -68,13 +78,27 @@ public class FileController {
     }
 
     /**
-     * 删除文件接口
+     * 删除文件接口 - DELETE方法
      * @param fileId 文件ID
      * @return 操作结果
      */
     @DeleteMapping("/de/{fileId}")
-    public R<Void> deleteFile(@PathVariable("fileId") Long fileId) {
+    public R<Void> deleteFile(@PathVariable("fileId") String fileId) {
         log.info("收到DELETE方法删除文件请求，fileId: {}", fileId);
+        
+        boolean success = fileService.deleteFile(fileId);
+        return success ? R.ok(null, "删除成功") : R.failed("删除失败");
+    }
+
+    /**
+     * 删除文件接口 - POST方法，提供给不方便使用DELETE方法的客户端
+     * @param fileId 文件ID
+     * @return 操作结果
+     */
+    @PostMapping("/de")
+    public R<Void> deleteFileByPost(@RequestParam("fileId") String fileId) {
+        log.info("收到POST方法删除文件请求，fileId: {}", fileId);
+        
         boolean success = fileService.deleteFile(fileId);
         return success ? R.ok(null, "删除成功") : R.failed("删除失败");
     }
@@ -187,5 +211,72 @@ public class FileController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(wordBytes);
+    }
+
+    /**
+     * 调试接口 - 检查文件是否存在
+     * @param fileId 文件ID
+     * @return 操作结果
+     */
+    @GetMapping("/check/{fileId}")
+    public R<Object> checkFileExists(@PathVariable("fileId") String fileId) {
+        log.info("收到检查文件是否存在请求，fileId: {}", fileId);
+        
+        try {
+            // 1. 原生SQL查询
+            FileEntity fileByRaw = fileMapper.selectByRawId(fileId);
+            
+            // 2. 使用MyBatis-Plus方式查询
+            FileEntity fileByMP = fileMapper.selectById(fileId);
+            
+            // 3. 使用QueryWrapper查询
+            QueryWrapper<FileEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", fileId);
+            FileEntity fileByWrapper = fileMapper.selectOne(queryWrapper);
+            
+            // 收集结果
+            Map<String, Object> result = new HashMap<>();
+            result.put("fileId", fileId);
+            result.put("existsByRawSQL", fileByRaw != null);
+            result.put("existsByMyBatisPlus", fileByMP != null);
+            result.put("existsByQueryWrapper", fileByWrapper != null);
+            
+            if (fileByRaw != null) {
+                result.put("fileDetails", fileByRaw);
+            }
+            
+            return R.ok(result, "检查完成");
+            
+        } catch (Exception e) {
+            log.error("检查文件存在状态时发生异常", e);
+            return R.failed("检查失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 数据库诊断接口 - 检查文件表结构和ID格式
+     * @return 诊断结果
+     */
+    @GetMapping("/diagnose")
+    public R<Object> diagnoseDatabase() {
+        log.info("开始数据库表结构和ID格式诊断");
+        
+        try {
+            // 查询一条样本记录，获取ID格式
+            List<Map<String, Object>> sampleRecords = fileMapper.getSampleRecord();
+            
+            // 获取表结构信息
+            List<Map<String, Object>> tableInfo = fileMapper.getTableStructure();
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("tableStructure", tableInfo);
+            result.put("sampleRecords", sampleRecords);
+            
+            return R.ok(result, "诊断完成");
+            
+        } catch (Exception e) {
+            log.error("数据库诊断失败", e);
+            return R.failed("诊断失败: " + e.getMessage());
+        }
     }
 } 

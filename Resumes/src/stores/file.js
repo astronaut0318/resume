@@ -198,10 +198,12 @@ export const useFileStore = defineStore('file', () => {
   const deleteFile = async (fileId) => {
     loading.value = true
     try {
-      console.log(`[${new Date().toLocaleTimeString()}] store层开始删除文件: ${fileId}`);
+      // 确保fileId作为字符串处理
+      const stringFileId = String(fileId);
+      console.log(`[${new Date().toLocaleTimeString()}] store层开始删除文件(字符串ID): ${stringFileId}`);
       
       // 调用API删除文件
-      const response = await fileApi.deleteFile(fileId)
+      const response = await fileApi.deleteFile(stringFileId)
       console.log('文件删除响应:', response)
       
       // 检查响应是否明确表示成功
@@ -210,10 +212,10 @@ export const useFileStore = defineStore('file', () => {
         
         // 成功时手动维护本地状态
         try {
-          // 从文件列表中移除该文件
-          const index = fileList.value.findIndex(file => file.id === fileId);
+          // 从文件列表中移除该文件 - 注意要比较字符串形式
+          const index = fileList.value.findIndex(file => String(file.id) === stringFileId);
           if (index !== -1) {
-            console.log(`从本地状态移除文件: ${fileId}`);
+            console.log(`从本地状态移除文件: ${stringFileId}`);
             fileList.value.splice(index, 1);
             total.value--;
           }
@@ -224,14 +226,14 @@ export const useFileStore = defineStore('file', () => {
         return { 
           success: true, 
           message: response.message || '删除成功',
-          fileId
+          fileId: stringFileId
         }
       } else {
         console.warn('文件删除API响应异常:', response);
         return { 
           success: false, 
           message: response.message || '删除操作未成功完成',
-          fileId
+          fileId: stringFileId
         }
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import * as userApi from '../api/user'
-import config from '../config/config.js'
+import { getFileUrl, defaultResources } from '../utils/config'
 
 export const useUserStore = defineStore('user', () => {
   // 状态
@@ -23,26 +23,23 @@ export const useUserStore = defineStore('user', () => {
   })
   const isAdmin = computed(() => userInfo.value?.role === 3) // 角色为3表示管理员
   const avatar = computed(() => {
-    // 如果avatar是完整的URL（以http开头），则直接返回
-    if (userInfo.value?.avatar && (userInfo.value.avatar.startsWith('http://') || userInfo.value.avatar.startsWith('https://'))) {
-      return userInfo.value.avatar;
+    // 如果用户信息不存在，返回默认头像
+    if (!userInfo.value) {
+      return defaultResources.avatar;
     }
     
-    // 如果avatar存在但不是完整URL，则拼接MinIO服务器地址
-    if (userInfo.value?.avatar) {
-      // 使用配置文件中的MinIO地址
-      const minioEndpoint = config.minioEndpoint;
-      const bucket = 'resume-avatars';
-      // 如果avatar已经包含了bucket路径，则直接拼接
-      if (userInfo.value.avatar.includes('/')) {
-        return `${minioEndpoint}/${userInfo.value.avatar}`;
-      }
-      // 否则，拼接bucket和avatar
-      return `${minioEndpoint}/${bucket}/${userInfo.value.avatar}`;
+    // 如果avatar不存在，返回默认头像
+    if (!userInfo.value.avatar) {
+      return defaultResources.avatar;
     }
     
-    // 如果avatar不存在，则返回默认头像
-    return '/default-avatar.png';  // 替换为实际的默认头像路径
+    try {
+      // 使用统一的getFileUrl函数处理头像URL
+      return getFileUrl(userInfo.value.avatar, 'thumbnail');
+    } catch (error) {
+      console.error('处理头像URL时出错:', error);
+      return defaultResources.avatar;
+    }
   })
   const username = computed(() => userInfo.value?.username || '')
 

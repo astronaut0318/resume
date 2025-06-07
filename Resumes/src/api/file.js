@@ -2,6 +2,7 @@ import request from '../utils/request'
 import { ElMessage } from 'element-plus'
 import router from '../router'
 import axios from 'axios'
+import { minioConfig, getFileUrl } from '../utils/config'
 
 /**
  * 检查用户是否登录
@@ -234,12 +235,9 @@ export function getFileList(params = {}) {
           response.data.forEach((item, index) => {
             if (!item.fileUrl) {
               console.warn(`第 ${index + 1} 条记录缺少fileUrl字段:`, item)
-              // 尝试构造文件URL
+              // 使用config.js中的getFileUrl函数生成文件URL
               if (item.filePath) {
-                let fileType = item.fileType || 'template'
-                let bucket = fileType === 'thumbnail' ? 'resume-thumbnails' : 'resume-templates'
-                let baseUrl = import.meta.env.VITE_MINIO_BASE_URL || 'http://localhost:9090'
-                item.fileUrl = `${baseUrl}/${bucket}/${item.filePath}`
+                item.fileUrl = getFileUrl(item.filePath, item.fileType)
                 console.log(`为文件 ${item.id} 补充fileUrl: ${item.fileUrl}`)
               }
             }
@@ -250,27 +248,14 @@ export function getFileList(params = {}) {
         
         return response
       } else {
-        console.error('文件列表请求失败:', response)
+        // 错误响应处理
+        console.error(`文件列表请求失败: code=${response.code}, message=${response.message}`)
         return Promise.reject(new Error(response.message || '获取文件列表失败'))
       }
     })
     .catch(error => {
-      console.error('文件列表请求异常:', error)
-      
-      // 处理网络错误
-      if (error.message?.includes('Network Error')) {
-        console.error('网络连接错误，请检查网络连接和后端服务是否正常')
-      } 
-      // 处理超时
-      else if (error.message?.includes('timeout')) {
-        console.error('请求超时，后端服务可能响应过慢')
-      }
-      // 处理服务器错误
-      else if (error.response && error.response.status >= 500) {
-        console.error(`服务器错误 ${error.response.status}:`, error.response.data)
-      }
-      
-      throw error
+      console.error('获取文件列表出错:', error)
+      return Promise.reject(error)
     })
 }
 
@@ -285,15 +270,17 @@ export function deleteFile(fileId) {
     return Promise.reject(new Error('用户未登录'))
   }
 
-  console.log(`[${new Date().toLocaleTimeString()}] 开始删除文件: ${fileId}`);
+  // 确保fileId作为字符串处理
+  const stringFileId = String(fileId);
+  
+  console.log(`[${new Date().toLocaleTimeString()}] 开始删除文件(字符串ID): ${stringFileId}`);
   
   // 直接使用axios发送DELETE请求，注意URL路径不要包含多余的/api前缀
   return axios({
-    url: `/files/de/${fileId}`,
+    url: `/files/de/${stringFileId}`,
     method: 'delete',
     headers: {
-      'Authorization': localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : '',
-      'userId': localStorage.getItem('userId') || ''
+      'Authorization': localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
     }
   })
   .then(response => {

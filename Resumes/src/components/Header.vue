@@ -5,6 +5,7 @@ import { ArrowDown, Trophy } from '@element-plus/icons-vue'
 import { useUserStore } from '../stores/user'
 import { ElMessage } from 'element-plus'
 import NotificationIcon from './notification/NotificationIcon.vue'
+import { defaultResources } from '../utils/config'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -20,6 +21,12 @@ console.log('[Header] 当前用户VIP状态检查:', {
   userRole: userStore.userInfo?.role,
   vipInfo: userStore.vipInfo 
 })
+
+// 处理头像加载错误
+const handleAvatarError = () => {
+  console.error('导航栏头像加载失败:', userStore.avatar)
+  // 这里不显示错误消息，避免用户体验受到影响
+}
 
 // 定期检查VIP状态
 let vipCheckInterval = null
@@ -112,7 +119,10 @@ onMounted(() => {
           <div class="user-menu">
             <el-dropdown>
               <span class="user-dropdown-link">
-                <el-avatar :size="32" :src="userStore.avatar" />
+                <el-avatar :size="32" :src="userStore.avatar" @error="handleAvatarError">
+                  <!-- Fallback默认头像 -->
+                  <img :src="defaultResources.avatar" />
+                </el-avatar>
                 <span class="username">
                   {{ userStore.username }}
                   <span v-if="isVip" class="vip-badge" :class="{ 'lifetime': vipLevel === 2 }">

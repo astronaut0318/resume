@@ -4,6 +4,8 @@ import com.ptu.file.dto.OnlyOfficeSaveDTO;
 import com.ptu.file.vo.FileUploadVO;
 import com.ptu.file.vo.FileVO;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -43,7 +45,7 @@ public interface FileService {
      * @param fileId 文件ID
      * @return 文件二进制流（由Controller处理输出）
      */
-    byte[] downloadFile(Long fileId);
+    byte[] downloadFile(String fileId);
 
     /**
      * 删除文件
@@ -51,7 +53,7 @@ public interface FileService {
      * @param fileId 文件ID
      * @return 是否删除成功
      */
-    boolean deleteFile(Long fileId);
+    boolean deleteFile(String fileId);
 
     /**
      * 分页查询文件列表
