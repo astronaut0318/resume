@@ -5,6 +5,7 @@ import io.minio.errors.*;
 import io.minio.http.Method;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,22 @@ public class MinioUtils {
 
     @Autowired
     private MinioClient minioClient;
+    
+    @Value("${minio.endpoint}")
+    private String endpoint;
+
+    /**
+     * 获取MinIO服务器基础URL
+     * 
+     * @return MinIO服务器基础URL
+     */
+    public String getBaseUrl() {
+        // 如果endpoint为空，返回默认值
+        if (endpoint == null || endpoint.isEmpty()) {
+            return "http://127.0.0.1:9090";
+        }
+        return endpoint;
+    }
 
     /**
      * 创建存储桶
@@ -143,6 +160,23 @@ public class MinioUtils {
      */
     public void removeObject(String bucketName, String objectName) {
         try {
+            // 先检查桶是否存在
+            boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!bucketExists) {
+                log.warn("删除文件时发现桶不存在，bucketName: {}", bucketName);
+                throw new RuntimeException("存储桶不存在: " + bucketName);
+            }
+            
+            // 检查对象是否存在
+            boolean fileExists = objectExists(bucketName, objectName);
+            if (!fileExists) {
+                log.warn("要删除的文件不存在，bucketName: {}, objectName: {}", bucketName, objectName);
+                // 如果文件不存在，我们不需要抛出异常，因为删除的目的已经达成
+                return;
+            }
+            
+            // 执行删除操作
+            log.info("文件存在，开始执行删除，bucketName: {}, objectName: {}", bucketName, objectName);
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
                             .bucket(bucketName)
@@ -150,8 +184,8 @@ public class MinioUtils {
                             .build());
             log.info("文件删除成功，bucketName: {}, objectName: {}", bucketName, objectName);
         } catch (Exception e) {
-            log.error("文件删除失败", e);
-            throw new RuntimeException("文件删除失败", e);
+            log.error("文件删除失败，bucketName: {}, objectName: {}, 错误原因: {}", bucketName, objectName, e.getMessage());
+            throw new RuntimeException("文件删除失败: " + e.getMessage(), e);
         }
     }
 

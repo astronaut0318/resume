@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import * as userApi from '../api/user'
+import config from '../config/config.js'
 
 export const useUserStore = defineStore('user', () => {
   // 状态
@@ -12,9 +13,37 @@ export const useUserStore = defineStore('user', () => {
 
   // 计算属性
   const isLoggedIn = computed(() => !!token.value)
-  const isVip = computed(() => vipInfo.value?.isVip || false)
+  const isVip = computed(() => {
+    console.log('VIP状态计算:', userInfo.value?.role);
+    // 根据用户角色判断会员状态:
+    // role=1 是月度会员
+    // role=2 是终身会员
+    // 都属于VIP用户
+    return userInfo.value?.role === 1 || userInfo.value?.role === 2;
+  })
   const isAdmin = computed(() => userInfo.value?.role === 3) // 角色为3表示管理员
-  const avatar = computed(() => userInfo.value?.avatar || '')
+  const avatar = computed(() => {
+    // 如果avatar是完整的URL（以http开头），则直接返回
+    if (userInfo.value?.avatar && (userInfo.value.avatar.startsWith('http://') || userInfo.value.avatar.startsWith('https://'))) {
+      return userInfo.value.avatar;
+    }
+    
+    // 如果avatar存在但不是完整URL，则拼接MinIO服务器地址
+    if (userInfo.value?.avatar) {
+      // 使用配置文件中的MinIO地址
+      const minioEndpoint = config.minioEndpoint;
+      const bucket = 'resume-avatars';
+      // 如果avatar已经包含了bucket路径，则直接拼接
+      if (userInfo.value.avatar.includes('/')) {
+        return `${minioEndpoint}/${userInfo.value.avatar}`;
+      }
+      // 否则，拼接bucket和avatar
+      return `${minioEndpoint}/${bucket}/${userInfo.value.avatar}`;
+    }
+    
+    // 如果avatar不存在，则返回默认头像
+    return '/default-avatar.png';  // 替换为实际的默认头像路径
+  })
   const username = computed(() => userInfo.value?.username || '')
 
   // 监听VIP状态变化，同步到localStorage

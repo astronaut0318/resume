@@ -45,4 +45,9 @@ public class FileVO {
      * 创建时间
      */
     private Date createTime;
+    
+    /**
+     * 文件完整访问URL
+     */
+    private String fileUrl;
 } 

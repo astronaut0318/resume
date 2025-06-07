@@ -6,7 +6,7 @@ import { useTemplateStore } from '../stores/template'
 import { useOrderStore } from '../stores/order'
 import { useFileStore } from '../stores/file'
 import { ElMessage, ElDialog, ElMessageBox } from 'element-plus'
-import { Share as ShareIcon, Star as StarIcon, StarFilled as StarFilledIcon, Download } from '@element-plus/icons-vue'
+import { Share as ShareIcon, Star as StarIcon, StarFilled as StarFilledIcon, Download, Money, ChatDotRound } from '@element-plus/icons-vue'
 import QrCode from 'qrcode.vue'
 import {
   getTemplateDetail,
@@ -26,6 +26,8 @@ const template = ref(null)
 const loading = ref(true)
 const showShareDialog = ref(false)
 const shareType = ref('wechat')
+const showPurchaseDialog = ref(false)
+const payMethod = ref(1) // 1: 支付宝, 2: 微信支付
 
 // 获取模板详情
 const fetchTemplateDetail = async () => {
@@ -123,7 +125,22 @@ const startCreate = () => {
   router.push(`/create?template=${template.value.id}`)
 }
 
-// 会员免费下载
+// 在线编辑文档
+const handleOnlineEdit = () => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning('请先登录后再操作')
+    router.push('/login')
+    return
+  }
+  
+  if (template.value && template.value.id) {
+    router.push(`/document/TEMPLATE/${template.value.id}?mode=edit&showVersions=true`)
+  } else {
+    ElMessage.error('模板信息加载失败，请刷新页面重试')
+  }
+}
+
+// 会员免费下载或者免费模板下载
 const handleVipDownload = () => {
   if (!userStore.isLoggedIn) {
     ElMessage.warning('请先登录后再操作')
@@ -131,7 +148,8 @@ const handleVipDownload = () => {
     return
   }
   
-  if (!userStore.isVip) {
+  // 如果既不是会员也不是免费模板，则提示升级VIP
+  if (!userStore.isVip && !template.value.isFree) {
     ElMessageBox.confirm(
       '该功能仅限VIP会员使用，是否立即开通VIP?',
       '提示',
@@ -151,9 +169,8 @@ const handleVipDownload = () => {
     return
   }
   
-  // 会员下载逻辑
+  // 会员下载或免费模板下载逻辑
   ElMessageBox.confirm('请选择下载格式', '下载模板', {
-    confirmButtonText: 'PDF格式',
     cancelButtonText: 'Word格式',
     distinguishCancelAndClose: true,
     closeOnClickModal: false
@@ -208,49 +225,89 @@ const handleVipDownload = () => {
   })
 }
 
-// 添加创建订单方法
-const createOrder = async (payType = 1) => {
+// 处理购买按钮点击
+const handlePurchase = () => {
+  if (!userStore.isLoggedIn) {
+    ElMessage.warning('请先登录后再操作')
+    router.push('/login')
+    return
+  }
+  
+  if (userStore.isVip) {
+    ElMessage.info('您是VIP会员，可以直接免费下载此模板')
+    return
+  }
+  
+  // 显示购买对话框
+  showPurchaseDialog.value = true
+}
+
+// 跳转到VIP开通页面
+const goToVip = () => {
+  showPurchaseDialog.value = false
+  router.push('/vip')
+}
+
+// 确认购买
+const confirmPurchase = async () => {
   try {
-    if (!userStore.isLoggedIn) {
-      ElMessage.warning('请先登录')
-      router.push('/login')
-      return
-    }
-    
-    // 如果是VIP用户，提示使用会员下载功能
-    if (userStore.isVip) {
-      ElMessage.info('您是VIP会员，可以直接使用"会员免费下载"功能')
-      return
-    }
-    
-    // 确保模板数据已加载
     if (!template.value || !template.value.id) {
       ElMessage.error('模板数据不完整，请刷新页面重试')
       return
     }
     
-    // 确保请求参数格式正确
-    const orderData = {
-      templateId: Number(template.value.id), // 确保是数字类型
-      payType: Number(payType) // 确保是数字类型
+    // 验证模板ID是否有效
+    if (isNaN(Number(template.value.id))) {
+      ElMessage.error('无效的模板ID，请刷新页面重试')
+      return
     }
     
-    console.log('创建订单数据:', orderData) // 调试日志
+    // 当前模板信息检查
+    console.log('尝试购买模板：', {
+      id: template.value.id,
+      name: template.value.name,
+      price: template.value.price
+    })
+    
+    // 创建订单
+    const orderData = {
+      templateId: Number(template.value.id),
+      payType: payMethod.value
+    }
     
     const result = await orderStore.createNewOrder(orderData)
     if (result) {
-      ElMessage.success('已加入我的订单，请前往"我的订单"页面查看')
+      showPurchaseDialog.value = false
+      ElMessageBox.confirm(
+        '订单已创建成功，是否前往我的订单页面完成支付？',
+        '订单创建成功',
+        {
+          confirmButtonText: '去支付',
+          cancelButtonText: '稍后支付',
+          type: 'success'
+        }
+      )
+        .then(() => {
+          router.push('/orders')
+        })
+        .catch(() => {
+          // 用户选择稍后支付
+        })
     }
   } catch (error) {
     console.error('创建订单失败:', error)
-    ElMessage.error('创建订单失败，请稍后重试')
+    // 根据错误类型显示更有用的信息
+    if (error.response && error.response.data && error.response.data.message) {
+      ElMessage.error(`创建订单失败: ${error.response.data.message}`)
+    } else {
+      ElMessage.error('创建订单失败，请稍后重试')
+    }
   }
 }
 
 // 监听用户VIP状态变化
 watch(() => userStore.isVip, (isVip) => {
   // 当用户VIP状态变化时，可以在这里添加额外处理逻辑
-  console.log('用户VIP状态变化:', isVip)
 })
 
 onMounted(() => {
@@ -286,12 +343,25 @@ onMounted(() => {
           </div>
 
           <div class="action-buttons">
-            <el-button type="primary" size="large" @click="startCreate">
+            <el-button
+              type="primary"
+              size="large"
+              @click="startCreate"
+            >
               开始制作
             </el-button>
             
             <el-button
-              :type="template.isCollected ? 'success' : 'default'"
+              type="primary"
+              plain
+              size="large"
+              @click="handleOnlineEdit"
+            >
+              在线编辑
+            </el-button>
+
+            <el-button
+              :type="template.isCollected ? 'danger' : 'default'"
               size="large"
               @click="handleCollect"
             >
@@ -310,23 +380,27 @@ onMounted(() => {
               分享
             </el-button>
             
-            <!-- 会员免费下载 -->
+            <!-- VIP会员可以免费下载 -->
             <el-button
               type="success"
               size="large"
               @click="handleVipDownload"
+              v-if="userStore.isVip || template.isFree"
             >
               <el-icon><Download /></el-icon>
-              会员免费下载
+              {{ userStore.isVip ? '会员免费下载' : '免费下载' }}
             </el-button>
             
-            <!-- 加入我的订单按钮 - 只对非VIP用户显示 -->
+            <!-- 非VIP用户，付费模板显示购买按钮 -->
             <el-button 
               v-if="!template.isFree && !userStore.isVip" 
-              type="primary" 
-              @click="createOrder()" 
-              :loading="orderStore.loading">
-              加入我的订单
+              type="danger" 
+              size="large"
+              @click="handlePurchase" 
+              :loading="orderStore.loading"
+            >
+              <el-icon><Download /></el-icon>
+              立即购买
             </el-button>
           </div>
 
@@ -337,6 +411,8 @@ onMounted(() => {
               <li>所有内容均可自定义修改</li>
               <li>制作完成后可导出PDF</li>
               <li>支持在线保存，随时编辑</li>
+              <li v-if="!userStore.isVip && !template.isFree">非会员用户需要购买此模板才能下载</li>
+              <li v-if="userStore.isVip">VIP会员可以免费下载所有模板</li>
             </ul>
           </div>
         </div>
@@ -379,6 +455,53 @@ onMounted(() => {
           
           <div class="share-tips">
             {{ shareType === 'wechat' ? '请使用微信扫描二维码分享' : '请使用QQ扫描二维码分享' }}
+          </div>
+        </div>
+      </el-dialog>
+      
+      <!-- 购买对话框 -->
+      <el-dialog
+        v-model="showPurchaseDialog"
+        title="购买模板"
+        width="400px"
+        destroy-on-close
+        center
+      >
+        <div class="purchase-dialog-content">
+          <h3>{{ template.name }}</h3>
+          <div class="price-info">
+            <span class="price-label">价格：</span>
+            <span class="price-value">￥{{ template.price }}</span>
+          </div>
+          
+          <div class="payment-options">
+            <h4>选择支付方式</h4>
+            <div class="payment-methods">
+              <div class="payment-method" :class="{ active: payMethod === 1 }" @click="payMethod = 1">
+                <span class="payment-icon">
+                  <el-icon class="alipay-icon"><Money /></el-icon>
+                </span>
+                <span>支付宝</span>
+              </div>
+              <div class="payment-method" :class="{ active: payMethod === 2 }" @click="payMethod = 2">
+                <span class="payment-icon">
+                  <el-icon class="wechat-icon"><ChatDotRound /></el-icon>
+                </span>
+                <span>微信支付</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vip-promotion" v-if="!userStore.isVip">
+            <p>成为VIP会员，即可免费下载所有模板！</p>
+            <el-button type="warning" @click="goToVip">升级VIP</el-button>
+          </div>
+          
+          <div class="dialog-footer">
+            <el-button @click="showPurchaseDialog = false">取消</el-button>
+            <el-button type="primary" @click="confirmPurchase" :loading="orderStore.loading">
+              确认购买
+            </el-button>
           </div>
         </div>
       </el-dialog>
@@ -469,127 +592,189 @@ onMounted(() => {
 }
 
 .description p {
-  color: #666;
+  font-size: 14px;
   line-height: 1.6;
+  color: #666;
 }
 
 .action-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .tips {
-  background: #f5f7fa;
-  padding: 20px;
+  background-color: #f9f9f9;
+  padding: 15px;
   border-radius: 8px;
 }
 
 .tips h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
+  font-size: 16px;
+  margin-bottom: 10px;
   color: #333;
 }
 
 .tips ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  padding-left: 20px;
 }
 
 .tips li {
+  font-size: 14px;
+  margin-bottom: 5px;
   color: #666;
-  margin-bottom: 10px;
-  padding-left: 20px;
-  position: relative;
-}
-
-.tips li::before {
-  content: "•";
-  color: #1890ff;
-  position: absolute;
-  left: 0;
-}
-
-@media (max-width: 992px) {
-  .detail-container {
-    grid-template-columns: 1fr;
-  }
-
-  .preview-section {
-    position: static;
-  }
-
-  .preview-image {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .info-section {
-    padding: 0;
-  }
-}
-
-@media (max-width: 576px) {
-  .template-detail {
-    padding: 20px;
-  }
-
-  .template-name {
-    font-size: 24px;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .action-buttons .el-button {
-    width: 100%;
-  }
 }
 
 .share-dialog-content {
-  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .share-tabs {
   display: flex;
-  justify-content: center;
+  width: 100%;
   margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
 }
 
 .share-tab {
-  padding: 8px 24px;
+  flex: 1;
+  text-align: center;
+  padding: 10px;
   cursor: pointer;
-  position: relative;
-  color: #666;
+  border-bottom: 2px solid #eee;
 }
 
 .share-tab.active {
-  color: #409EFF;
-}
-
-.share-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #409EFF;
+  border-bottom: 2px solid #409eff;
+  color: #409eff;
+  font-weight: 500;
 }
 
 .qrcode-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .share-tips {
-  text-align: center;
-  color: #666;
   font-size: 14px;
-  margin-top: 15px;
+  color: #666;
+  text-align: center;
+}
+
+/* 新增的购买对话框样式 */
+.purchase-dialog-content {
+  padding: 10px;
+}
+
+.purchase-dialog-content h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.price-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.price-label {
+  font-size: 16px;
+  color: #666;
+}
+
+.price-value {
+  font-size: 24px;
+  color: #f56c6c;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.payment-options {
+  margin-bottom: 20px;
+}
+
+.payment-options h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.payment-methods {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.payment-method {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 120px;
+}
+
+.payment-method.active {
+  border-color: #409eff;
+  background-color: #ecf5ff;
+}
+
+.payment-method .payment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+}
+
+.alipay-icon {
+  color: #00a0e9;
+  font-size: 24px;
+}
+
+.wechat-icon {
+  color: #09bb07;
+  font-size: 24px;
+}
+
+.vip-promotion {
+  background-color: #fff9e6;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.vip-promotion p {
+  margin-bottom: 10px;
+  color: #e6a23c;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .detail-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .payment-methods {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style> 

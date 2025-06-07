@@ -13,6 +13,14 @@ const isVip = computed(() => userStore.isVip)
 const isAdmin = computed(() => userStore.isAdmin)
 const vipLevel = computed(() => userStore.userInfo?.role || 0)
 
+// 调试VIP状态
+console.log('[Header] 当前用户VIP状态检查:', { 
+  isVip: isVip.value, 
+  vipLevel: vipLevel.value, 
+  userRole: userStore.userInfo?.role,
+  vipInfo: userStore.vipInfo 
+})
+
 // 定期检查VIP状态
 let vipCheckInterval = null
 

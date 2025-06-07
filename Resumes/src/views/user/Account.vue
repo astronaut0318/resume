@@ -9,10 +9,17 @@
       <div class="account-sidebar">
         <div class="user-avatar">
           <div class="avatar-wrapper">
-            <el-avatar :size="80" :src="userInfo?.avatar">
-              <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+            <el-avatar 
+              :size="80" 
+              :src="userInfo?.avatar"
+              @error="handleAvatarError"
+            >
+              <img src="../../../public/static/default-thumbnail1.png"/>
             </el-avatar>
-            <div class="avatar-overlay" @click="triggerUpload">
+            <div class="avatar-loading" v-if="profileLoading">
+              <el-icon class="is-loading"><Loading /></el-icon>
+            </div>
+            <div class="avatar-overlay" @click="triggerUpload" v-else>
               <el-icon><Camera /></el-icon>
               <span>更换头像</span>
             </div>
@@ -275,7 +282,7 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import { useUserStore } from '../../stores/user'
 import { useNotificationStore } from '../../stores/notification'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { User, Lock, Star, Check, Camera, Bell } from '@element-plus/icons-vue'
+import { User, Lock, Star, Check, Camera, Bell, Loading } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { uploadFile } from '../../api/file'
 
@@ -415,10 +422,54 @@ const resetPasswordForm = () => {
   }
 }
 
-// 触发文件选择框
-const triggerUpload = () => {
-  fileInput.value.click()
-}
+// 压缩图片函数
+const compressImage = (file) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 300;
+        const MAX_HEIGHT = 300;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        canvas.toBlob((blob) => {
+          const compressedFile = new File([blob], file.name, { 
+            type: 'image/jpeg', 
+            lastModified: Date.now() 
+          });
+          console.log('图片压缩前后对比:', {
+            before: `${Math.round(file.size / 1024)}KB`,
+            after: `${Math.round(compressedFile.size / 1024)}KB`,
+            ratio: `${Math.round((file.size - compressedFile.size) / file.size * 100)}%`
+          });
+          resolve(compressedFile);
+        }, 'image/jpeg', 0.7);
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+};
 
 // 处理头像变更
 const handleAvatarChange = async (e) => {
@@ -442,18 +493,26 @@ const handleAvatarChange = async (e) => {
   profileLoading.value = true
   
   try {
+    // 压缩图片
+    const compressedFile = await compressImage(file);
+    
     // 使用文件上传API
-    const response = await uploadFile(file, 'avatar')
+    console.log('准备上传头像文件:', { fileName: compressedFile.name, fileType: compressedFile.type, fileSize: compressedFile.size, type: 'avatar' })
+    const response = await uploadFile(compressedFile, 'avatar')
+    console.log('头像上传响应:', response)
     const { code, data, message } = response.data
     
     if (code === 200) {
-      // 更新用户头像
+      // 更新用户头像，使用fileUrl而不是filePath
+      console.log('头像上传成功，更新用户信息:', data)
       const updateRes = await userStore.updateInfo({
-        avatar: data.filePath
+        avatar: data.fileUrl || data.filePath
       })
       
       if (updateRes.code === 200) {
         ElMessage.success('头像更新成功')
+        // 强制刷新用户信息，确保头像更新显示
+        await userStore.loadUserInfo()
       }
     } else {
       ElMessage.error(message || '头像上传失败')
@@ -481,7 +540,7 @@ const sendTestNotification = (type) => {
   
   const notification = notificationTypes[type]
   if (notification) {
-    notificationStore.receiveNewNotification({
+    notificationStore.createNotification({
       id: Date.now(),
       title: notification.title,
       content: notification.content,
@@ -492,6 +551,17 @@ const sendTestNotification = (type) => {
     
     ElMessage.success('测试通知已发送')
   }
+}
+
+// 处理头像加载错误
+const handleAvatarError = () => {
+  console.error('头像加载失败:', userInfo.value?.avatar)
+  // 不显示错误通知，避免打扰用户体验
+}
+
+// 触发文件选择框
+const triggerUpload = () => {
+  fileInput.value.click()
 }
 
 // 初始化
@@ -729,6 +799,25 @@ onMounted(() => {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+}
+
+.avatar-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.avatar-loading .el-icon {
+  font-size: 24px;
 }
 
 @media (max-width: 768px) {

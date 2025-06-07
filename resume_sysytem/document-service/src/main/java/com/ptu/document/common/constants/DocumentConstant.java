@@ -51,9 +51,24 @@ public class DocumentConstant {
     public static final String MODE_COMMENT = "comment";
     
     /**
+     * 回调状态：文档已准备就绪
+     */
+    public static final int CALLBACK_STATUS_READY = 0;
+    
+    /**
+     * 回调状态：文档已准备就绪（强制保存模式）
+     */
+    public static final int CALLBACK_STATUS_FORCE_SAVE_READY = 1;
+    
+    /**
      * 回调状态：保存成功
      */
     public static final int CALLBACK_STATUS_SAVED = 2;
+    
+    /**
+     * 回调状态：文档已编辑
+     */
+    public static final int CALLBACK_STATUS_EDITED = 3;
     
     /**
      * 回调状态：保存失败

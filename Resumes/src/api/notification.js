@@ -70,6 +70,22 @@ export function getUnreadCount() {
 }
 
 /**
+ * 创建新通知
+ * @param {Object} data - 通知数据
+ * @param {Number} data.userId - 用户ID，如不提供则使用当前登录用户
+ * @param {String} data.title - 通知标题
+ * @param {String} data.content - 通知内容
+ * @param {Number} data.type - 通知类型：1-系统通知，2-订单通知，3-其他
+ */
+export function createNotification(data) {
+  return request({
+    url: '/api/notifications',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 发送邮件通知(仅管理员)
  * @param {Object} data - 发送数据
  * @param {Array} data.userIds - 接收用户ID列表，为空则发送给所有用户

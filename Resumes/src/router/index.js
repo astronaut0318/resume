@@ -89,6 +89,33 @@ const router = createRouter({
       requiresAuth: true
     }
   },
+  // 文档编辑路由
+  {
+    path: '/document/:sourceType/:sourceId',
+    name: 'DocumentEditor',
+    component: () => import('../views/DocumentEditor.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // 文档编辑器示例路由
+  {
+    path: '/document-example/:sourceType/:sourceId',
+    name: 'DocumentEditorExample',
+    component: () => import('../views/DocumentEditorExample.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // 文档版本预览路由
+  {
+    path: '/document/version/:versionId',
+    name: 'DocumentVersionPreview',
+    component: () => import('../views/DocumentVersionPreview.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // 管理员路由
   {
     path: '/admin',

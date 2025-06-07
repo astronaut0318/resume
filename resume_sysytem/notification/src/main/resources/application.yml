@@ -5,13 +5,46 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+    hiddenmethod:
+      filter:
+        enabled: true  # 启用HTTP方法过滤器，支持PUT/DELETE请求
   datasource:
     url: jdbc:mysql://localhost:3306/resume_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: notification-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+  profiles:
+    active: dev  # 默认使用开发环境配置
+
+# Feign配置
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+  hystrix:
+    enabled: true  # 启用Hystrix降级
+  okhttp:
+    enabled: true  # 使用okhttp连接池
 
 # Sentinel配置
 sentinel:
   transport:
-    dashboard: localhost:8858 
+    dashboard: localhost:8858
+
+# 日志配置
+logging:
+  level:
+    com.ptu.notification: debug
+    org.springframework.web: info
+    com.ptu.notification.feign: debug  # 添加Feign调试日志 

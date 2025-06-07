@@ -203,15 +203,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         userDetailService.save(detail);
 
         // 注册时可选插入VIP信息（如不想默认开通VIP可注释掉）
-        UserVipEntity vip = new UserVipEntity();
-        vip.setUserId(userEntity.getId());
-        vip.setLevel(0); // 默认VIP等级
-        vip.setStartTime(LocalDateTime.now());
-        vip.setEndTime(LocalDateTime.now().plusMonths(1)); // 默认1个月有效期
-        vip.setCreateTime(LocalDateTime.now());
-        vip.setUpdateTime(LocalDateTime.now());
-        vip.setDeleted(0);
-        userVipService.save(vip);
+        // UserVipEntity vip = new UserVipEntity();
+        // vip.setUserId(userEntity.getId());
+        // vip.setLevel(0); // 默认VIP等级
+        // vip.setStartTime(LocalDateTime.now());
+        // vip.setEndTime(LocalDateTime.now().plusMonths(1)); // 默认1个月有效期
+        // vip.setCreateTime(LocalDateTime.now());
+        // vip.setUpdateTime(LocalDateTime.now());
+        // vip.setDeleted(0);
+        // userVipService.save(vip);
 
         // 返回注册结果
         return new RegisterVO()

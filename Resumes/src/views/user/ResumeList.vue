@@ -29,7 +29,7 @@
       <div v-if="activeTab === 'myResumes'" class="my-resumes">
         <h2 class="section-title">我的简历</h2>
         <!-- 有简历时显示简历列表 -->
-        <div v-if="resumeStore.resumeList.length > 0" class="resume-list" v-loading="resumeStore.loading">
+        <div v-if="resumeStore.resumeList != null" class="resume-list" v-loading="resumeStore.loading">
           <div v-for="resume in resumeStore.resumeList" :key="resume.id" class="resume-card">
             <div class="resume-card-header">
               <h3 class="resume-title">{{ resume.title }}</h3>
@@ -52,6 +52,7 @@
                   </el-button>
                   <template #dropdown>
                     <el-dropdown-menu>
+                      <el-dropdown-item command="onlineEdit">在线编辑</el-dropdown-item>
                       <el-dropdown-item v-if="!resume.isDefault" command="setDefault">设为默认</el-dropdown-item>
                       <el-dropdown-item command="download">下载</el-dropdown-item>
                       <el-dropdown-item command="delete" divided>删除</el-dropdown-item>
@@ -78,10 +79,10 @@
       <!-- 收藏的模板区域 -->
       <div v-if="activeTab === 'collections'" class="collected-templates">
         <h2 class="section-title">收藏的模板</h2>
-        <div v-if="collectedTemplates.length > 0" class="templates-grid">
+        <div v-if="collectedTemplates.length > 0" class="templates-grid" v-loading="loadingCollections">
           <div
             v-for="template in collectedTemplates"
-            :key="template.id"
+            :key="template.templateId || template.id"
             class="template-card"
             @click="goToDetail(template)"
           >
@@ -100,7 +101,7 @@
             <div class="template-info">
               <h3 class="template-name">{{ template.name }}</h3>
               <div class="template-stats">
-                <span>下载 {{ template.downloads }}</span>
+                <span>下载 {{ template.downloads || 0 }}</span>
                 <div class="template-actions">
                   <el-button
                     type="danger"
@@ -110,14 +111,19 @@
                   />
                 </div>
               </div>
+              <div class="template-meta">
               <div class="template-price">
-                <span v-if="template.isFree" class="free">免费</span>
+                <span v-if="template.isFree === 1" class="free">免费</span>
                 <span v-else class="price">￥{{ template.price }}</span>
+                </div>
+                <div v-if="template.collectTimeFormatted" class="collect-time">
+                  收藏时间: {{ template.collectTimeFormatted }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div v-else class="empty-state">
+        <div v-else class="empty-state" v-loading="loadingCollections">
           <el-empty description="暂无收藏" />
         </div>
       </div>
@@ -184,7 +190,7 @@ import { useResumeStore } from '../../stores/resume'
 import { useFileStore } from '../../stores/file'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Document, Star, Plus, ArrowDown } from '@element-plus/icons-vue'
-import { uncollectTemplate } from '../../api/template'
+import { uncollectTemplate, getCollectedTemplates } from '../../api/template'
 import ResumeExporter from '../../components/ResumeExporter.vue'
 
 const router = useRouter()
@@ -192,28 +198,88 @@ const templateStore = useTemplateStore()
 const resumeStore = useResumeStore()
 const fileStore = useFileStore()
 const activeTab = ref('myResumes')
+const collectedTemplates = ref([])
+const loadingCollections = ref(false)
 
 // 预览相关
 const previewDialogVisible = ref(false)
 const previewResumeData = ref(null)
 
 // 获取收藏的模板列表
-const collectedTemplates = computed(() => {
-  return Array.from(templateStore.collectedTemplates).map(id => ({
-    id,
-    name: `模板 ${id}`,
-    thumbnail: `http://example.com/thumb${id}.jpg`,
-    downloads: Math.floor(Math.random() * 10000),
-    isFree: Math.random() > 0.5,
-    price: Math.random() > 0.5 ? 0 : Number((Math.random() * 20 + 9.9).toFixed(1))
-  }))
-})
+const fetchCollectedTemplates = async () => {
+  try {
+    loadingCollections.value = true
+    const response = await getCollectedTemplates()
+    // 调试输出后端返回的数据结构
+    console.log('后端返回的收藏模板数据:', response)
+    
+    // 根据后端API返回格式处理数据
+    if (response.data && response.data.records) {
+      // 正确的数据格式: response.data.records
+      collectedTemplates.value = response.data.records
+    } else if (response.data && response.data.list) {
+      // 兼容旧格式
+      collectedTemplates.value = response.data.list
+    } else if (Array.isArray(response.data)) {
+      collectedTemplates.value = response.data
+    } else if (response.data) {
+      // 如果是直接返回了数据对象，尝试转换为数组
+      collectedTemplates.value = Array.isArray(response.data) ? response.data : [response.data]
+    } else {
+      collectedTemplates.value = []
+    }
+    
+    // 检查并处理返回的数据
+    if (collectedTemplates.value.length > 0) {
+      console.log('解析后的收藏模板数据:', collectedTemplates.value)
+      
+      // 确保每个模板对象都有必要的属性
+      collectedTemplates.value = collectedTemplates.value.map(template => {
+        // 处理collectTime格式，将数组转换为字符串
+        let collectTimeStr = ''
+        if (template.collectTime && Array.isArray(template.collectTime) && template.collectTime.length >= 6) {
+          const [year, month, day, hour, minute, second] = template.collectTime
+          collectTimeStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+        }
+        
+        return {
+          ...template,
+          // 确保有id和templateId
+          id: template.id || template.templateId,
+          templateId: template.templateId || template.id,
+          // 确保有name属性
+          name: template.name || '未命名模板',
+          // 确保有thumbnail属性，如果没有则使用默认图片
+          thumbnail: template.thumbnail || '/static/default-thumbnail.png',
+          // 确保有downloads属性
+          downloads: template.downloads || 0,
+          // 确保有isFree属性
+          isFree: template.isFree !== undefined ? template.isFree : 0,
+          // 确保有price属性
+          price: template.price || 0,
+          // 添加格式化后的收藏时间
+          collectTimeFormatted: collectTimeStr
+        }
+      })
+    }
+  } catch (error) {
+    console.error('获取收藏的模板失败:', error)
+    ElMessage.error('获取收藏的模板失败')
+  } finally {
+    loadingCollections.value = false
+  }
+}
 
 // 取消收藏
 const handleUncollect = async (template) => {
   try {
-    await uncollectTemplate(template.id)
-    templateStore.removeCollection(template.id)
+    // 使用templateId或id
+    const templateId = template.templateId || template.id
+    await uncollectTemplate(templateId)
+    // 重新获取收藏列表或直接从当前列表中移除
+    collectedTemplates.value = collectedTemplates.value.filter(item => 
+      (item.templateId || item.id) !== templateId
+    )
     ElMessage.success('取消收藏成功')
   } catch (error) {
     console.error('取消收藏失败:', error)
@@ -223,12 +289,14 @@ const handleUncollect = async (template) => {
 
 // 跳转到在线制作
 const goToCreate = (template) => {
-  router.push(`/create?template=${template.id}`)
+  const templateId = template.templateId || template.id
+  router.push(`/create?template=${templateId}`)
 }
 
 // 跳转到详情页
 const goToDetail = (template) => {
-  router.push(`/templates/${template.id}`)
+  const templateId = template.templateId || template.id
+  router.push(`/templates/${templateId}`)
 }
 
 // 创建新简历
@@ -239,6 +307,11 @@ const createNewResume = () => {
 // 编辑简历
 const editResume = (resumeId) => {
   router.push(`/create?resumeId=${resumeId}`)
+}
+
+// 在线编辑简历
+const onlineEditResume = (resumeId) => {
+  router.push(`/document/RESUME/${resumeId}?mode=edit&showVersions=true`)
 }
 
 // 预览简历
@@ -255,6 +328,9 @@ const previewResume = async (resumeId) => {
 // 处理更多操作
 const handleCommand = (command, resumeId) => {
   switch (command) {
+    case 'onlineEdit':
+      onlineEditResume(resumeId)
+      break
     case 'setDefault':
       setDefaultResume(resumeId)
       break
@@ -358,6 +434,7 @@ const deleteResume = async (resumeId) => {
 // 初始化
 onMounted(() => {
   resumeStore.fetchResumeList()
+  fetchCollectedTemplates()
 })
 </script>
 
@@ -591,9 +668,21 @@ onMounted(() => {
   color: #999;
 }
 
+.template-meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
 .template-price {
   font-size: 16px;
   font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.collect-time {
+  font-size: 12px;
+  color: #999;
 }
 
 .free {

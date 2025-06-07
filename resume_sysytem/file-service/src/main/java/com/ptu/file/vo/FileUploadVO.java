@@ -34,4 +34,9 @@ public class FileUploadVO {
      * 文件类型（template/resume/avatar）
      */
     private String fileType;
+    
+    /**
+     * 文件完整访问URL
+     */
+    private String fileUrl;
 } 

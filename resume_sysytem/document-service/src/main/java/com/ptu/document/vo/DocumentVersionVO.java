@@ -20,9 +20,34 @@ public class DocumentVersionVO implements Serializable {
     private Long id;
 
     /**
+     * 文档ID
+     */
+    private Long documentId;
+
+    /**
+     * 来源类型
+     */
+    private String sourceType;
+
+    /**
+     * 来源ID
+     */
+    private Long sourceId;
+
+    /**
      * 版本号
      */
     private Integer version;
+
+    /**
+     * 文件名
+     */
+    private String fileName;
+
+    /**
+     * 文件类型
+     */
+    private String fileType;
 
     /**
      * 文件大小
@@ -30,14 +55,19 @@ public class DocumentVersionVO implements Serializable {
     private Long fileSize;
 
     /**
+     * 文件路径
+     */
+    private String filePath;
+
+    /**
      * 修改者ID
      */
-    private Long userId;
+    private Long modifierId;
 
     /**
      * 修改者名称
      */
-    private String userName;
+    private String modifierName;
 
     /**
      * 变更摘要

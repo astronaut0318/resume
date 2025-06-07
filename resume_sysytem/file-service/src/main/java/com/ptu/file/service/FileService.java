@@ -24,6 +24,18 @@ public interface FileService {
      * @return 文件上传响应VO
      */
     FileUploadVO uploadFile(MultipartFile file, String fileType, Long bizId, Long userId);
+    
+    /**
+     * 上传文件（模板、简历、头像）- 支持指定存储桶
+     *
+     * @param file    文件对象
+     * @param fileType 文件类型（template/resume/avatar）
+     * @param bizId   业务ID（如模板ID、简历ID、用户ID，头像时为用户ID）
+     * @param userId  上传用户ID
+     * @param bucket  指定存储桶（如果为null则使用默认存储桶）
+     * @return 文件上传响应VO
+     */
+    FileUploadVO uploadFile(MultipartFile file, String fileType, Long bizId, Long userId, String bucket);
 
     /**
      * 下载文件
@@ -52,6 +64,23 @@ public interface FileService {
      * @return 文件VO列表
      */
     List<FileVO> listFiles(String fileType, Long bizId, Long userId, int page, int size);
+    
+    /**
+     * 统计用户文件总数
+     * 
+     * @param userId 用户ID
+     * @return 文件总数
+     */
+    long countUserFiles(Long userId);
+    
+    /**
+     * 获取用户所有文件并手动构建URL
+     * 用于文件列表查询结果为空但数据库有记录的情况
+     * 
+     * @param userId 用户ID
+     * @return 文件列表（包含手动构建的URL）
+     */
+    List<FileVO> getAllUserFilesWithUrl(Long userId);
 
     /**
      * OnlyOffice文档保存回调处理
@@ -67,4 +96,11 @@ public interface FileService {
      * @return Word文件二进制流
      */
     byte[] exportResumeToWord(Long resumeId);
+    
+    /**
+     * 获取文件URL
+     * @param fileId 文件ID
+     * @return 文件URL
+     */
+    String getFileUrlById(Long fileId);
 } 

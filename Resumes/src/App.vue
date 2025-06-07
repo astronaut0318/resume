@@ -1,5 +1,6 @@
 <script setup>
 import Header from './components/Header.vue'
+import AIFloatingChat from './components/AIFloatingChat.vue'
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Header from './components/Header.vue'
     <main class="main-content">
       <router-view></router-view>
     </main>
+    <AIFloatingChat />
   </div>
 </template>
 

@@ -49,14 +49,24 @@ public class DocumentMetadataEntity implements Serializable {
     private Long fileSize;
     
     /**
+     * MIME类型
+     */
+    private String mimeType;
+    
+    /**
      * 内容类型
      */
     private String contentType;
     
     /**
-     * 存储路径
+     * 文件类型
      */
-    private String storagePath;
+    private String fileType;
+    
+    /**
+     * 文件路径
+     */
+    private String filePath;
     
     /**
      * 当前版本号
@@ -67,6 +77,11 @@ public class DocumentMetadataEntity implements Serializable {
      * 创建者ID
      */
     private Long creatorId;
+    
+    /**
+     * 创建者名称
+     */
+    private String creatorName;
     
     /**
      * 最后修改者ID

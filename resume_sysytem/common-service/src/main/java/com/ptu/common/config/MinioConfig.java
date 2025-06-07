@@ -49,6 +49,11 @@ public class MinioConfig {
          * 缩略图存储桶
          */
         private String thumbnail = "resume-thumbnails";
+
+        /**
+         * 头像文件存储桶
+         */
+        private String avatar = "resume-avatars";
     }
 
     /**

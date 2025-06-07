@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import pinia from './stores' // 导入统一的 pinia 实例
 import './style.css'
 import App from './App.vue'
 import router from './router'
@@ -8,15 +8,28 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios'
 
+// 全局配置
+// OnlyOffice服务器配置
+window.onlyofficeServerUrl = 'http://192.168.64.129:80' // OnlyOffice Document Server 地址
+
 // 配置axios
 axios.defaults.timeout = 30000 // 增加超时时间到30秒
 axios.defaults.retry = 2 // 增加重试次数到2次
 axios.defaults.retryDelay = 1500 // 增加重试延时到1.5秒
 axios.defaults.maxContentLength = 10485760 // 设置最大响应内容长度为10MB
 
+// API基础URL
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || '/api'
+
 // 添加请求拦截器
 axios.interceptors.request.use(
   config => {
+    // 获取token并添加到请求头
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
+    
     // 设置请求阶段的超时处理
     if (config.url.includes('/download') || config.responseType === 'blob') {
       config.timeout = 60000 // 下载文件时使用更长的超时时间
@@ -67,14 +80,13 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
 })
 
 const app = createApp(App)
-const pinia = createPinia()
 
-// 注册所有图标
+// 注册所有 ElementPlus 图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
-app.use(pinia)
-app.use(ElementPlus)
+app.use(pinia) // 使用统一的 pinia 实例
 app.use(router)
+app.use(ElementPlus)
 app.mount('#app')

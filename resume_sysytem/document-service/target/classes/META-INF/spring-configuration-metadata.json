@@ -19,6 +19,11 @@
       "name": "onlyoffice.document",
       "type": "com.ptu.document.config.OnlyOfficeConfig$Document",
       "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
+      "name": "onlyoffice.formats",
+      "type": "com.ptu.document.config.OnlyOfficeConfig$Formats",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
     }
   ],
   "properties": [
@@ -83,9 +88,33 @@
       "sourceType": "com.ptu.document.config.OnlyOfficeConfig$Document"
     },
     {
+      "name": "onlyoffice.formats.convertible",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "可转换格式",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig$Formats"
+    },
+    {
+      "name": "onlyoffice.formats.editable",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "可编辑格式",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig$Formats"
+    },
+    {
+      "name": "onlyoffice.ignore-ssl",
+      "type": "java.lang.Boolean",
+      "description": "是否忽略SSL证书错误",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
       "name": "onlyoffice.jwt-secret",
       "type": "java.lang.String",
       "description": "JWT密钥",
+      "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
+    },
+    {
+      "name": "onlyoffice.lossy-edit-formats",
+      "type": "java.lang.String",
+      "description": "允许有损编辑的文件格式",
       "sourceType": "com.ptu.document.config.OnlyOfficeConfig"
     },
     {

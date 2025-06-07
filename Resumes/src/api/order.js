@@ -38,7 +38,7 @@ export function cancelOrder(orderNo) {
 export function payOrder(orderNo) {
   return request({
     url: `/api/orders/${orderNo}/pay`,
-    method: 'post'
+    method: 'put'
   })
 }
 

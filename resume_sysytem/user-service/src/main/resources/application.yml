@@ -43,6 +43,10 @@ spring:
         server-addr: 127.0.0.1:8848
         file-extension: yaml
         namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+    # Sentinel标准配置
+    sentinel:
+      transport:
+        dashboard: localhost:8858
   
   # SpringFox配置
   mvc:
@@ -90,7 +94,4 @@ springfox:
     swagger-ui:
       enabled: true
 
-# Sentinel配置
-sentinel:
-  transport:
-    dashboard: localhost:8858 
+# 删除此Sentinel配置，已移至spring.cloud.sentinel下 

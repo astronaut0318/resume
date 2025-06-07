@@ -168,22 +168,26 @@ const simulatePayment = async () => {
     
     const orderNo = currentPayOrder.value.orderNo
     
-    // 调用直接支付API
-    const res = await payOrder(orderNo)
+    // 使用订单Store的支付方法
+    const success = await orderStore.payCurrentOrder(orderNo)
     
-    if (res.code === 200) {
+    if (success) {
       // 关闭支付对话框
       payDialogVisible.value = false
       ElMessage.success('支付成功')
-      
-      // 刷新订单列表
-      await orderStore.fetchOrderList()
-    } else {
-      throw new Error(res.message || '支付失败')
     }
   } catch (error) {
     console.error('支付失败:', error)
-    ElMessage.error('支付处理失败，请稍后重试')
+    // 增强错误提示信息
+    const errorMsg = error.response?.data?.message || error.message || '支付处理失败'
+    ElMessage.error(`支付失败: ${errorMsg}`)
+    
+    // 对于特定错误提供更有用的建议
+    if (error.response?.status === 404) {
+      ElMessage.warning('支付接口未找到，请确认订单号是否正确')
+    } else if (error.response?.status === 500) {
+      ElMessage.warning('服务器处理支付请求时出错，请稍后重试或联系客服')
+    }
   } finally {
     loading.value = false
   }

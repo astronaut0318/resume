@@ -114,7 +114,7 @@ const handlePayment = () => {
       }
       
       // 添加通知到通知中心
-      notificationStore.receiveNewNotification(notification)
+      notificationStore.createNotification(notification)
       
       // 5. 显示成功消息
       showPaymentDialog.value = false
@@ -126,6 +126,25 @@ const handlePayment = () => {
         type: 'success',
         duration: 5000
       })
+      
+      // 6. 提示用户刷新页面以确保会员标识显示正常
+      setTimeout(() => {
+        ElMessageBox.confirm(
+          '会员已成功开通，建议刷新页面以确保会员权益立即生效。是否立即刷新页面？',
+          '提示',
+          {
+            confirmButtonText: '刷新页面',
+            cancelButtonText: '稍后刷新',
+            type: 'info'
+          }
+        ).then(() => {
+          // 用户点击刷新，刷新整个页面
+          window.location.reload()
+        }).catch(() => {
+          // 用户取消，再次尝试更新用户信息
+          userStore.loadUserInfo()
+        })
+      }, 1000)
       
     } catch (error) {
       console.error('会员开通失败:', error)

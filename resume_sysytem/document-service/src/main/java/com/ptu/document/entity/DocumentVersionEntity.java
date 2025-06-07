@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 文档版本实体类
  */
 @Data
-@TableName("document_version")
+@TableName("document_versions")
 public class DocumentVersionEntity implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -44,25 +44,34 @@ public class DocumentVersionEntity implements Serializable {
     private Integer version;
     
     /**
+     * 文件名
+     */
+    private String fileName;
+    
+    /**
+     * 文件类型
+     */
+    private String fileType;
+    
+    /**
      * 文件大小(字节)
      */
     private Long fileSize;
     
     /**
-     * 存储路径
+     * 文件路径
      */
-    @com.baomidou.mybatisplus.annotation.TableField("storage_path")
-    private String storagePath;
+    private String filePath;
     
     /**
      * 修改者ID
      */
-    private Long userId;
+    private Long modifierId;
     
     /**
      * 修改者名称
      */
-    private String userName;
+    private String modifierName;
     
     /**
      * 变更摘要

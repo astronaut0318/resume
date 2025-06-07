@@ -165,6 +165,13 @@
             <groupId>com.ptu</groupId>
             <artifactId>common-service</artifactId>
         </dependency>
+
+        <!-- Nimbus JOSE+JWT 依赖 -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>9.31</version>
+        </dependency>
     </dependencies>
     
     <build>

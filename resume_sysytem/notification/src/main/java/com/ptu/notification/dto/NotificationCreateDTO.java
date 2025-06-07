@@ -10,8 +10,7 @@ import java.io.Serializable;
  */
 @Data
 public class NotificationCreateDTO implements Serializable {
-    /** 用户ID，必填 */
-    @NotNull(message = "用户ID不能为空")
+    /** 用户ID，可选，如不提供将使用当前用户ID */
     private Long userId;
     /** 标题，必填 */
     @NotBlank(message = "标题不能为空")

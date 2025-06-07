@@ -1,9 +1,11 @@
 package com.ptu.order.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,35 +14,58 @@ import java.util.Date;
  */
 @Data
 @TableName("orders")
-public class OrderEntity {
-    /** 订单主键ID */
-    @TableId
+public class OrderEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 订单ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /** 订单编号 */
+    /**
+     * 订单编号
+     */
     private String orderNo;
 
-    /** 用户ID */
+    /**
+     * 用户ID
+     */
     private Long userId;
 
-    /** 模板ID */
+    /**
+     * 模板ID
+     */
     private Long templateId;
 
-    /** 订单金额 */
+    /**
+     * 订单金额
+     */
     private BigDecimal amount;
 
-    /** 支付方式：1-支付宝，2-微信 */
+    /**
+     * 支付方式：1-支付宝，2-微信
+     */
     private Integer payType;
 
-    /** 状态：0-待支付，1-已支付，2-已取消 */
+    /**
+     * 状态：0-待支付，1-已支付，2-已取消
+     */
     private Integer status;
 
-    /** 支付时间 */
+    /**
+     * 支付时间
+     */
     private Date payTime;
 
-    /** 创建时间 */
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
-    /** 更新时间 */
+    /**
+     * 更新时间
+     */
     private Date updateTime;
 } 

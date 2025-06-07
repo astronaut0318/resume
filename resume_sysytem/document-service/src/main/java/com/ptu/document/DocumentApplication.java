@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 负责文档相关微服务的启动与配置
  */
 @SpringBootApplication
-@MapperScan("com.ptu.document.mapper")
+@MapperScan("com.ptu.document.dao")
 @EnableFeignClients(basePackages = "com.ptu.document.feign")
 public class DocumentApplication {
     /**

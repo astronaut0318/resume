@@ -45,6 +45,12 @@ spring:
         max-wait: -1
         max-idle: 8
         min-idle: 0
+        
+  # Sentinel标准配置
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8858
 
 # MyBatis-Plus配置
 mybatis-plus:
@@ -72,14 +78,30 @@ minio:
 
 # OnlyOffice配置
 onlyoffice:
-  document-server-url: http://localhost:8085
-  callback-url: http://localhost:9000/api/documents/callback
-  jwt-secret: your_secure_jwt_secret
+  document-server-url: http://192.168.64.129:80
+  callback-url: http://172.19.173.6:8002/documents/callback
+  jwt-secret: your_secure_jwt_secret_at_least_32_bytes_long
   token-ttl: 300 # 秒
   document:
-    storage-path: documents
+    storage-path: /app/documents
     versions-enabled: true
     max-versions: 10  # 每个文档最多保存的历史版本数
+  # 支持的文件格式配置
+  formats:
+    # 可编辑文档格式
+    editable:
+      text: docx,xlsx,pptx,odt,ods,odp,doc,xls,ppt,rtf,txt,html
+      spreadsheet: xlsx,ods,xls,csv
+      presentation: pptx,odp,ppt
+    # 支持转换的文档格式
+    convertible:
+      text: docx,xlsx,pptx,odt,ods,odp,doc,xls,ppt,rtf,txt,html,pdf,epub,fb2
+      spreadsheet: xlsx,ods,xls,csv,pdf
+      presentation: pptx,odp,ppt,pdf
+  # 忽略SSL证书错误
+  ignore-ssl: false
+  # 允许有损编辑的文件格式
+  lossy-edit-formats: epub,fb2,html,odt,ott,rtf,txt,csv,ods,ots,odp,otp
 
 # Swagger配置
 knife4j:
@@ -119,9 +141,4 @@ security:
     - /**/webjars/**
     - /**/v2/api-docs
     - /**/v3/api-docs
-    - /**/swagger-ui/**
-
-# Sentinel配置
-sentinel:
-  transport:
-    dashboard: localhost:8858 
+    - /**/swagger-ui/** 

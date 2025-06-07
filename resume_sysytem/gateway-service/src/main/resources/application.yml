@@ -31,24 +31,55 @@ spring:
       # 路由配置：所有微服务转发规则
       # =============================
       routes:
+        # 文档服务静态资源路由
+        - id: document-service-static
+          uri: lb://document-service
+          predicates:
+            - Path=/static/**
+          filters:
+            - StripPrefix=0
+            
+        # 文档服务API路由
+        - id: document-service
+          uri: lb://document-service
+          predicates:
+            - Path=/api/documents/**
+          filters:
+            - StripPrefix=1
+
+
+
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
           filters:
             - StripPrefix=2
+
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/users/**
           filters:
             - StripPrefix=1
+
+
         - id: file-service
           uri: lb://file-service
           predicates:
             - Path=/api/files/**
           filters:
             - StripPrefix=2
+            
+        # 文件URL接口路由
+        - id: file-url-service
+          uri: lb://file-service
+          predicates:
+            - Path=/api/files/*/url
+          filters:
+            - StripPrefix=2
+
+
         - id: order-service
           uri: lb://order-service
           predicates:
@@ -70,30 +101,47 @@ spring:
           filters:
             - StripPrefix=2
             - RewritePath=/template-files/(?<segment>.*), /template-files/${segment}
+
+
         - id: resume-service
           uri: lb://resume-service
           predicates:
             - Path=/api/resumes/**
           filters:
             - StripPrefix=1
+
+
         - id: ai-service
           uri: lb://ai-service
           predicates:
             - Path=/api/ai/**
           filters:
             - StripPrefix=2
+
+        - id: ai-service
+          uri: lb://ai-service
+          predicates:
+            - Path=/api/chat/**
+          filters:
+            - StripPrefix=1
+
+
         - id: notification-service
           uri: lb://notification-service
           predicates:
             - Path=/api/notifications/**
           filters:
             - StripPrefix=1
+
+
         - id: admin-api
           uri: lb://user-service
           predicates:
             - Path=/api/admin/**
           filters:
             - StripPrefix=2
+
+
         - id: system-api
           uri: lb://gateway-service
           predicates:
@@ -125,6 +173,16 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+    # Sentinel标准配置
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+      eager: true
+      scg:
+        fallback:
+          mode: response
+          response-status: 429
+          response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","data":null}'
 
 gateway:
   security:
@@ -137,6 +195,15 @@ gateway:
       - /api/users/register
       - /api/templates/categories
       - /api/templates
+      - /static/**
+      - /documents/test/**
+      - /documents/tests/**
+      - /documents/test/direct
+      - /documents/test/onlyoffice
+      - /documents/test/secure-json
+      - /documents/test/example-config
+      - /documents/test/blank-config
+      - /documents/server/info
       - /*/v2/api-docs
       - /*/v3/api-docs
       - /v2/api-docs
@@ -169,19 +236,6 @@ jwt:
   secret: ptu-resume-system-secret-key-for-jwt-token-generation-and-verification
   token-validity-in-seconds: 86400  # token有效期1天
   refresh-token-validity-in-seconds: 604800  # refresh token有效期7天
-
-# =============================
-# Sentinel流控配置
-# =============================
-sentinel:
-  transport:
-    dashboard: localhost:8858
-  eager: true
-  scg:
-    fallback:
-      mode: response
-      response-status: 429
-      response-body: '{"code":429,"message":"请求过于频繁，请稍后重试","data":null}'
 
 # =============================
 # 日志配置

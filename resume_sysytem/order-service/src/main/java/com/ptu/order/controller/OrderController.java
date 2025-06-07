@@ -2,8 +2,10 @@ package com.ptu.order.controller;
 
 import com.ptu.order.dto.OrderCreateDTO;
 import com.ptu.order.vo.OrderVO;
+import com.ptu.order.vo.PaymentVO;
 import com.ptu.order.service.OrderService;
 import com.ptu.common.api.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -12,8 +14,9 @@ import java.util.List;
 /**
  * 订单控制器，提供订单相关RESTful接口
  */
+@Slf4j
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 public class OrderController {
 
     @Autowired
@@ -60,6 +63,22 @@ public class OrderController {
         Long userId = 1L; // TODO: 获取当前登录用户ID
         orderService.cancelOrder(orderNo, userId);
         return R.ok(null, "取消成功");
+    }
+    
+    /**
+     * 支付订单
+     */
+    @PutMapping("/{orderNo}/pay")
+    public R<PaymentVO> payOrder(@PathVariable String orderNo) {
+        log.info("处理订单支付请求: orderNo={}", orderNo);
+        Long userId = 1L; // TODO: 获取当前登录用户ID
+        try {
+            PaymentVO paymentVO = orderService.processPayment(orderNo, userId);
+            return R.ok(paymentVO, "支付成功");
+        } catch (Exception e) {
+            log.error("订单支付处理失败: orderNo={}", orderNo, e);
+            return R.failed("支付处理失败: " + e.getMessage());
+        }
     }
 
     /**

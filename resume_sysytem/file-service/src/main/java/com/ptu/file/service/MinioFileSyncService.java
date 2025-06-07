@@ -24,8 +24,8 @@ public class MinioFileSyncService {
 
     // MinIO配置
     private static final String ENDPOINT = "http://127.0.0.1:9090";
-    private static final String ACCESS_KEY = "minioadmin";
-    private static final String SECRET_KEY = "minioadmin";
+    private static final String ACCESS_KEY = "ZMlUgS6Z3d4raCN3pVeT";
+    private static final String SECRET_KEY = "VOHLtWjk1WBFdiCpG06VPVTVgKsSp5Nl9w2D8vg8";
     private static final String BUCKET = "resume-templates";
     // 匹配 文件名_{id}.docx
     private static final Pattern RESUME_ID_PATTERN = Pattern.compile(".+_(\\d+)\\.docx");

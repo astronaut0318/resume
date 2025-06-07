@@ -13,15 +13,24 @@ spring:
     host: 127.0.0.1
     port: 6379
     database: 0
-
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        namespace: d0e61529-b169-481a-8e64-6c652f5729c8
+    # Sentinel标准配置
+    sentinel:
+      transport:
+        dashboard: localhost:8858
 minio:
   endpoint: http://127.0.0.1:9090
   access-key: ZMlUgS6Z3d4raCN3pVeT
   secret-key: VOHLtWjk1WBFdiCpG06VPVTVgKsSp5Nl9w2D8vg8
 
-# Sentinel配置
-sentinel:
-  transport:
-    dashboard: localhost:8858
 server:
   port: 8003

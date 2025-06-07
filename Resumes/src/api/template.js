@@ -50,6 +50,14 @@ export function getCollections(params) {
   })
 }
 
+// 获取收藏的模板详细信息
+export function getCollectedTemplates() {
+  return request({
+    url: '/api/templates/collections',
+    method: 'get'
+  })
+}
+
 // 分享模板
 export function shareTemplate(id) {
   return request({

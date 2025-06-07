@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 /**
  * OnlyOffice配置类
  */
@@ -37,6 +39,21 @@ public class OnlyOfficeConfig {
      */
     private Document document = new Document();
     
+    /**
+     * 文件格式配置
+     */
+    private Formats formats = new Formats();
+    
+    /**
+     * 是否忽略SSL证书错误
+     */
+    private boolean ignoreSsl = false;
+    
+    /**
+     * 允许有损编辑的文件格式
+     */
+    private String lossyEditFormats;
+    
     @Data
     public static class Document {
         /**
@@ -53,5 +70,18 @@ public class OnlyOfficeConfig {
          * 最大版本数
          */
         private int maxVersions = 10;
+    }
+    
+    @Data
+    public static class Formats {
+        /**
+         * 可编辑格式
+         */
+        private Map<String, String> editable;
+        
+        /**
+         * 可转换格式
+         */
+        private Map<String, String> convertible;
     }
 } 

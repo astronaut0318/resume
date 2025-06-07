@@ -2,6 +2,7 @@ package com.ptu.order.service;
 
 import com.ptu.order.dto.OrderCreateDTO;
 import com.ptu.order.vo.OrderVO;
+import com.ptu.order.vo.PaymentVO;
 import java.util.List;
 
 /**
@@ -40,6 +41,15 @@ public interface OrderService {
      * @param userId 用户ID
      */
     void cancelOrder(String orderNo, Long userId);
+    
+    /**
+     * 处理订单支付
+     * @param orderNo 订单编号
+     * @param userId 用户ID
+     * @return 支付结果
+     * @throws Exception 支付处理异常
+     */
+    PaymentVO processPayment(String orderNo, Long userId) throws Exception;
 
     /**
      * 处理支付回调

@@ -4,6 +4,21 @@ server:
 spring:
   application:
     name: ai-service
+  # 添加路径匹配策略，解决Swagger文档生成问题
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  # Sentinel标准配置
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/resume_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 ai:
   deepseek:
@@ -26,7 +41,3 @@ feign:
 #   secret: xxx
 #   expire: 86400
 
-# Sentinel配置
-sentinel:
-  transport:
-    dashboard: localhost:8858 

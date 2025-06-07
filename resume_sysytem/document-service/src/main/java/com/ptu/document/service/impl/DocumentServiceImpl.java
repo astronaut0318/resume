@@ -2,642 +2,710 @@ package com.ptu.document.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ptu.document.common.constants.DocumentConstant;
-import com.ptu.document.common.utils.JwtUtils;
-import com.ptu.document.config.MinioConfig;
+import com.ptu.document.common.util.DocumentUtil;
+import com.ptu.document.common.util.FileUtils;
+import com.ptu.document.common.util.JwtUtil;
 import com.ptu.document.config.OnlyOfficeConfig;
+import com.ptu.document.dao.DocumentMetadataMapper;
+import com.ptu.document.dao.DocumentVersionMapper;
 import com.ptu.document.dto.CallbackData;
 import com.ptu.document.dto.DocumentEditorConfig;
 import com.ptu.document.entity.DocumentMetadataEntity;
 import com.ptu.document.entity.DocumentVersionEntity;
-import com.ptu.document.mapper.DocumentMetadataMapper;
-import com.ptu.document.mapper.DocumentVersionMapper;
 import com.ptu.document.service.DocumentService;
-import com.ptu.document.service.MinioService;
 import com.ptu.document.vo.DocumentVersionVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 文档服务实现类
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
 
-    private final DocumentMetadataMapper metadataMapper;
-    private final DocumentVersionMapper versionMapper;
-    private final MinioService minioService;
-    private final MinioConfig minioConfig;
-    private final OnlyOfficeConfig onlyOfficeConfig;
-    private final ObjectMapper objectMapper;
-    private final com.ptu.document.feign.ResumeFeignClient resumeFeignClient;
+    @Autowired
+    private OnlyOfficeConfig onlyOfficeConfig;
+    
+    @Autowired
+    private DocumentMetadataMapper documentMetadataMapper;
+    
+    @Autowired
+    private DocumentVersionMapper documentVersionMapper;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * 导出简历为Word
+     *
      * @param resumeId 简历ID
-     * @param userId 用户ID
+     * @param userId   用户ID
      * @return Word文件流
      */
     @Override
     public InputStream exportResumeAsWord(Long resumeId, Long userId) {
-        // 1. 通过Feign获取简历详情
-        com.ptu.document.dto.ResumeDetailDTO resume = resumeFeignClient.getResumeDetail(resumeId, userId);
-        if (resume == null || resume.getUserId() == null || !resume.getUserId().equals(userId)) {
-            log.warn("用户{}无权导出简历{}或简历不存在", userId, resumeId);
+        // TODO: 实现导出简历为Word的功能
+        log.info("导出简历为Word: resumeId={}, userId={}", resumeId, userId);
+        return new ByteArrayInputStream(new byte[0]);
+    }
+
+    /**
+     * 导出简历为PDF
+     *
+     * @param resumeId 简历ID
+     * @param userId   用户ID
+     * @return PDF文件流
+     */
+    @Override
+    public InputStream exportResumeAsPdf(Long resumeId, Long userId) {
+        // TODO: 实现导出简历为PDF的功能
+        log.info("导出简历为PDF: resumeId={}, userId={}", resumeId, userId);
+        return new ByteArrayInputStream(new byte[0]);
+    }
+
+    /**
+     * 获取文档元数据
+     *
+     * @param sourceType 来源类型
+     * @param sourceId   来源ID
+     * @return 文档元数据
+     */
+    @Override
+    public DocumentMetadataEntity getDocumentMetadata(String sourceType, Long sourceId) {
+        if (sourceType == null || sourceId == null) {
             return null;
         }
+        
+        LambdaQueryWrapper<DocumentMetadataEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(DocumentMetadataEntity::getSourceType, sourceType.toUpperCase())
+               .eq(DocumentMetadataEntity::getSourceId, sourceId);
+        
+        return documentMetadataMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 保存文档元数据
+     *
+     * @param metadata 文档元数据
+     * @return 是否成功
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveDocumentMetadata(DocumentMetadataEntity metadata) {
+        if (metadata == null) {
+            return false;
+        }
+        
+        if (metadata.getId() != null) {
+            // 更新
+            return documentMetadataMapper.updateById(metadata) > 0;
+        } else {
+            // 新增
+            return documentMetadataMapper.insert(metadata) > 0;
+        }
+    }
+
+    /**
+     * 获取文档编辑器配置
+     *
+     * @param sourceType 来源类型：template/resume/file
+     * @param sourceId   来源ID
+     * @param mode       模式：view/edit/comment
+     * @param userId     用户ID
+     * @param userName   用户名称
+     * @return 编辑器配置
+     */
+    @Override
+    public DocumentEditorConfig getEditorConfig(String sourceType, Long sourceId, String mode, Long userId, String userName) {
         try {
-            // 2. 使用POI生成Word文档
-            org.apache.poi.xwpf.usermodel.XWPFDocument doc = new org.apache.poi.xwpf.usermodel.XWPFDocument();
-            // 标题
-            org.apache.poi.xwpf.usermodel.XWPFParagraph title = doc.createParagraph();
-            org.apache.poi.xwpf.usermodel.XWPFRun runTitle = title.createRun();
-            runTitle.setText(resume.getTitle() != null ? resume.getTitle() : "简历");
-            runTitle.setBold(true);
-            runTitle.setFontSize(18);
-            // 内容（简单示例，实际可根据content结构优化美化）
-            if (resume.getContent() != null) {
-                for (Map.Entry<String, Object> entry : resume.getContent().entrySet()) {
-                    org.apache.poi.xwpf.usermodel.XWPFParagraph p = doc.createParagraph();
-                    org.apache.poi.xwpf.usermodel.XWPFRun run = p.createRun();
-                    run.setText(entry.getKey() + ": " + String.valueOf(entry.getValue()));
+            // 获取文档元数据
+            DocumentMetadataEntity metadata = getDocumentMetadata(sourceType, sourceId);
+            if (metadata == null) {
+                log.error("获取文档元数据失败: sourceType={}, sourceId={}", sourceType, sourceId);
+                return null;
+            }
+            
+            // 检查权限
+            if (!checkPermission(sourceType, sourceId, userId, mode)) {
+                log.error("权限检查失败: sourceType={}, sourceId={}, userId={}, mode={}", sourceType, sourceId, userId, mode);
+                return null;
+            }
+            
+            // 确保文件存在
+            Path filePath = Paths.get(onlyOfficeConfig.getDocument().getStoragePath(), metadata.getFilePath());
+            if (!Files.exists(filePath)) {
+                log.warn("文件不存在: {}，将创建空白文件", filePath);
+                try {
+                    // 确保目录存在
+                    Files.createDirectories(filePath.getParent());
+                    
+                    // 根据文件类型创建不同的文件
+                    String fileExt = metadata.getFileExt().toLowerCase();
+                    if ("docx".equals(fileExt)) {
+                        // 创建Word文档
+                        FileUtils.createMinimalWordDocument(filePath);
+                    } else {
+                        // 创建普通空白文件
+                        Files.createFile(filePath);
+                        log.info("已创建空白文件: {}", filePath);
+                    }
+                } catch (IOException e) {
+                    log.error("创建文档文件失败: {}", filePath, e);
+                    return null;
                 }
             }
-            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-            doc.write(out);
-            return new java.io.ByteArrayInputStream(out.toByteArray());
+            
+            // 构建文档编辑器配置
+            DocumentEditorConfig config = new DocumentEditorConfig();
+            
+            // 设置文档类型
+            String docType = DocumentUtil.getDocumentType(metadata.getFileName(), onlyOfficeConfig);
+            config.setDocumentType(DocumentUtil.getDocumentEditorKey(docType));
+            
+            // 设置文档信息
+            String fileUrl = String.format("/api/documents/%s/%s/content", sourceType.toLowerCase(), sourceId);
+            DocumentEditorConfig.Document document = new DocumentEditorConfig.Document(
+                    metadata.getFileName(),
+                    fileUrl,
+                    metadata.getFileExt()
+            );
+            
+            // 设置文档权限
+            Map<String, Object> permissions = new HashMap<>();
+            permissions.put("download", true);
+            permissions.put("print", true);
+            if (DocumentUtil.MODE_EDIT.equals(mode) && DocumentUtil.isEditable(metadata.getFileName(), onlyOfficeConfig)) {
+                permissions.put("edit", true);
+                permissions.put("review", true);
+            } else {
+                permissions.put("edit", false);
+                permissions.put("review", false);
+            }
+            document.setPermissions(permissions);
+            
+            // 设置文档信息
+            Map<String, Object> info = new HashMap<>();
+            info.put("owner", userName);
+            info.put("uploaded", metadata.getCreateTime().toString());
+            info.put("favorite", false);
+            document.setInfo(info);
+            
+            config.setDocument(document);
+            
+            // 设置编辑器配置
+            DocumentEditorConfig.EditorConfig editorConfig = new DocumentEditorConfig.EditorConfig(
+                    mode,
+                    userId.toString(),
+                    userName
+            );
+            
+            // 设置回调URL
+            editorConfig.setCallbackUrl(onlyOfficeConfig.getCallbackUrl());
+            
+            config.setEditorConfig(editorConfig);
+            config.setDocserviceApiUrl(onlyOfficeConfig.getDocumentServerUrl());
+            
+            // 生成令牌
+            if (StringUtils.hasText(onlyOfficeConfig.getJwtSecret())) {
+                Map<String, Object> tokenData = new HashMap<>();
+                tokenData.put("document", document);
+                tokenData.put("editorConfig", editorConfig);
+                String token = JwtUtil.generateToken(tokenData, onlyOfficeConfig);
+                config.setToken(token);
+            }
+            
+            return config;
         } catch (Exception e) {
-            log.error("导出Word异常", e);
+            log.error("获取编辑器配置异常", e);
             return null;
         }
     }
 
     /**
-     * 导出简历为PDF
-     * @param resumeId 简历ID
-     * @param userId 用户ID
-     * @return PDF文件流
+     * 处理回调
+     *
+     * @param body 回调请求体
+     * @return 处理结果
      */
-    @Override
-    public InputStream exportResumeAsPdf(Long resumeId, Long userId) {
-        // 1. 先生成Word文档流
-        InputStream wordStream = exportResumeAsWord(resumeId, userId);
-        if (wordStream == null) return null;
-        try {
-            // 2. 使用PDFBox将Word转为PDF（简单文本方式，复杂格式建议用OnlyOffice服务）
-            org.apache.poi.xwpf.usermodel.XWPFDocument doc = new org.apache.poi.xwpf.usermodel.XWPFDocument(wordStream);
-            java.io.ByteArrayOutputStream pdfOut = new java.io.ByteArrayOutputStream();
-            org.apache.pdfbox.pdmodel.PDDocument pdfDoc = new org.apache.pdfbox.pdmodel.PDDocument();
-            for (org.apache.poi.xwpf.usermodel.XWPFParagraph para : doc.getParagraphs()) {
-                org.apache.pdfbox.pdmodel.PDPage page = new org.apache.pdfbox.pdmodel.PDPage();
-                pdfDoc.addPage(page);
-                org.apache.pdfbox.pdmodel.PDPageContentStream contentStream = new org.apache.pdfbox.pdmodel.PDPageContentStream(pdfDoc, page);
-                contentStream.beginText();
-                contentStream.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA, 12);
-                contentStream.newLineAtOffset(50, 700);
-                contentStream.showText(para.getText());
-                contentStream.endText();
-                contentStream.close();
-            }
-            pdfDoc.save(pdfOut);
-            pdfDoc.close();
-            return new java.io.ByteArrayInputStream(pdfOut.toByteArray());
-        } catch (Exception e) {
-            log.error("导出PDF异常", e);
-            return null;
-        }
-    }
-
-    @Override
-    public DocumentMetadataEntity getDocumentMetadata(String sourceType, Long sourceId) {
-        return metadataMapper.getBySourceTypeAndSourceId(sourceType, sourceId);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean saveDocumentMetadata(DocumentMetadataEntity metadata) {
-        // 查询是否已存在
-        DocumentMetadataEntity existingMetadata = metadataMapper.getBySourceTypeAndSourceId(
-                metadata.getSourceType(), metadata.getSourceId());
-        
-        if (existingMetadata != null) {
-            // 更新
-            metadata.setId(existingMetadata.getId());
-            return metadataMapper.updateById(metadata) > 0;
-        } else {
-            // 新增
-            return metadataMapper.insert(metadata) > 0;
-        }
-    }
-
-    @Override
-    public DocumentEditorConfig getEditorConfig(String sourceType, Long sourceId, String mode, Long userId, String userName) {
-        // 1. 检查参数
-        if (!StringUtils.hasText(sourceType) || sourceId == null || userId == null) {
-            log.error("获取文档编辑器配置参数错误: sourceType={}, sourceId={}, userId={}", sourceType, sourceId, userId);
-            return null;
-        }
-        
-        // 2. 获取文档元数据
-        DocumentMetadataEntity metadata = getDocumentMetadata(sourceType, sourceId);
-        if (metadata == null) {
-            log.error("获取文档元数据失败: sourceType={}, sourceId={}", sourceType, sourceId);
-            return null;
-        }
-        
-        // 3. 检查权限
-        if (!checkPermission(sourceType, sourceId, userId, mode)) {
-            log.error("用户无权限访问文档: sourceType={}, sourceId={}, userId={}, mode={}", 
-                    sourceType, sourceId, userId, mode);
-            return null;
-        }
-        
-        // 4. 生成文档访问URL
-        String fileUrl = minioService.generatePresignedUrl(
-                minioConfig.getDocumentBucket(), 
-                metadata.getStoragePath(),
-                30,
-                TimeUnit.MINUTES);
-
-        if (!StringUtils.hasText(fileUrl)) {
-            log.error("生成文档访问URL失败: sourceType={}, sourceId={}", sourceType, sourceId);
-            return null;
-        }
-
-        // 5. 创建编辑器配置
-        DocumentEditorConfig config = new DocumentEditorConfig();
-
-        // 设置文档类型
-        config.setDocumentType(getDocumentType(metadata.getFileName()));
-
-        // 设置文档信息
-        DocumentEditorConfig.Document document = new DocumentEditorConfig.Document(
-                metadata.getFileName(),
-                fileUrl,
-                getFileExtension(metadata.getFileName())
-        );
-        config.setDocument(document);
-
-        // 设置编辑器配置
-        DocumentEditorConfig.EditorConfig editorConfig = new DocumentEditorConfig.EditorConfig(
-                mode,
-                userId.toString(),
-                userName != null ? userName : "用户" + userId
-        );
-        config.setEditorConfig(editorConfig);
-
-        // 如果是编辑模式，设置回调URL
-        if (DocumentConstant.MODE_EDIT.equals(mode)) {
-            config.setCallbackUrl(onlyOfficeConfig.getCallbackUrl());
-            editorConfig.setCallbackUrl(onlyOfficeConfig.getCallbackUrl());
-        }
-
-        // 6. 生成token
-        String token = JwtUtils.generateDocumentToken(
-                sourceType,
-                sourceId,
-                userId,
-                mode,
-                onlyOfficeConfig.getJwtSecret(),
-                onlyOfficeConfig.getTokenTtl()
-        );
-        config.setToken(token);
-
-        return config;
-    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean handleCallback(String body) {
         try {
-            // 1. 解析回调数据
+            log.info("OnlyOffice回调请求: {}", body);
+            
+            // 解析回调数据
             CallbackData callbackData = objectMapper.readValue(body, CallbackData.class);
             if (callbackData == null) {
                 log.error("解析回调数据失败: {}", body);
                 return false;
             }
-
-            // 2. 验证token
-            if (!StringUtils.hasText(callbackData.getToken()) ||
-                    !JwtUtils.validateToken(callbackData.getToken(), onlyOfficeConfig.getJwtSecret())) {
-                log.error("回调Token无效");
+            
+            // 验证token
+            if (StringUtils.hasText(onlyOfficeConfig.getJwtSecret()) && callbackData.getToken() != null) {
+                boolean valid = JwtUtil.validateToken(callbackData.getToken(), onlyOfficeConfig);
+                if (!valid) {
+                    log.error("验证token失败: {}", callbackData.getToken());
+                    return false;
+                }
+            }
+            
+            // 记录用户信息
+            if (callbackData.getUsers() != null && !callbackData.getUsers().isEmpty()) {
+                log.info("文档操作用户: {}", callbackData.getUsers());
+            }
+            
+            // 记录操作信息
+            if (callbackData.getActions() != null && !callbackData.getActions().isEmpty()) {
+                for (CallbackData.Action action : callbackData.getActions()) {
+                    log.info("文档操作: 类型={}, 用户ID={}", 
+                            action.getType() == 0 ? "打开文档" : 
+                            action.getType() == 1 ? "保存文档" : "其他操作", 
+                            action.getUserId());
+                }
+            }
+            
+            // 处理不同的回调状态
+            switch (callbackData.getStatus()) {
+                case 0: // 文档编辑开始
+                    log.info("文档编辑开始: key={}", callbackData.getKey());
+                    break;
+                case 1: // 文档已准备就绪（强制保存模式）
+                    log.info("文档已准备就绪(强制保存模式): url={}", callbackData.getUrl());
+                    return saveDocument(callbackData);
+                case 2: // 文档已保存
+                    log.info("文档已保存: url={}", callbackData.getUrl());
+                    return saveDocument(callbackData);
+                case 3: // 文档保存错误
+                    log.error("文档保存错误: url={}, 错误码={}", callbackData.getUrl(), callbackData.getError());
+                    return false;
+                case 4: // 文档已编辑
+                    log.info("文档已编辑: key={}", callbackData.getKey());
+                    break;
+                default:
+                    log.warn("未知的回调状态: {}", callbackData.getStatus());
+                    break;
+            }
+            
+            return true;
+        } catch (Exception e) {
+            log.error("处理回调异常", e);
+            return false;
+        }
+    }
+    
+    /**
+     * 保存文档
+     * @param callbackData 回调数据
+     * @return 是否成功
+     */
+    private boolean saveDocument(CallbackData callbackData) {
+        try {
+            if (callbackData == null) {
+                log.error("保存文档失败: 回调数据为空");
                 return false;
             }
-
-            // 3. 解析token，获取sourceType和sourceId
-            var claims = JwtUtils.parseToken(callbackData.getToken(), onlyOfficeConfig.getJwtSecret());
-            String sourceType = claims.get("sourceType", String.class);
-            Long sourceId = claims.get("sourceId", Long.class);
-            Long userId = claims.get("userId", Long.class);
-
-            // 4. 获取文档元数据
+            
+            // 处理状态=1的强制保存模式，此时可能没有URL，直接返回成功
+            if (callbackData.getStatus() != null && callbackData.getStatus() == 1 
+                    && !StringUtils.hasText(callbackData.getUrl())) {
+                log.info("强制保存模式，尚未有URL，返回成功");
+                return true;
+            }
+            
+            // 确保URL不为空
+            if (!StringUtils.hasText(callbackData.getUrl())) {
+                log.error("保存文档失败: URL为空");
+                return false;
+            }
+            
+            String url = callbackData.getUrl();
+            log.info("开始下载并保存文档: url={}", url);
+            
+            // 解析URL中的文档信息
+            // 假设URL格式: /api/documents/{sourceType}/{sourceId}/content
+            String[] parts = url.split("/");
+            if (parts.length < 5) {
+                log.error("无法从URL解析文档信息: {}", url);
+                return false;
+            }
+            
+            String sourceType = parts[parts.length - 3];
+            String sourceIdStr = parts[parts.length - 2];
+            
+            Long sourceId;
+            try {
+                sourceId = Long.parseLong(sourceIdStr);
+            } catch (NumberFormatException e) {
+                log.error("无效的sourceId: {}", sourceIdStr);
+                return false;
+            }
+            
+            // 获取文档元数据
             DocumentMetadataEntity metadata = getDocumentMetadata(sourceType, sourceId);
             if (metadata == null) {
                 log.error("获取文档元数据失败: sourceType={}, sourceId={}", sourceType, sourceId);
                 return false;
             }
-
-            // 5. 处理回调状态
-            if (callbackData.getStatus() == DocumentConstant.CALLBACK_STATUS_SAVED) {
-                // 5.1 状态为已保存，下载新文件并更新
-                log.info("文档已保存: sourceType={}, sourceId={}", sourceType, sourceId);
-
-                // 下载文件
-                URL url = new URL(callbackData.getUrl());
-                URLConnection connection = url.openConnection();
-                connection.setConnectTimeout(5000);
-                connection.setReadTimeout(5000);
-
-                try (InputStream inputStream = connection.getInputStream()) {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(buffer)) > 0) {
-                        outputStream.write(buffer, 0, length);
-                    }
-
-                    byte[] fileData = outputStream.toByteArray();
-
-                    // 保存文件到MinIO
-                    boolean saveResult = minioService.putObject(
-                            minioConfig.getDocumentBucket(),
-                            metadata.getStoragePath(),
-                            fileData);
-
-                    if (!saveResult) {
-                        log.error("保存文件到MinIO失败: sourceType={}, sourceId={}", sourceType, sourceId);
-                        return false;
-                    }
-
-                    // 更新文档元数据
-                    metadata.setFileSize((long) fileData.length);
-                    metadata.setUpdateTime(LocalDateTime.now());
-                    saveDocumentMetadata(metadata);
-
-                    // 如果版本控制已启用，创建新版本
-                    if (onlyOfficeConfig.getDocument().isVersionsEnabled()) {
-                        createDocumentVersion(sourceType, sourceId, userId);
-                    }
+            
+            // 下载文件
+            try (InputStream fileStream = downloadFromUrl(url)) {
+                if (fileStream == null) {
+                    log.error("下载文件失败: {}", url);
+                    return false;
                 }
-
+                
+                // 确保存储目录存在
+                Path storagePath = Paths.get(onlyOfficeConfig.getDocument().getStoragePath());
+                if (!Files.exists(storagePath)) {
+                    Files.createDirectories(storagePath);
+                }
+                
+                // 保存文件
+                Path filePath = Paths.get(onlyOfficeConfig.getDocument().getStoragePath(), metadata.getFilePath());
+                Files.createDirectories(filePath.getParent());
+                Files.copy(fileStream, filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                
+                log.info("文档保存成功: {}", filePath);
                 return true;
-            } else if (callbackData.getStatus() == DocumentConstant.CALLBACK_STATUS_FAILED) {
-                // 5.2 状态为保存失败
-                log.error("文档保存失败: sourceType={}, sourceId={}, error={}, errorDesc={}",
-                        sourceType, sourceId, callbackData.getError(), callbackData.getErrorDescription());
-                return false;
             }
-
-            return true;
         } catch (Exception e) {
-            log.error("处理回调异常: {}", e.getMessage(), e);
+            log.error("保存文档异常", e);
             return false;
         }
     }
 
+    /**
+     * 创建文档版本
+     *
+     * @param sourceType 来源类型
+     * @param sourceId   来源ID
+     * @param userId     用户ID
+     * @return 版本ID
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createDocumentVersion(String sourceType, Long sourceId, Long userId) {
         try {
-            // 1. 获取文档元数据
+            // 获取文档元数据
             DocumentMetadataEntity metadata = getDocumentMetadata(sourceType, sourceId);
             if (metadata == null) {
                 log.error("获取文档元数据失败: sourceType={}, sourceId={}", sourceType, sourceId);
                 return null;
             }
-
-            // 2. 获取当前最新版本号
-            Integer latestVersion = versionMapper.getLatestVersion(sourceType, sourceId);
-            int newVersion = (latestVersion == null) ? 1 : latestVersion + 1;
-
-            // 3. 生成版本文件路径
-            String versionStoragePath = sourceType + "/" + sourceId + "/versions/v" + newVersion +
-                    getFileExtension(metadata.getFileName());
-
-            // 4. 从主文件复制到版本文件
-            byte[] fileData = minioService.getObjectBytes(minioConfig.getDocumentBucket(), metadata.getStoragePath());
-            if (fileData == null) {
-                log.error("获取文档内容失败: sourceType={}, sourceId={}", sourceType, sourceId);
+            
+            // 检查权限
+            if (!checkPermission(sourceType, sourceId, userId, DocumentUtil.MODE_VIEW)) {
+                log.error("权限检查失败: sourceType={}, sourceId={}, userId={}", sourceType, sourceId, userId);
                 return null;
             }
-
-            boolean saveResult = minioService.putObject(
-                    minioConfig.getVersionBucket(),
-                    versionStoragePath,
-                    fileData);
-
-            if (!saveResult) {
-                log.error("保存版本文件失败: sourceType={}, sourceId={}, version={}",
-                        sourceType, sourceId, newVersion);
-                return null;
-            }
-
-            // 5. 创建版本记录
-            DocumentVersionEntity version = new DocumentVersionEntity();
-            version.setSourceType(sourceType);
-            version.setSourceId(sourceId);
-            version.setVersion(newVersion);
-            version.setStoragePath(versionStoragePath);
-            version.setFileSize((long) fileData.length);
-            version.setUserId(userId);
-
-            versionMapper.insert(version);
-
-            // 6. 检查并清理过多的版本
-            if (onlyOfficeConfig.getDocument().getMaxVersions() > 0) {
-                cleanOldVersions(sourceType, sourceId, onlyOfficeConfig.getDocument().getMaxVersions());
-            }
-
-            return version.getId();
+            
+            // 获取最大版本号
+            Integer maxVersion = documentVersionMapper.getMaxVersionNumber(sourceType, sourceId);
+            int newVersion = (maxVersion == null) ? 1 : maxVersion + 1;
+            
+            // 创建新版本
+            DocumentVersionEntity versionEntity = new DocumentVersionEntity();
+            versionEntity.setSourceType(sourceType.toUpperCase());
+            versionEntity.setSourceId(sourceId);
+            versionEntity.setVersion(newVersion);
+            versionEntity.setFileName(metadata.getFileName());
+            versionEntity.setFilePath(metadata.getFilePath());
+            versionEntity.setFileSize(metadata.getFileSize());
+            versionEntity.setFileType(metadata.getFileType());
+            versionEntity.setModifierId(userId);
+            versionEntity.setModifierName("用户" + userId); // 实际应该从用户服务获取用户名
+            versionEntity.setCreateTime(LocalDateTime.now());
+            
+            documentVersionMapper.insert(versionEntity);
+            
+            return versionEntity.getId();
         } catch (Exception e) {
-            log.error("创建文档版本异常: {}", e.getMessage(), e);
+            log.error("创建文档版本异常", e);
             return null;
         }
     }
 
+    /**
+     * 获取文档版本列表
+     *
+     * @param sourceType 来源类型
+     * @param sourceId   来源ID
+     * @return 版本列表
+     */
     @Override
     public List<DocumentVersionVO> getVersionList(String sourceType, Long sourceId) {
         try {
-            // 1. 获取版本列表
-            List<DocumentVersionEntity> versions = versionMapper.getVersionList(sourceType, sourceId);
-            if (versions == null || versions.isEmpty()) {
-                return new ArrayList<>();
+            // 查询版本列表
+            LambdaQueryWrapper<DocumentVersionEntity> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(DocumentVersionEntity::getSourceType, sourceType.toUpperCase())
+                   .eq(DocumentVersionEntity::getSourceId, sourceId)
+                   .orderByDesc(DocumentVersionEntity::getVersion);
+            
+            List<DocumentVersionEntity> versionEntities = documentVersionMapper.selectList(wrapper);
+            
+            // 如果版本列表为空，则从元数据自动创建初始版本
+            if (versionEntities == null || versionEntities.isEmpty()) {
+                log.info("版本列表为空，创建初始版本: sourceType={}, sourceId={}", sourceType, sourceId);
+                DocumentMetadataEntity metadata = getDocumentMetadata(sourceType, sourceId);
+                if (metadata != null) {
+                    // 创建初始版本
+                    DocumentVersionEntity initialVersion = new DocumentVersionEntity();
+                    initialVersion.setSourceType(sourceType.toUpperCase());
+                    initialVersion.setSourceId(sourceId);
+                    initialVersion.setVersion(1);
+                    initialVersion.setFileName(metadata.getFileName());
+                    initialVersion.setFilePath(metadata.getFilePath());
+                    initialVersion.setFileSize(metadata.getFileSize());
+                    initialVersion.setFileType(metadata.getFileType());
+                    initialVersion.setModifierId(metadata.getCreatorId());
+                    initialVersion.setModifierName(metadata.getCreatorName());
+                    initialVersion.setChangeSummary("初始版本");
+                    initialVersion.setCreateTime(LocalDateTime.now());
+                    
+                    documentVersionMapper.insert(initialVersion);
+                    
+                    // 重新查询
+                    versionEntities = documentVersionMapper.selectList(wrapper);
+                    log.info("已创建初始版本: {}", initialVersion);
+                }
             }
-
-            // 2. 转换为VO
-            List<DocumentVersionVO> versionVOList = new ArrayList<>(versions.size());
-            for (DocumentVersionEntity version : versions) {
+            
+            // 转换为VO
+            return versionEntities.stream().map(entity -> {
                 DocumentVersionVO vo = new DocumentVersionVO();
-                vo.setId(version.getId());
-                vo.setVersion(version.getVersion());
-                vo.setFileSize(version.getFileSize());
-                vo.setUserId(version.getUserId());
-                vo.setCreateTime(version.getCreateTime());
-                vo.setIsCurrent(false);
-
-                // 生成预览URL
-                String previewUrl = minioService.generatePresignedUrl(
-                        minioConfig.getVersionBucket(),
-                        version.getStoragePath(),
-                        30,
-                        TimeUnit.MINUTES);
-                vo.setPreviewUrl(previewUrl);
-
-                versionVOList.add(vo);
-            }
-
-            // 如果有版本，将最新版本标记为当前版本
-            if (!versionVOList.isEmpty()) {
-                versionVOList.get(0).setIsCurrent(true);
-            }
-
-            return versionVOList;
+                BeanUtils.copyProperties(entity, vo);
+                return vo;
+            }).collect(Collectors.toList());
         } catch (Exception e) {
-            log.error("获取文档版本列表异常: {}", e.getMessage(), e);
-            return new ArrayList<>();
+            log.error("获取文档版本列表异常", e);
+            return Collections.emptyList();
         }
     }
 
+    /**
+     * 获取指定版本
+     *
+     * @param versionId 版本ID
+     * @return 版本信息
+     */
     @Override
     public DocumentVersionVO getVersion(Long versionId) {
         try {
-            // 1. 获取版本信息
-            DocumentVersionEntity version = versionMapper.selectById(versionId);
-            if (version == null) {
+            DocumentVersionEntity entity = documentVersionMapper.selectById(versionId);
+            if (entity == null) {
                 return null;
             }
-
-            // 2. 转换为VO
+            
             DocumentVersionVO vo = new DocumentVersionVO();
-            vo.setId(version.getId());
-            vo.setVersion(version.getVersion());
-            vo.setFileSize(version.getFileSize());
-            vo.setUserId(version.getUserId());
-            vo.setCreateTime(version.getCreateTime());
-
-            // 生成预览URL
-            String previewUrl = minioService.generatePresignedUrl(
-                    minioConfig.getVersionBucket(),
-                    version.getStoragePath(),
-                    30,
-                    TimeUnit.MINUTES);
-            vo.setPreviewUrl(previewUrl);
-
+            BeanUtils.copyProperties(entity, vo);
             return vo;
         } catch (Exception e) {
-            log.error("获取文档版本异常: {}", e.getMessage(), e);
+            log.error("获取指定版本异常", e);
             return null;
         }
     }
 
+    /**
+     * 预览指定版本
+     *
+     * @param versionId 版本ID
+     * @param userId    用户ID
+     * @param userName  用户名
+     * @return 预览配置
+     */
     @Override
     public DocumentEditorConfig previewVersion(Long versionId, Long userId, String userName) {
         try {
-            // 1. 获取版本信息
-            DocumentVersionEntity version = versionMapper.selectById(versionId);
+            // 获取版本信息
+            DocumentVersionEntity version = documentVersionMapper.selectById(versionId);
             if (version == null) {
-                log.error("版本不存在: versionId={}", versionId);
+                log.error("获取版本信息失败: versionId={}", versionId);
                 return null;
             }
-
-            // 2. 获取文档元数据
-            DocumentMetadataEntity metadata = getDocumentMetadata(version.getSourceType(), version.getSourceId());
-            if (metadata == null) {
-                log.error("获取文档元数据失败: sourceType={}, sourceId={}",
-                        version.getSourceType(), version.getSourceId());
+            
+            // 检查权限
+            if (!checkPermission(version.getSourceType(), version.getSourceId(), userId, DocumentUtil.MODE_VIEW)) {
+                log.error("权限检查失败: versionId={}, userId={}", versionId, userId);
                 return null;
             }
-
-            // 3. 检查权限
-            if (!checkPermission(version.getSourceType(), version.getSourceId(), userId, DocumentConstant.MODE_VIEW)) {
-                log.error("用户无权限预览文档版本: versionId={}, userId={}", versionId, userId);
-                return null;
-            }
-
-            // 4. 生成文档访问URL
-            String fileUrl = minioService.generatePresignedUrl(
-                    minioConfig.getVersionBucket(),
-                    version.getStoragePath(),
-                    30,
-                    TimeUnit.MINUTES);
-
-            if (!StringUtils.hasText(fileUrl)) {
-                log.error("生成文档版本访问URL失败: versionId={}", versionId);
-                return null;
-            }
-
-            // 5. 创建编辑器配置
+            
+            // 构建文档编辑器配置
             DocumentEditorConfig config = new DocumentEditorConfig();
-
+            
             // 设置文档类型
-            config.setDocumentType(getDocumentType(metadata.getFileName()));
-
+            String fileExt = DocumentUtil.getFileExtension(version.getFileName());
+            String docType = DocumentUtil.getDocumentType(version.getFileName(), onlyOfficeConfig);
+            config.setDocumentType(DocumentUtil.getDocumentEditorKey(docType));
+            
             // 设置文档信息
+            String fileUrl = String.format("/api/documents/versions/%s/content", versionId);
             DocumentEditorConfig.Document document = new DocumentEditorConfig.Document(
-                    metadata.getFileName() + " (版本 " + version.getVersion() + ")",
+                    version.getFileName(),
                     fileUrl,
-                    getFileExtension(metadata.getFileName())
+                    fileExt
             );
+            
+            // 设置文档权限（只读）
+            Map<String, Object> permissions = new HashMap<>();
+            permissions.put("download", true);
+            permissions.put("print", true);
+            permissions.put("edit", false);
+            permissions.put("review", false);
+            document.setPermissions(permissions);
+            
+            // 设置文档信息
+            Map<String, Object> info = new HashMap<>();
+            info.put("owner", version.getModifierName());
+            info.put("uploaded", version.getCreateTime().toString());
+            info.put("favorite", false);
+            document.setInfo(info);
+            
             config.setDocument(document);
-
+            
             // 设置编辑器配置
             DocumentEditorConfig.EditorConfig editorConfig = new DocumentEditorConfig.EditorConfig(
-                    DocumentConstant.MODE_VIEW,
+                    DocumentUtil.MODE_VIEW,
                     userId.toString(),
-                    userName != null ? userName : "用户" + userId
+                    userName
             );
+            
             config.setEditorConfig(editorConfig);
-
-            // 6. 生成token
-            String token = JwtUtils.generateDocumentToken(
-                    version.getSourceType(),
-                    version.getSourceId(),
-                    userId,
-                    DocumentConstant.MODE_VIEW,
-                    onlyOfficeConfig.getJwtSecret(),
-                    onlyOfficeConfig.getTokenTtl()
-            );
-            config.setToken(token);
-
+            config.setDocserviceApiUrl(onlyOfficeConfig.getDocumentServerUrl());
+            
+            // 生成令牌
+            if (StringUtils.hasText(onlyOfficeConfig.getJwtSecret())) {
+                Map<String, Object> tokenData = new HashMap<>();
+                tokenData.put("document", document);
+                tokenData.put("editorConfig", editorConfig);
+                String token = JwtUtil.generateToken(tokenData, onlyOfficeConfig);
+                config.setToken(token);
+            }
+            
             return config;
         } catch (Exception e) {
-            log.error("预览文档版本异常: {}", e.getMessage(), e);
+            log.error("预览指定版本异常", e);
             return null;
         }
     }
 
+    /**
+     * 下载文档
+     *
+     * @param sourceType 来源类型
+     * @param sourceId   来源ID
+     * @return 文件流
+     */
     @Override
     public InputStream downloadDocument(String sourceType, Long sourceId) {
         try {
-            // 1. 获取文档元数据
+            // 获取文档元数据
             DocumentMetadataEntity metadata = getDocumentMetadata(sourceType, sourceId);
             if (metadata == null) {
                 log.error("获取文档元数据失败: sourceType={}, sourceId={}", sourceType, sourceId);
                 return null;
             }
-
-            // 2. 获取文档内容
-            return minioService.getObject(minioConfig.getDocumentBucket(), metadata.getStoragePath());
-        } catch (Exception e) {
-            log.error("下载文档异常: {}", e.getMessage(), e);
-            return null;
-        }
-    }
-
-    @Override
-    public InputStream downloadVersion(Long versionId) {
-        try {
-            // 1. 获取版本信息
-            DocumentVersionEntity version = versionMapper.selectById(versionId);
-            if (version == null) {
-                log.error("版本不存在: versionId={}", versionId);
+            
+            // 读取文件
+            Path filePath = Paths.get(onlyOfficeConfig.getDocument().getStoragePath(), metadata.getFilePath());
+            if (!Files.exists(filePath)) {
+                log.error("文件不存在: {}", filePath);
                 return null;
             }
             
-            // 2. 获取版本文件内容
-            return minioService.getObject(minioConfig.getVersionBucket(), version.getStoragePath());
+            return Files.newInputStream(filePath);
         } catch (Exception e) {
-            log.error("下载文档版本异常: {}", e.getMessage(), e);
+            log.error("下载文档异常", e);
             return null;
         }
     }
 
+    /**
+     * 下载指定版本
+     *
+     * @param versionId 版本ID
+     * @return 文件流
+     */
     @Override
-    public boolean checkPermission(String sourceType, Long sourceId, Long userId, String mode) {
-        // 根据不同的sourceType实现不同的权限检查逻辑
-        // 此处简单实现，实际项目中需要根据业务需求进行权限控制
-        if (DocumentConstant.SOURCE_TYPE_TEMPLATE.equals(sourceType)) {
-            // 模板文件：管理员可编辑，其他用户只能查看
-            return true; // 此处简化，实际应从用户服务获取用户角色判断
-        } else if (DocumentConstant.SOURCE_TYPE_RESUME.equals(sourceType)) {
-            // 简历文件：只有所有者可编辑，其他用户不可访问
-            return true; // 此处简化，实际应从简历服务获取简历所有者判断
-        } else if (DocumentConstant.SOURCE_TYPE_FILE.equals(sourceType)) {
-            // 普通文件：只有所有者可编辑，其他用户不可访问
-            return true; // 此处简化，实际应从文件服务获取文件所有者判断
-        }
-        
-        return false;
-    }
-    
-    /**
-     * 获取文档类型
-     *
-     * @param fileName 文件名
-     * @return 文档类型
-     */
-    private String getDocumentType(String fileName) {
-        if (fileName == null) {
-            return DocumentConstant.DOC_TYPE_WORD;
-        }
-        
-        String lowerFileName = fileName.toLowerCase();
-        if (lowerFileName.endsWith(".xlsx") || lowerFileName.endsWith(".xls")) {
-            return DocumentConstant.DOC_TYPE_EXCEL;
-        } else if (lowerFileName.endsWith(".pptx") || lowerFileName.endsWith(".ppt")) {
-            return DocumentConstant.DOC_TYPE_PPTX;
-        } else {
-            return DocumentConstant.DOC_TYPE_WORD;
-        }
-    }
-    
-    /**
-     * 获取文件扩展名
-     *
-     * @param fileName 文件名
-     * @return 文件扩展名
-     */
-    private String getFileExtension(String fileName) {
-        if (fileName == null || !fileName.contains(".")) {
-            return "";
-        }
-        
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
-    }
-    
-    /**
-     * 清理旧版本
-     *
-     * @param sourceType 来源类型
-     * @param sourceId 来源ID
-     * @param maxVersions 最大版本数
-     */
-    private void cleanOldVersions(String sourceType, Long sourceId, int maxVersions) {
+    public InputStream downloadVersion(Long versionId) {
         try {
-            // 1. 获取所有版本
-            List<DocumentVersionEntity> versions = versionMapper.getVersionList(sourceType, sourceId);
-            if (versions == null || versions.size() <= maxVersions) {
-                return;
+            // 获取版本信息
+            DocumentVersionEntity version = documentVersionMapper.selectById(versionId);
+            if (version == null) {
+                log.error("获取版本信息失败: versionId={}", versionId);
+                return null;
             }
             
-            // 2. 删除多余的版本
-            for (int i = maxVersions; i < versions.size(); i++) {
-                DocumentVersionEntity version = versions.get(i);
-                
-                // 删除版本文件
-                minioService.removeObject(minioConfig.getVersionBucket(), version.getStoragePath());
-                
-                // 删除版本记录
-                versionMapper.deleteById(version.getId());
+            // 读取文件
+            Path filePath = Paths.get(onlyOfficeConfig.getDocument().getStoragePath(), version.getFilePath());
+            if (!Files.exists(filePath)) {
+                log.error("文件不存在: {}", filePath);
+                return null;
+            }
+            
+            return Files.newInputStream(filePath);
+        } catch (Exception e) {
+            log.error("下载指定版本异常", e);
+            return null;
+        }
+    }
+
+    /**
+     * 检查权限
+     *
+     * @param sourceType 来源类型
+     * @param sourceId   来源ID
+     * @param userId     用户ID
+     * @param mode       操作模式
+     * @return 是否有权限
+     */
+    @Override
+    public boolean checkPermission(String sourceType, Long sourceId, Long userId, String mode) {
+        // TODO: 实现权限检查逻辑
+        // 暂时直接返回true，后续根据业务需求实现
+        return true;
+    }
+
+    /**
+     * 从URL下载文件
+     *
+     * @param url 文件URL
+     * @return 文件输入流
+     */
+    private InputStream downloadFromUrl(String url) {
+        try {
+            URL fileUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) fileUrl.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(30000);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 ResumeSystem/1.0");
+            
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                return connection.getInputStream();
+            } else {
+                log.error("下载文件失败: HTTP状态码={}, url={}", connection.getResponseCode(), url);
+                return null;
             }
         } catch (Exception e) {
-            log.error("清理旧版本异常: {}", e.getMessage(), e);
+            log.error("从URL下载文件异常: {}", url, e);
+            return null;
         }
     }
 } 

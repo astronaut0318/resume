@@ -53,6 +53,11 @@ spring:
       max-request-size: 20MB
 
 # Feign配置
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8858
+
 feign:
   client:
     config:
@@ -118,9 +123,4 @@ security:
     - /**/webjars/**
     - /**/v2/api-docs
     - /**/v3/api-docs
-    - /**/swagger-ui/**
-
-# Sentinel配置
-sentinel:
-  transport:
-    dashboard: localhost:8858 
+    - /**/swagger-ui/** 

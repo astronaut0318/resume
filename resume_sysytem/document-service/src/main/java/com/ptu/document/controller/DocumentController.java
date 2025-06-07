@@ -3,7 +3,9 @@ package com.ptu.document.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ptu.common.api.R;
 import com.ptu.document.common.constants.DocumentConstant;
+import com.ptu.document.config.OnlyOfficeConfig;
 import com.ptu.document.dto.DocumentEditorConfig;
+import com.ptu.document.entity.DocumentMetadataEntity;
 import com.ptu.document.service.DocumentService;
 import com.ptu.document.vo.DocumentVersionVO;
 import io.swagger.annotations.Api;
@@ -16,9 +18,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,6 +101,7 @@ public class DocumentController {
 
     private final DocumentService documentService;
     private final ObjectMapper objectMapper;
+    private final OnlyOfficeConfig onlyOfficeConfig;
 
     /**
      * 获取文档编辑器配置
@@ -154,17 +159,28 @@ public class DocumentController {
     @PostMapping("/callback")
     public Map<String, Object> handleCallback(HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
+        String remoteAddr = request.getRemoteAddr();
+        String userAgent = request.getHeader("User-Agent");
         
         try {
             // 读取请求体
             String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
+            log.info("接收到OnlyOffice回调请求，IP: {}, 用户代理: {}", remoteAddr, userAgent);
+            log.info("回调请求体: {}", body);
             
             // 处理回调
             boolean success = documentService.handleCallback(body);
             
-            // 返回结果
+            // 返回结果 (根据OnlyOffice文档，必须返回 {error: 0} 表示成功)
             result.put("error", success ? 0 : 1);
             
+            // 记录额外响应信息 (仅用于状态=1的强制保存模式)
+            if (body.contains("\"status\":1")) {
+                result.put("url", request.getRequestURL().toString());
+                result.put("status", "ready");
+            }
+            
+            log.info("回调处理结果: {}, 返回响应: {}", success ? "成功" : "失败", result);
             return result;
         } catch (Exception e) {
             log.error("处理回调异常: {}", e.getMessage(), e);
@@ -287,6 +303,12 @@ public class DocumentController {
             return R.paramError("参数错误");
         }
         
+        // 获取版本信息，确认存在
+        DocumentVersionVO version = documentService.getVersion(versionId);
+        if (version == null) {
+            return R.error("该版本不存在或已删除");
+        }
+        
         // 获取预览配置
         DocumentEditorConfig config = documentService.previewVersion(versionId, userId, userName);
         if (config == null) {
@@ -391,5 +413,149 @@ public class DocumentController {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "下载文档版本失败");
             return null;
         }
+    }
+
+    /**
+     * 获取文档内容
+     * 
+     * @param sourceType 来源类型
+     * @param sourceId 来源ID
+     * @param response 响应
+     * @throws IOException IO异常
+     */
+    @ApiOperation("获取文档内容")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sourceType", value = "来源类型", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "sourceId", value = "来源ID", required = true, paramType = "path")
+    })
+    @GetMapping("/{sourceType}/{sourceId}/content")
+    public void getDocumentContent(
+            @PathVariable String sourceType,
+            @PathVariable Long sourceId,
+            HttpServletResponse response) throws IOException {
+        
+        // 检查参数
+        if (!StringUtils.hasText(sourceType) || sourceId == null) {
+            response.sendError(HttpStatus.BAD_REQUEST.value(), "参数错误");
+            return;
+        }
+        
+        // 获取文档元数据
+        DocumentMetadataEntity metadata = documentService.getDocumentMetadata(sourceType, sourceId);
+        if (metadata == null) {
+            response.sendError(HttpStatus.NOT_FOUND.value(), "文档不存在");
+            return;
+        }
+        
+        // 获取文档流
+        try (InputStream inputStream = documentService.downloadDocument(sourceType, sourceId)) {
+            if (inputStream == null) {
+                response.sendError(HttpStatus.NOT_FOUND.value(), "文档内容不存在");
+                return;
+            }
+            
+            // 设置Content-Type
+            String contentType = metadata.getContentType();
+            if (!StringUtils.hasText(contentType)) {
+                contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+            }
+            response.setContentType(contentType);
+            
+            // 复制文件流到响应
+            StreamUtils.copy(inputStream, response.getOutputStream());
+        } catch (Exception e) {
+            log.error("获取文档内容异常: {}", e.getMessage(), e);
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "获取文档内容失败");
+        }
+    }
+    
+    /**
+     * 获取文档版本内容
+     * 
+     * @param versionId 版本ID
+     * @param response 响应
+     * @throws IOException IO异常
+     */
+    @ApiOperation("获取文档版本内容")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "versionId", value = "版本ID", required = true, paramType = "path")
+    })
+    @GetMapping("/versions/{versionId}/content")
+    public void getVersionContent(
+            @PathVariable Long versionId,
+            HttpServletResponse response) throws IOException {
+        
+        // 检查参数
+        if (versionId == null) {
+            response.sendError(HttpStatus.BAD_REQUEST.value(), "参数错误");
+            return;
+        }
+        
+        // 获取版本信息
+        DocumentVersionVO version = documentService.getVersion(versionId);
+        if (version == null) {
+            response.sendError(HttpStatus.NOT_FOUND.value(), "版本不存在");
+            return;
+        }
+        
+        // 获取文档流
+        try (InputStream inputStream = documentService.downloadVersion(versionId)) {
+            if (inputStream == null) {
+                response.sendError(HttpStatus.NOT_FOUND.value(), "版本内容不存在");
+                return;
+            }
+            
+            // 设置Content-Type
+            String contentType = version.getFileType();
+            if (!StringUtils.hasText(contentType)) {
+                contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+            }
+            response.setContentType(contentType);
+            
+            // 复制文件流到响应
+            StreamUtils.copy(inputStream, response.getOutputStream());
+        } catch (Exception e) {
+            log.error("获取文档版本内容异常: {}", e.getMessage(), e);
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "获取文档版本内容失败");
+        }
+    }
+
+    /**
+     * OnlyOffice 测试页面
+     */
+    @ApiOperation(value = "OnlyOffice 测试页面", notes = "用于测试 OnlyOffice 集成")
+    @GetMapping("/test/onlyoffice")
+    public ModelAndView testOnlyOffice() {
+        return new ModelAndView("forward:/onlyoffice-demo.html");
+    }
+    
+    /**
+     * OnlyOffice 直接测试页面
+     */
+    @ApiOperation(value = "OnlyOffice 直接测试页面", notes = "直接测试 OnlyOffice 服务器连接")
+    @GetMapping("/test/direct")
+    public ModelAndView testDirectConnection() {
+        return new ModelAndView("forward:/test-direct.html");
+    }
+    
+    /**
+     * 获取 OnlyOffice 服务器信息
+     */
+    @ApiOperation(value = "获取 OnlyOffice 服务器信息", notes = "返回当前配置的 OnlyOffice 服务器信息")
+    @GetMapping("/server/info")
+    public R<Map<String, Object>> getServerInfo() {
+        Map<String, Object> info = new HashMap<>();
+        info.put("documentServerUrl", onlyOfficeConfig.getDocumentServerUrl());
+        info.put("callbackUrl", onlyOfficeConfig.getCallbackUrl());
+        return R.ok(info);
+    }
+
+    /**
+     * OnlyOffice 安全集成测试页面
+     */
+    @ApiOperation(value = "OnlyOffice 安全集成测试页面", notes = "使用JWT令牌安全访问OnlyOffice")
+    @GetMapping("/test/secure-json")
+    public ModelAndView testSecureIntegration() {
+        return new ModelAndView("forward:/static/test-secure.html");
     }
 } 
